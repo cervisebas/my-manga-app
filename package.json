@@ -2,12 +2,15 @@
   "name": "my-manga-app",
   "version": "1.0.0",
   "main": "index.ts",
+  "type": "module",
   "scripts": {
     "start": "expo start",
     "android": "expo android",
     "ios": "expo ios",
     "web": "expo start --web",
-    "prebuild": "expo prebuild"
+    "prebuild": "expo prebuild",
+    "lint": "eslint \"**/*.{js,jsx,ts,tsx}\" && prettier -c \"**/*.{js,jsx,ts,tsx,json}\"",
+    "lint:fix": "eslint \"**/*.{js,jsx,ts,tsx}\" --fix && prettier \"**/*.{js,jsx,ts,tsx,json}\" --write"
   },
   "dependencies": {
     "@expo/ui": "~55.0.5",
@@ -27,9 +30,21 @@
     "react-native-screens": "~4.23.0"
   },
   "devDependencies": {
+    "@eslint/css": "^1.0.0",
+    "@eslint/js": "^10.0.1",
+    "@eslint/json": "^1.2.0",
     "@types/react": "~19.2.2",
     "drizzle-kit": "^0.31.10",
-    "typescript": "~5.9.2"
+    "eslint": "^10.1.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.5",
+    "eslint-plugin-react": "^7.37.5",
+    "globals": "^17.4.0",
+    "jiti": "^2.6.1",
+    "prettier": "^3.8.1",
+    "prettier-plugin-tailwindcss": "^0.7.2",
+    "typescript": "~5.9.2",
+    "typescript-eslint": "^8.57.2"
   },
   "private": true,
   "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
