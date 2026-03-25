@@ -11,7 +11,10 @@ export default defineConfig([
   {
     ignores: ['**/node_modules', 'metro.config.js', '**/.vscode', '**/.yarn'],
   },
-  pluginReact.configs.flat.recommended,
+  {
+    ...pluginReact.configs.flat.recommended,
+    files: ['**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+  },
   {
     files: ['**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     plugins: { js },
