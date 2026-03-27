@@ -1,22 +1,21 @@
 import './global.css';
 
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { View } from 'react-native';
+import { ThemeProvider } from '@/providers/ThemeProvider';
+import { BottomNavigation } from '@/navigation/BottomNavigation';
+import { UHost } from '@/common/components/UniwindElements';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
+    <View className={'flex-1'}>
       <StatusBar style="auto" />
+
+      <ThemeProvider>
+        <UHost className={'flex-1'}>
+          <BottomNavigation />
+        </UHost>
+      </ThemeProvider>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

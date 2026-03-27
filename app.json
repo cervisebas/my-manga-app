@@ -27,6 +27,10 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": ["expo-sqlite"]
+    "plugins": [
+      "expo-sqlite",
+      "react-native-bottom-tabs",
+      "react-native-worklets/plugin"
+    ]
   }
 }
