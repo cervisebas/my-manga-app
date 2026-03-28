@@ -8,12 +8,14 @@ import React from 'react';
 import { AppbarHeader } from '@/common/components/AppbarHeader';
 import { UImage } from '@/common/components/UniwindElements';
 import { View } from 'react-native';
+import { PopularTab } from './tabs/PopularTab';
 
 type IProps = NativeBottomTabScreenProps<ParamListBase, 'Populares'>;
 
 const Tab = createMaterialTopTabNavigator();
 
-export function HomeScreen(props: IProps) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function HomeScreen(_props: IProps) {
   const theme = useTheme();
 
   return (
@@ -44,9 +46,9 @@ export function HomeScreen(props: IProps) {
             key={scrapper.getIdName()}
             name={scrapper.getNameService()}
             // eslint-disable-next-line react/no-children-prop
-            children={() => <></>}
+            children={() => <PopularTab instance={scrapper} />}
             options={{
-              tabBarLabel(props) {
+              tabBarLabel(tabProps) {
                 return (
                   <View className={'flex-row items-center gap-2.5'}>
                     <UImage
@@ -55,10 +57,10 @@ export function HomeScreen(props: IProps) {
                     />
                     <Text
                       style={{
-                        color: props.color,
+                        color: tabProps.color,
                       }}
                     >
-                      {props.children}
+                      {tabProps.children}
                     </Text>
                   </View>
                 );
