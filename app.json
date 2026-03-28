@@ -3,6 +3,26 @@
     "name": "my-manga-app",
     "slug": "my-manga-app",
     "version": "1.0.0",
+    "experiments": {
+      "tsconfigPaths": true,
+      "reactCompiler": true
+    },
+    "plugins": [
+      "expo-sqlite",
+      "react-native-bottom-tabs",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "abiFilters": [
+              "arm64-v8a",
+              "armeabi-v7a"
+            ]
+          }
+        }
+      ],
+      "expo-image"
+    ],
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -26,7 +46,6 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    },
-    "plugins": ["expo-sqlite", "react-native-bottom-tabs"]
+    }
   }
 }

@@ -1,0 +1,11 @@
+{
+  "dark": true,
+  "colors": {
+    "primary": "rgb(42, 87, 186)",
+    "background": "rgb(17, 19, 25)",
+    "card": "rgb(30, 33, 43)",
+    "text": "rgb(226, 226, 235)",
+    "border": "rgb(39, 39, 41)",
+    "notification": "rgb(255, 69, 58)"
+  }
+}

@@ -1,0 +1,164 @@
+{
+  "dark": true,
+  "roundness": 4,
+  "version": 3,
+  "isV3": true,
+  "colors": {
+    "primary": "#B2C5FF",
+    "primaryContainer": "#2A57BA",
+    "secondary": "#B2C5FF",
+    "secondaryContainer": "#2A57BA",
+    "tertiary": "#B2C5FF",
+    "tertiaryContainer": "#2A57BA",
+    "surface": "#111319",
+    "surfaceVariant": "#434652",
+    "surfaceDisabled": "rgba(17, 19, 25, 0.12)",
+    "background": "#111319",
+    "error": "#FFB4AB",
+    "errorContainer": "#93000A",
+    "onPrimary": "#002B74",
+    "onPrimaryContainer": "#C9D5FF",
+    "onSecondary": "#002B74",
+    "onSecondaryContainer": "#C9D5FF",
+    "onTertiary": "#002B74",
+    "onTertiaryContainer": "#C9D5FF",
+    "onSurface": "#E2E2EB",
+    "onSurfaceVariant": "#C3C6D5",
+    "onSurfaceDisabled": "rgba(226, 226, 235, 0.38)",
+    "onError": "#690005",
+    "onErrorContainer": "#FFDAD6",
+    "onBackground": "#E2E2EB",
+    "outline": "#8D909E",
+    "outlineVariant": "#434652",
+    "inverseSurface": "#E2E2EB",
+    "inverseOnSurface": "#2F3037",
+    "inversePrimary": "#2C59BC",
+    "shadow": "#000000",
+    "scrim": "#000000",
+    "backdrop": "rgba(50, 47, 55, 0.4)",
+    "elevation": {
+      "level0": "transparent",
+      "level1": "rgb(25, 28, 37)",
+      "level2": "rgb(30, 33, 43)",
+      "level3": "rgb(35, 39, 50)",
+      "level4": "rgb(36, 40, 53)",
+      "level5": "rgb(40, 44, 57)"
+    }
+  },
+  "fonts": {
+    "displayLarge": {
+      "fontFamily": "sans-serif",
+      "letterSpacing": 0,
+      "fontWeight": "400",
+      "lineHeight": 64,
+      "fontSize": 57
+    },
+    "displayMedium": {
+      "fontFamily": "sans-serif",
+      "letterSpacing": 0,
+      "fontWeight": "400",
+      "lineHeight": 52,
+      "fontSize": 45
+    },
+    "displaySmall": {
+      "fontFamily": "sans-serif",
+      "letterSpacing": 0,
+      "fontWeight": "400",
+      "lineHeight": 44,
+      "fontSize": 36
+    },
+    "headlineLarge": {
+      "fontFamily": "sans-serif",
+      "letterSpacing": 0,
+      "fontWeight": "400",
+      "lineHeight": 40,
+      "fontSize": 32
+    },
+    "headlineMedium": {
+      "fontFamily": "sans-serif",
+      "letterSpacing": 0,
+      "fontWeight": "400",
+      "lineHeight": 36,
+      "fontSize": 28
+    },
+    "headlineSmall": {
+      "fontFamily": "sans-serif",
+      "letterSpacing": 0,
+      "fontWeight": "400",
+      "lineHeight": 32,
+      "fontSize": 24
+    },
+    "titleLarge": {
+      "fontFamily": "sans-serif",
+      "letterSpacing": 0,
+      "fontWeight": "400",
+      "lineHeight": 28,
+      "fontSize": 22
+    },
+    "titleMedium": {
+      "fontFamily": "sans-serif-medium",
+      "letterSpacing": 0.15,
+      "fontWeight": "500",
+      "lineHeight": 24,
+      "fontSize": 16
+    },
+    "titleSmall": {
+      "fontFamily": "sans-serif-medium",
+      "letterSpacing": 0.1,
+      "fontWeight": "500",
+      "lineHeight": 20,
+      "fontSize": 14
+    },
+    "labelLarge": {
+      "fontFamily": "sans-serif-medium",
+      "letterSpacing": 0.1,
+      "fontWeight": "500",
+      "lineHeight": 20,
+      "fontSize": 14
+    },
+    "labelMedium": {
+      "fontFamily": "sans-serif-medium",
+      "letterSpacing": 0.5,
+      "fontWeight": "500",
+      "lineHeight": 16,
+      "fontSize": 12
+    },
+    "labelSmall": {
+      "fontFamily": "sans-serif-medium",
+      "letterSpacing": 0.5,
+      "fontWeight": "500",
+      "lineHeight": 16,
+      "fontSize": 11
+    },
+    "bodyLarge": {
+      "fontFamily": "sans-serif",
+      "letterSpacing": 0.15,
+      "fontWeight": "400",
+      "lineHeight": 24,
+      "fontSize": 16
+    },
+    "bodyMedium": {
+      "fontFamily": "sans-serif",
+      "letterSpacing": 0.25,
+      "fontWeight": "400",
+      "lineHeight": 20,
+      "fontSize": 14
+    },
+    "bodySmall": {
+      "fontFamily": "sans-serif",
+      "letterSpacing": 0.4,
+      "fontWeight": "400",
+      "lineHeight": 16,
+      "fontSize": 12
+    },
+    "default": {
+      "fontFamily": "sans-serif",
+      "letterSpacing": 0,
+      "fontWeight": "400"
+    }
+  },
+  "animation": {
+    "scale": 1
+  },
+  "mode": "exact"
+}

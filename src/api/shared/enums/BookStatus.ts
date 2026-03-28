@@ -1,0 +1,10 @@
+export enum BookStatus {
+  PUBLICANDOSE,
+  FINALIZADO,
+  CANCELADO,
+  EN_ESPERA,
+
+  PAUSADO,
+  ACTIVO,
+  ABANDONADO,
+}
