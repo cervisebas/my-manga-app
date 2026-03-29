@@ -9,10 +9,12 @@ interface IProps {
 export function PopularTab(props: IProps) {
   return (
     <View className={'flex-row flex-1'}>
-      <View className={'flex-1 bg-red-500'}>
-        <BookItem />
+      <View className={'flex-1'}>
+        <BookItem instance={props.instance} />
       </View>
-      <View className={'flex-1 bg-blue-500'}></View>
+      <View className={'flex-1'}>
+        <BookItem instance={props.instance} />
+      </View>
     </View>
   );
 }
