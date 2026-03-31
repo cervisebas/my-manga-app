@@ -1,20 +1,68 @@
 import { IScrappingService } from '@/api/interfaces/IScrappingService';
+import { BookInfoInterface } from '@/api/shared/interfaces/BookInfoInterface';
 import { BookItem } from '@/common/components/BookItem';
-import { View } from 'react-native';
+import { LoadingErrorContent } from '@/common/components/LoadingErrorContent';
+import SafeArea from '@/common/components/SafeArea';
+import { useEffect, useState } from 'react';
+import { ListRenderItemInfo } from 'react-native';
 
 interface IProps {
   instance: IScrappingService;
 }
 
 export function PopularTab(props: IProps) {
+  const [data, setData] = useState<BookInfoInterface[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const _renderItem = ({ item }: ListRenderItemInfo<BookInfoInterface>) => {
+    return (
+      <BookItem
+        key={`${item.path}`}
+        type={item.type}
+        title={item.title}
+        stars={item.stars}
+        cover={item.picture}
+        language={item.language}
+      />
+    );
+  };
+
+  const _keyExtractor = (item: BookInfoInterface) => {
+    return item.path;
+  };
+
+  const loadData = async () => {
+    setLoading(true);
+
+    try {
+      const _data = await props.instance.getPopular();
+      console.log(_data);
+      setData(_data);
+    } catch (_error) {
+      setError(_error as never);
+      console.error(_error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
   return (
-    <View className={'flex-row flex-1'}>
-      <View className={'flex-1'}>
-        <BookItem instance={props.instance} />
-      </View>
-      <View className={'flex-1'}>
-        <BookItem instance={props.instance} />
-      </View>
-    </View>
+    <LoadingErrorContent loading={loading} error={error}>
+      <SafeArea.FlatList
+        data={data}
+        numColumns={2}
+        keyExtractor={_keyExtractor}
+        renderItem={_renderItem}
+        expandDisableTop
+        expandArea={{
+          top: 16,
+        }}
+      />
+    </LoadingErrorContent>
   );
 }

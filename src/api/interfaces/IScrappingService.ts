@@ -14,6 +14,7 @@ export interface IScrappingService {
   getSearchFilters(): SearchFilter[];
 
   // Extract data
+  getPopular(): Promise<BookInfoInterface[]>;
   search(value: string, filters: SearchFilter[]): Promise<SearchResult>;
   bookInfo(url: string): Promise<BookInfoInterface>;
   getDataChapter(url: string): Promise<string[]>;

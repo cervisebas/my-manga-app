@@ -510,6 +510,82 @@ export class MangaDexScrapping implements IScrappingService {
     ];
   }
 
+  public async getPopular(): Promise<BookInfoInterface[]> {
+    const { data } = await axios.get<MangaDexSearchResponse>(
+      'https://api.mangadex.org/manga?limit=32&offset=0&includes[]=cover_art&contentRating[]=safe&contentRating[]=suggestive&contentRating[]=erotica&order[rating]=desc&includedTagsMode=AND&excludedTagsMode=OR',
+      {
+        headers: {
+          Referer: 'https://mangadex.org/',
+        },
+      },
+    );
+
+    return this.mapSearchItems(data.data);
+  }
+
+  private mapSearchItems(items: MangaDexSearchResponse['data']) {
+    return items
+      .filter((val) => val.type === RelationshipSearchType.Manga)
+      .map<BookInfoInterface>((val) => {
+        const CoverArt = val.relationships.find(
+          (v) => v.type === RelationShipType.CoverArt,
+        );
+
+        const Staffs = val.relationships.filter(
+          (v) =>
+            v.type === RelationShipType.Author ||
+            v.type === RelationShipType.Artist,
+        );
+
+        const id = val.id;
+        const url = `https://mangadex.org/title/${id}/`;
+
+        return {
+          path: id,
+          url: url,
+          title:
+            val.attributes.title?.['es'] ??
+            val.attributes.title?.['en'] ??
+            val.attributes.title?.['ja'] ??
+            Object.values(val.attributes.title)[0]!,
+
+          altTitles: val.attributes.altTitles.reduce(
+            (prev, curr) => ({ ...prev, ...curr }),
+            {},
+          ),
+          picture:
+            'https://mangadex.org/covers/' +
+            id +
+            '/' +
+            (CoverArt?.attributes?.fileName ?? ''),
+          type: BookType.MANGA,
+
+          language: this.getLanguageEnum(val.attributes.originalLanguage),
+          languages: val.attributes.availableTranslatedLanguages.map((val) =>
+            this.getLanguageEnum(val),
+          ),
+
+          status: this.getStatus(val.attributes.status),
+          description:
+            val.attributes.description?.['es'] ??
+            val.attributes.description?.['en'] ??
+            Object.values(val.attributes.description)[0]!,
+          wallpaper:
+            'https://mangadex.org/covers/' +
+            id +
+            '/' +
+            (CoverArt?.attributes?.fileName ?? ''),
+
+          staff: Staffs.map((staff) => ({
+            url: `https://mangadex.org/author/${staff.id}/`,
+            name: staff.attributes?.name ?? '',
+            work_position: staff.type,
+            search_name: staff.attributes?.name ?? '',
+          })),
+        };
+      });
+  }
+
   public async search(
     value: string,
     filters: SearchFilter[],
@@ -547,58 +623,7 @@ export class MangaDexScrapping implements IScrappingService {
       page: offset ? Math.round(data.total / offset) : 0,
       total: data.total,
       offset: offset,
-      books: data.data
-        .filter((val) => val.type === RelationshipSearchType.Manga)
-        .map<BookInfoInterface>((val) => {
-          const CoverArt = val.relationships.find(
-            (v) => v.type === RelationShipType.CoverArt,
-          );
-
-          const Staffs = val.relationships.filter(
-            (v) =>
-              v.type === RelationShipType.Author ||
-              v.type === RelationShipType.Artist,
-          );
-
-          const id = val.id;
-          const url = `https://mangadex.org/title/${id}/`;
-
-          return {
-            path: id,
-            url: url,
-            title:
-              val.attributes.title?.['es'] ??
-              val.attributes.title?.['en'] ??
-              val.attributes.title?.['ja'] ??
-              Object.values(val.attributes.title)[0]!,
-
-            altTitles: val.attributes.altTitles.reduce(
-              (prev, curr) => ({ ...prev, ...curr }),
-              {},
-            ),
-            picture: CoverArt?.attributes?.fileName ?? '',
-            type: BookType.MANGA,
-
-            language: this.getLanguageEnum(val.attributes.originalLanguage),
-            languages: val.attributes.availableTranslatedLanguages.map((val) =>
-              this.getLanguageEnum(val),
-            ),
-
-            status: this.getStatus(val.attributes.status),
-            description:
-              val.attributes.description?.['es'] ??
-              val.attributes.description?.['en'] ??
-              Object.values(val.attributes.description)[0]!,
-            wallpaper: CoverArt?.attributes?.fileName ?? '',
-
-            staff: Staffs.map((staff) => ({
-              url: `https://mangadex.org/author/${staff.id}/`,
-              name: staff.attributes?.name ?? '',
-              work_position: staff.type,
-              search_name: staff.attributes?.name ?? '',
-            })),
-          };
-        }),
+      books: this.mapSearchItems(data.data),
     };
   }
 
@@ -960,7 +985,11 @@ export class MangaDexScrapping implements IScrappingService {
           (prev, curr) => ({ ...prev, ...curr }),
           {},
         ),
-        picture: CoverArt?.attributes?.fileName ?? '',
+        picture:
+          'https://mangadex.org/covers/' +
+          id +
+          '/' +
+          (CoverArt?.attributes?.fileName ?? ''),
         stars: Number(RatingBook?.rating.bayesian.toFixed(2)),
         type: BookType.MANGA,
 
@@ -974,7 +1003,11 @@ export class MangaDexScrapping implements IScrappingService {
           BookInfo.attributes.description?.['es'] ??
           BookInfo.attributes.description?.['en'] ??
           Object.values(BookInfo.attributes.description)[0]!,
-        wallpaper: CoverArt?.attributes?.fileName ?? '',
+        wallpaper:
+          'https://mangadex.org/covers/' +
+          id +
+          '/' +
+          (CoverArt?.attributes?.fileName ?? ''),
 
         genders: BookInfo.attributes.tags.map((tag) => ({
           name:
