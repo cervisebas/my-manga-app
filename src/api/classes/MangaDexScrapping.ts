@@ -27,6 +27,7 @@ import { ImageSourcePropType } from 'react-native';
 import LogoImage from '@api/assets/mangadex-logo.webp';
 import axios from 'axios';
 import dayjs from 'dayjs';
+import { Language } from '../shared/enums/Language';
 
 /* const ORDER_OPTIONS: SearchFilterOption[] = [
   {
@@ -578,8 +579,10 @@ export class MangaDexScrapping implements IScrappingService {
             picture: CoverArt?.attributes?.fileName ?? '',
             type: BookType.MANGA,
 
-            language: val.attributes.originalLanguage,
-            languages: val.attributes.availableTranslatedLanguages,
+            language: this.getLanguageEnum(val.attributes.originalLanguage),
+            languages: val.attributes.availableTranslatedLanguages.map((val) =>
+              this.getLanguageEnum(val),
+            ),
 
             status: this.getStatus(val.attributes.status),
             description:
@@ -618,6 +621,199 @@ export class MangaDexScrapping implements IScrappingService {
     }
   }
 
+  private getLanguageEnum(language: string) {
+    switch (language) {
+      case 'ja':
+        return Language.JP;
+
+      case 'ko':
+        return Language.KR;
+
+      case 'zh':
+        return Language.CN;
+
+      case 'zh-hk':
+        return Language.HK;
+
+      case 'en':
+        return Language.GB;
+
+      case 'af':
+        return Language.ZA;
+
+      case 'sq':
+        return Language.SQ;
+
+      case 'ar':
+        return Language.SA;
+
+      case 'az':
+        return Language.AZ;
+
+      case 'eu':
+        return Language.EU;
+
+      case 'be':
+        return Language.BY;
+
+      case 'bn':
+        return Language.BD;
+
+      case 'bg':
+        return Language.BG;
+
+      case 'my':
+        return Language.MM;
+
+      case 'ca':
+        return Language.AD;
+
+      case 'cv':
+        return Language.RU_CU;
+
+      case 'hr':
+        return Language.HR;
+
+      case 'cs':
+        return Language.CZ;
+
+      case 'da':
+        return Language.DK;
+
+      case 'nl':
+        return Language.NL;
+
+      case 'eo':
+        return Language.EO;
+
+      case 'et':
+        return Language.ET;
+
+      case 'tl':
+        return Language.PH;
+
+      case 'fi':
+        return Language.FI;
+
+      case 'fr':
+        return Language.FR;
+
+      case 'ka':
+        return Language.KA;
+
+      case 'de':
+        return Language.DE;
+
+      case 'el':
+        return Language.GR;
+
+      case 'he':
+        return Language.IL;
+
+      case 'hi':
+        return Language.IN;
+
+      case 'hu':
+        return Language.HU;
+
+      case 'id':
+        return Language.ID;
+
+      case 'ga':
+        return Language.IE;
+
+      case 'it':
+        return Language.IT;
+
+      case 'jv':
+        return Language.ID;
+
+      case 'kk':
+        return Language.KZ;
+
+      case 'la':
+        return Language.RI;
+
+      case 'lt':
+        return Language.LT;
+
+      case 'ms':
+        return Language.MY;
+
+      case 'mn':
+        return Language.MN;
+
+      case 'ne':
+        return Language.NP;
+
+      case 'no':
+        return Language.NO;
+
+      case 'fa':
+        return Language.IR;
+
+      case 'pl':
+        return Language.PL;
+
+      case 'pt':
+        return Language.PT;
+
+      case 'pt-br':
+        return Language.BR;
+
+      case 'ro':
+        return Language.RO;
+
+      case 'ru':
+        return Language.RU;
+
+      case 'sr':
+        return Language.RS;
+
+      case 'sk':
+        return Language.SK;
+
+      case 'sl':
+        return Language.SI;
+
+      case 'es':
+        return Language.ES;
+
+      case 'es-la':
+        return Language.MX;
+
+      case 'sv':
+        return Language.SE;
+
+      case 'ta':
+        return Language.TAM;
+
+      case 'te':
+        return Language.TEL;
+
+      case 'th':
+        return Language.TH;
+
+      case 'tr':
+        return Language.TR;
+
+      case 'uk':
+        return Language.UA;
+
+      case 'ur':
+        return Language.PK;
+
+      case 'uz':
+        return Language.UZ;
+
+      case 'vi':
+        return Language.VN;
+
+      default:
+        return Language.GB;
+    }
+  }
+
   private collectChapters(
     response: MangaDexChapterResponse | MangaDexSearchResponse,
     map: Map<string, ChapterInterface>,
@@ -639,7 +835,7 @@ export class MangaDexScrapping implements IScrappingService {
         title: scanlationGroup?.attributes?.name ?? '',
         date: dayjs(item.attributes.publishAt).toDate(),
         url: `https://mangadex.org/chapter/${item.id}`,
-        language: item.attributes.translatedLanguage,
+        language: this.getLanguageEnum(item.attributes.translatedLanguage),
       };
 
       if (alreadyExist) {
@@ -768,8 +964,10 @@ export class MangaDexScrapping implements IScrappingService {
         stars: Number(RatingBook?.rating.bayesian.toFixed(2)),
         type: BookType.MANGA,
 
-        language: BookInfo.attributes.originalLanguage,
-        languages: BookInfo.attributes.availableTranslatedLanguages,
+        language: this.getLanguageEnum(BookInfo.attributes.originalLanguage),
+        languages: BookInfo.attributes.availableTranslatedLanguages.map((val) =>
+          this.getLanguageEnum(val),
+        ),
 
         status: this.getStatus(BookInfo.attributes.status),
         description:

@@ -2,11 +2,12 @@ import React from 'react';
 import { View } from 'react-native';
 import { UImage } from './UniwindElements';
 import { Text, useTheme } from 'react-native-paper';
-import { Langueages } from '../constants/Languages';
+import { Languages } from '../constants/Languages';
 import { IScrappingService } from '@/api/interfaces/IScrappingService';
 
 import Cover from '@/assets/cbd2ace0-5647-4bff-8632-64ace496130e.webp';
 import StarIcon from '@/assets/icons/star.svg';
+import { Language } from '../../api/shared/enums/Language';
 
 interface IProps {
   instance?: IScrappingService;
@@ -21,7 +22,7 @@ export const BookItem = React.memo(function (props: IProps) {
         <UImage className={'aspect-5/7 z-1'} source={Cover} />
 
         <View className={'absolute bottom-0 left-0 z-2 m-2'}>
-          <UImage source={Langueages.ES} className={'w-[25] h-[16]'} />
+          <UImage source={Languages[Language.ES]} className={'w-[25] h-[16]'} />
         </View>
 
         <View

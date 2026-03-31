@@ -1,3 +1,4 @@
+import { Language } from '@/api/shared/enums/Language';
 import { BookStatus } from '@api/shared/enums/BookStatus';
 import { BookType } from '@api/shared/enums/BookType';
 import type { BookStaffInterface } from '@api/shared/interfaces/BookStaffInterface';
@@ -15,8 +16,8 @@ export interface BookInfoInterface {
   stars?: number;
   type: BookType;
 
-  language?: string;
-  languages?: string[];
+  language?: Language;
+  languages?: Language[];
 
   status?: BookStatus | null;
   description?: string;
