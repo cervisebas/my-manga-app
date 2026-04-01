@@ -27,7 +27,9 @@ import { ImageSourcePropType } from 'react-native';
 import LogoImage from '@api/assets/mangadex-logo.webp';
 import axios from 'axios';
 import dayjs from 'dayjs';
+import { Buffer } from 'buffer';
 import { Language } from '../shared/enums/Language';
+import { HandleErrors } from '../decorators/HandleErrors';
 
 /* const ORDER_OPTIONS: SearchFilterOption[] = [
   {
@@ -510,6 +512,7 @@ export class MangaDexScrapping implements IScrappingService {
     ];
   }
 
+  @HandleErrors()
   public async getPopular(): Promise<BookInfoInterface[]> {
     const { data } = await axios.get<MangaDexSearchResponse>(
       'https://api.mangadex.org/manga?limit=32&offset=0&includes[]=cover_art&contentRating[]=safe&contentRating[]=suggestive&contentRating[]=erotica&order[rating]=desc&includedTagsMode=AND&excludedTagsMode=OR',
@@ -586,6 +589,7 @@ export class MangaDexScrapping implements IScrappingService {
       });
   }
 
+  @HandleErrors()
   public async search(
     value: string,
     filters: SearchFilter[],
@@ -933,6 +937,7 @@ export class MangaDexScrapping implements IScrappingService {
     return this.collectionMapToArray(collect);
   }
 
+  @HandleErrors()
   public async bookInfo(url: string): Promise<BookInfoInterface> {
     try {
       const id = url.slice(url.indexOf('title/') + 6, url.lastIndexOf('/'));
@@ -1031,6 +1036,7 @@ export class MangaDexScrapping implements IScrappingService {
     }
   }
 
+  @HandleErrors()
   public async getDataChapter(url: string): Promise<string[]> {
     const id = url.slice(url.indexOf('chapter/') + 8);
 
@@ -1044,6 +1050,7 @@ export class MangaDexScrapping implements IScrappingService {
     );
   }
 
+  @HandleErrors()
   public async loadChapterImage(url: string): Promise<string> {
     const { data } = await axios.get(url, {
       headers: { Referer: 'https://mangadex.org/' },
@@ -1053,6 +1060,7 @@ export class MangaDexScrapping implements IScrappingService {
     return Buffer.from(data, 'binary').toString('base64');
   }
 
+  @HandleErrors()
   public async loadChapterImages(
     urls: string[],
     progress?: (index: number, source: string) => void,

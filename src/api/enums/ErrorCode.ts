@@ -1,0 +1,8 @@
+export enum ErrorCode {
+  NO_INTERNET,
+  SERVICE_NOT_AVAILABLE,
+  NOT_FOUND,
+  BLOCKED,
+  UNKNOWN,
+  INTERNAL_ERROR,
+}
