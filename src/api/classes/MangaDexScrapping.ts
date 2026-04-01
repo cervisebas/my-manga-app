@@ -29,7 +29,7 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 import { Buffer } from 'buffer';
 import { Language } from '../shared/enums/Language';
-import { HandleErrors } from '../decorators/HandleErrors';
+import { HandleErrors } from '../shared/decorators/HandleErrors';
 
 /* const ORDER_OPTIONS: SearchFilterOption[] = [
   {
