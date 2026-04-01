@@ -37,7 +37,6 @@ export function PopularTab(props: IProps) {
 
     try {
       const _data = await props.instance.getPopular();
-      console.log(_data);
       setData(_data);
     } catch (_error) {
       setError(_error as never);

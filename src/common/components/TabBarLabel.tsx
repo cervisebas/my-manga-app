@@ -9,7 +9,6 @@ interface IProps {
 }
 
 export function TabBarLabel(props: IProps) {
-  console.log(props);
   const data = useMemo(() => {
     if (props.children.indexOf('}') === -1) {
       return { label: props.children };

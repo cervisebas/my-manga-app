@@ -906,9 +906,6 @@ export class MangaDexScrapping implements IScrappingService {
           limit = this.EXTRACT_CHAPTERS - offset;
         }
 
-        console.log(
-          `Extract chapters: Limit: ${limit} | Offset: ${offset} | Total: ${total}`,
-        );
         const { data } = await axios.get<MangaDexChapterResponse>(
           `https://api.mangadex.org/manga/${id}/feed?limit=${limit}&includes[]=scanlation_group&includes[]=user&order[volume]=desc&order[chapter]=desc&offset=${offset}&contentRating[]=safe&contentRating[]=suggestive&contentRating[]=erotica&contentRating[]=pornographic&includeUnavailable=0&excludeExternalUrl=blinktoon.com`,
           { headers: { Referer: url } },
@@ -1072,7 +1069,7 @@ export class MangaDexScrapping implements IScrappingService {
 
       return images;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       throw error;
     }
   }

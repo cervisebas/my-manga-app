@@ -1,12 +1,11 @@
 import React from 'react';
 import { View } from 'react-native';
-import { UImage } from './UniwindElements';
+import { UImage, UNativePressable } from './UniwindElements';
 import { Text, useTheme } from 'react-native-paper';
 import { Languages } from '../constants/Languages';
 import { IScrappingService } from '@/api/interfaces/IScrappingService';
 import { Language } from '../../api/shared/enums/Language';
 
-// import Cover from '@/assets/cbd2ace0-5647-4bff-8632-64ace496130e.webp';
 import StarIcon from '@/assets/icons/star.svg';
 
 interface IProps {
@@ -16,6 +15,7 @@ interface IProps {
   title: string;
   language?: Language;
   instance?: IScrappingService;
+  onPress?(): void;
 }
 
 export const BookItem = React.memo(function (props: IProps) {
@@ -23,7 +23,10 @@ export const BookItem = React.memo(function (props: IProps) {
   const type = props.type?.toUpperCase();
 
   return (
-    <View className={'flex-col gap-2 py-2 px-4 flex-1'}>
+    <UNativePressable
+      className={'flex-col gap-2 py-2 px-4 flex-1'}
+      onPress={props.onPress}
+    >
       <View className={'overflow-hidden shadow-xs relative rounded-md'}>
         <UImage
           className={'aspect-5/7 z-1'}
@@ -91,6 +94,6 @@ export const BookItem = React.memo(function (props: IProps) {
       <View className={'px-1'}>
         <Text variant={'titleSmall'}>{props.title}</Text>
       </View>
-    </View>
+    </UNativePressable>
   );
 });
