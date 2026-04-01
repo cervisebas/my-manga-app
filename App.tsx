@@ -3,8 +3,8 @@ import './global.css';
 import { StatusBar } from 'expo-status-bar';
 import { View } from 'react-native';
 import { ThemeProvider } from '@/providers/ThemeProvider';
-import { BottomNavigation } from '@/navigation/BottomNavigation';
 import { UHost } from '@/common/components/UniwindElements';
+import { NativeStackNavigation } from '@/navigation/NativeStackNavigation';
 
 export default function App() {
   return (
@@ -13,7 +13,7 @@ export default function App() {
 
       <ThemeProvider>
         <UHost className={'flex-1'}>
-          <BottomNavigation />
+          <NativeStackNavigation />
         </UHost>
       </ThemeProvider>
     </View>

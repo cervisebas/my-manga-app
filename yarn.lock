@@ -2042,6 +2042,16 @@
     color "^4.2.3"
     react-native-tab-view "^4.3.0"
 
+"@react-navigation/native-stack@^7.14.10":
+  version "7.14.10"
+  resolved "https://registry.yarnpkg.com/@react-navigation/native-stack/-/native-stack-7.14.10.tgz#f83ff598bbadcaec57412301f2258183af244085"
+  integrity sha512-mCbYbYhi7Em2R2nEgwYGdLU38smy+KK+HMMVcwuzllWsF3Qb+jOUEYbB6Or7LvE7SS77BZ6sHdx4HptCEv50hQ==
+  dependencies:
+    "@react-navigation/elements" "^2.9.14"
+    color "^4.2.3"
+    sf-symbols-typescript "^2.1.0"
+    warn-once "^0.1.1"
+
 "@react-navigation/native@^7.2.0":
   version "7.2.0"
   resolved "https://registry.yarnpkg.com/@react-navigation/native/-/native-7.2.0.tgz#41e68397e37fdb662b07c30b82ebec7cf2e4f0ef"
@@ -7044,7 +7054,7 @@ walker@^1.0.7, walker@^1.0.8:
   dependencies:
     makeerror "1.0.12"
 
-warn-once@^0.1.0:
+warn-once@^0.1.0, warn-once@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/warn-once/-/warn-once-0.1.1.tgz#952088f4fb56896e73fd4e6a3767272a3fccce43"
   integrity sha512-VkQZJbO8zVImzYFteBXvBOZEl1qL175WH8VmZcxF2fZAoudNhNDvHi+doCaAEdU2l2vtcIwa2zn0QK5+I1HQ3Q==
