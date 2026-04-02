@@ -10,8 +10,11 @@ import { useTheme } from 'react-native-paper';
 import { getInstanceById } from '@/api/utils/getInstanceById';
 import { BookInfoParams } from './interfaces/BookInfoParams';
 import { UImage } from '@/common/components/UniwindElements';
+import { BookInfoPicture } from './components/BookInfoPicture';
 
 type IProps = NativeStackScreenProps<ParamListBase, 'book-info'>;
+
+const COVER_HEIGHT = 240;
 
 export function BookInfoScreen(props: IProps) {
   const params = props.route.params as BookInfoParams;
@@ -23,9 +26,8 @@ export function BookInfoScreen(props: IProps) {
   const { top } = useSafeArea();
   const theme = useTheme();
 
-  const coverSize = top + modeAppbarHeight['small'] + 220;
+  const coverSize = top + modeAppbarHeight['small'] + COVER_HEIGHT;
 
-  console.log(instance.getIdName() + info.path);
   return (
     <View className={'flex-1 relative'}>
       <BookInfoHeader
@@ -42,15 +44,25 @@ export function BookInfoScreen(props: IProps) {
         className={'flex-1 z-1'}
         onScroll={onScroll}
       >
-        <UImage
-          className={'w-full'}
-          style={{
-            backgroundColor: theme.colors.onSecondary,
-            height: coverSize,
-          }}
-          source={{ uri: info.picture }}
-          blurRadius={10}
-        />
+        <View className={'w-full relative'} style={{ height: coverSize }}>
+          <UImage
+            className={'w-full'}
+            style={{
+              backgroundColor: theme.colors.onSecondary,
+              height: coverSize,
+            }}
+            source={{ uri: info.picture }}
+            blurRadius={10}
+          />
+
+          <BookInfoPicture
+            type={info.type}
+            stars={info.stars}
+            source={info.picture}
+            language={info.language}
+            onPress={() => {}}
+          />
+        </View>
         <SafeArea.View
           expandDisableTop
           expandArea={{ horizontal: 16 }}

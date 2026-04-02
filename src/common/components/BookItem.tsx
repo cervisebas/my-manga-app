@@ -92,7 +92,9 @@ export const BookItem = React.memo(function (props: IProps) {
       )}
 
       <View className={'px-1'}>
-        <Text variant={'titleSmall'}>{props.title}</Text>
+        <Text variant={'titleSmall'} numberOfLines={2}>
+          {props.title}
+        </Text>
       </View>
     </UNativePressable>
   );

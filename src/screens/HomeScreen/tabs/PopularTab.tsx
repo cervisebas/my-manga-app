@@ -26,7 +26,6 @@ export function PopularTab(props: IProps) {
         cover={item.picture}
         language={item.language}
         onPress={() => {
-          console.log(props.instance.getIdName() + item.path);
           goToBookInfo(props.instance, item);
         }}
       />
