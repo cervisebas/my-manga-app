@@ -15,7 +15,7 @@ interface IProps {
 export const LoadingErrorContent = React.memo(function (props: IProps) {
   const error =
     props.error instanceof ApiError
-      ? props.error.getError()
+      ? props.error.getMessage()
       : 'Error desconocido';
 
   if (props.error) {

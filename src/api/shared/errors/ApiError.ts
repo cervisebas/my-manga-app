@@ -1,5 +1,6 @@
 import { AxiosError } from 'axios';
 import { ErrorCode } from '../enums/ErrorCode';
+import { ErrorMensages } from '../translate/ErrorMessages';
 
 export class ApiError {
   private message: string | object | unknown;
@@ -33,5 +34,9 @@ export class ApiError {
     }
 
     return ErrorCode.INTERNAL_ERROR;
+  }
+
+  public getMessage() {
+    return ErrorMensages[this.getError()];
   }
 }
