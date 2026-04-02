@@ -3,6 +3,7 @@ import { BookInfoInterface } from '@/api/shared/interfaces/BookInfoInterface';
 import { BookItem } from '@/common/components/BookItem';
 import { LoadingErrorContent } from '@/common/components/LoadingErrorContent';
 import SafeArea from '@/common/components/SafeArea';
+import { goToBookInfo } from '@/utils/goToBookInfo';
 import { useEffect, useState } from 'react';
 import { ListRenderItemInfo } from 'react-native';
 
@@ -24,6 +25,10 @@ export function PopularTab(props: IProps) {
         stars={item.stars}
         cover={item.picture}
         language={item.language}
+        onPress={() => {
+          console.log(props.instance.getIdName() + item.path);
+          goToBookInfo(props.instance, item);
+        }}
       />
     );
   };

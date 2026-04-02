@@ -3,6 +3,7 @@ import React, { createContext } from 'react';
 import { MD3DarkTheme, PaperProvider } from 'react-native-paper';
 import PaperDarkTheme from '@/assets/theme-paper-dark.json';
 import NavegationDarkTheme from '@/assets/theme-navegation-dark.json';
+import { refNavegation } from '@/constants/Refs';
 
 const ThemeContext = createContext({
   isDark: false,
@@ -19,7 +20,7 @@ export function ThemeProvider(props: ThemeProviderProps) {
   return (
     <ThemeContext.Provider value={{ isDark: true }}>
       <PaperProvider theme={PaperTheme}>
-        <NavigationContainer theme={NavTheme}>
+        <NavigationContainer ref={refNavegation} theme={NavTheme}>
           {props.children}
         </NavigationContainer>
       </PaperProvider>
