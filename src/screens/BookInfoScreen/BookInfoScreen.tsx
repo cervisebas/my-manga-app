@@ -6,12 +6,17 @@ import { View } from 'react-native';
 import { BookInfoHeader } from './components/BookInfoHeader';
 import useSafeArea from '@/common/hooks/useSafeArea';
 import { modeAppbarHeight } from 'react-native-paper/src/components/Appbar/utils';
-import { useTheme } from 'react-native-paper';
+import { Divider, Text, useTheme } from 'react-native-paper';
 import { getInstanceById } from '@/api/utils/getInstanceById';
 import { BookInfoParams } from './interfaces/BookInfoParams';
 import { UImage } from '@/common/components/UniwindElements';
 import { BookInfoPicture } from './components/BookInfoPicture';
 import { BookStatusTabs } from '@/common/components/BookStatusTabs';
+import { useBookInfo } from './hooks/useBookInfo';
+import { LoadingErrorContent } from '@/common/components/LoadingErrorContent';
+import React from 'react';
+import { BookStatusColors } from '@/api/shared/constants/BookStatusColors';
+import { BookStatusTranslate } from '@/api/shared/translate/BookStatusTranslate';
 
 type IProps = NativeStackScreenProps<ParamListBase, 'book-info'>;
 
@@ -20,19 +25,29 @@ const COVER_HEIGHT = 240;
 export function BookInfoScreen(props: IProps) {
   const params = props.route.params as BookInfoParams;
 
-  const info = params.data;
-  const instance = getInstanceById(params.instance);
-
+  // Hooks de interfaz
   const { onScroll, scrollEvent } = useScrollEvent();
   const { top } = useSafeArea();
   const theme = useTheme();
 
+  // Variables de interfaz
   const coverSize = top + modeAppbarHeight['small'] + COVER_HEIGHT;
+
+  // Variables de informacion
+  const info = params.data;
+  const scrapper = getInstanceById(params.instance);
+
+  // Hook de datos
+  const { data, loading, error } = useBookInfo(scrapper, info);
+
+  const altTitles = Array.isArray(data.altTitles)
+    ? data.altTitles
+    : Object.values(data.altTitles);
 
   return (
     <View className={'flex-1 relative'}>
       <BookInfoHeader
-        title={info.title}
+        title={data.title}
         className={'absolute top-0 left-0 z-10'}
         sizeHidden={coverSize}
         scrollEvent={scrollEvent}
@@ -52,28 +67,69 @@ export function BookInfoScreen(props: IProps) {
               backgroundColor: theme.colors.onSecondary,
               height: coverSize,
             }}
-            source={{ uri: info.picture }}
+            source={{ uri: data.picture }}
             blurRadius={10}
           />
 
           <BookInfoPicture
-            type={info.type}
-            stars={info.stars}
-            source={info.picture}
-            language={info.language}
+            type={data.type}
+            stars={data.stars}
+            source={data.picture}
+            language={data.language}
             onPress={() => {}}
           />
         </View>
 
         <BookStatusTabs />
 
-        <SafeArea.View
-          expandDisableTop
-          expandArea={{ horizontal: 16 }}
-          style={{ width: '100%' }}
-        >
-          <View className={'h-[3000] bg-red-500'} />
-        </SafeArea.View>
+        <LoadingErrorContent loading={loading} error={error}>
+          <SafeArea.View
+            expandDisableTop
+            expandArea={{ horizontal: 16 }}
+            className={'w-full gap-[24]'}
+          >
+            {/* TITLES */}
+            <View className={'gap-[8]'}>
+              <Text variant={'titleLarge'}>Títulos</Text>
+
+              <Text variant={'titleMedium'}>{data?.title}</Text>
+
+              {data.altTitles &&
+                altTitles.map((altTitle, index) => (
+                  <Text
+                    key={`book-info-alt-title-${index}`}
+                    variant={'labelMedium'}
+                  >
+                    {altTitle}
+                  </Text>
+                ))}
+            </View>
+
+            <Divider />
+
+            {/* STATUS */}
+            {data.status ? (
+              <React.Fragment>
+                <View className={'gap-[8] flex-col'}>
+                  <Text variant={'titleLarge'}>Estado</Text>
+
+                  <View className={'flex-row gap-[8] items-center'}>
+                    <View
+                      className={'size-[16] rounded-full'}
+                      style={{ backgroundColor: BookStatusColors[data.status] }}
+                    />
+
+                    <Text variant={'labelLarge'}>
+                      {BookStatusTranslate[data.status]}
+                    </Text>
+                  </View>
+                </View>
+
+                <Divider />
+              </React.Fragment>
+            ) : null}
+          </SafeArea.View>
+        </LoadingErrorContent>
       </SafeArea.ScrollView>
     </View>
   );

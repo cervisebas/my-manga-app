@@ -1,4 +1,5 @@
 import { IScrappingService } from '@/api/interfaces/IScrappingService';
+import { ApiError } from '@/api/shared/errors/ApiError';
 import { BookInfoInterface } from '@/api/shared/interfaces/BookInfoInterface';
 import { BookItem } from '@/common/components/BookItem';
 import { LoadingErrorContent } from '@/common/components/LoadingErrorContent';
@@ -14,7 +15,7 @@ interface IProps {
 export function PopularTab(props: IProps) {
   const [data, setData] = useState<BookInfoInterface[]>([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<ApiError | null>(null);
 
   const _renderItem = ({ item }: ListRenderItemInfo<BookInfoInterface>) => {
     return (

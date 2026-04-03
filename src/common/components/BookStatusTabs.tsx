@@ -76,30 +76,36 @@ export function BookStatusTabs() {
               className={'overflow-hidden h-[64]'}
               style={{
                 width: `${100 / rows.length}%`,
-                backgroundColor: theme.colors.elevation.level1,
+                backgroundColor: theme.colors.elevation.level5,
               }}
             >
               <UNativePressable
-                className={'gap-[8] flex-1 items-center flex-row p-[8]'}
+                className={'flex-1 flex-col'}
                 onPress={() => onPressCell(row)}
               >
-                {row.selected ? (
-                  <Icon source={row.selectedIcon} size={32} color={row.color} />
-                ) : (
-                  <Icon source={row.icon} size={32} color={row.color} />
-                )}
-                <View className={'gap-[4] flex-col'}>
-                  <Text variant={'labelSmall'}>{row.label}</Text>
+                <View className={'gap-[8] flex-1 items-center flex-row p-[8]'}>
+                  {row.selected ? (
+                    <Icon
+                      source={row.selectedIcon}
+                      size={32}
+                      color={row.color}
+                    />
+                  ) : (
+                    <Icon source={row.icon} size={32} color={row.color} />
+                  )}
+                  <View className={'gap-[4] flex-col'}>
+                    <Text variant={'labelSmall'}>{row.label}</Text>
+                  </View>
                 </View>
-              </UNativePressable>
 
-              <View
-                className={'w-full h-[4]'}
-                style={{
-                  backgroundColor: row.color,
-                  opacity: Number(row.selected ?? 0),
-                }}
-              />
+                <View
+                  className={'w-full h-[4]'}
+                  style={{
+                    backgroundColor: row.color,
+                    opacity: Number(row.selected ?? 0),
+                  }}
+                />
+              </UNativePressable>
             </USurface>
           ))}
         </View>
