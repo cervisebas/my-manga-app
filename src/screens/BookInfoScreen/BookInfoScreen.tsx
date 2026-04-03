@@ -11,6 +11,7 @@ import { getInstanceById } from '@/api/utils/getInstanceById';
 import { BookInfoParams } from './interfaces/BookInfoParams';
 import { UImage } from '@/common/components/UniwindElements';
 import { BookInfoPicture } from './components/BookInfoPicture';
+import { BookStatusTabs } from '@/common/components/BookStatusTabs';
 
 type IProps = NativeStackScreenProps<ParamListBase, 'book-info'>;
 
@@ -63,6 +64,9 @@ export function BookInfoScreen(props: IProps) {
             onPress={() => {}}
           />
         </View>
+
+        <BookStatusTabs />
+
         <SafeArea.View
           expandDisableTop
           expandArea={{ horizontal: 16 }}
