@@ -6,7 +6,7 @@ import { View } from 'react-native';
 import { BookInfoHeader } from './components/BookInfoHeader';
 import useSafeArea from '@/common/hooks/useSafeArea';
 import { modeAppbarHeight } from 'react-native-paper/src/components/Appbar/utils';
-import { Divider, Text, useTheme } from 'react-native-paper';
+import { Chip, Divider, Text, useTheme } from 'react-native-paper';
 import { getInstanceById } from '@/api/utils/getInstanceById';
 import { BookInfoParams } from './interfaces/BookInfoParams';
 import { UImage } from '@/common/components/UniwindElements';
@@ -17,6 +17,7 @@ import { LoadingErrorContent } from '@/common/components/LoadingErrorContent';
 import React from 'react';
 import { BookStatusColors } from '@/api/shared/constants/BookStatusColors';
 import { BookStatusTranslate } from '@/api/shared/translate/BookStatusTranslate';
+import { BookInfoDescription } from './components/BookInfoDescription';
 
 type IProps = NativeStackScreenProps<ParamListBase, 'book-info'>;
 
@@ -132,12 +133,31 @@ export function BookInfoScreen(props: IProps) {
               </React.Fragment>
             ) : null}
 
-            <View className={'gap-[8]'}>
-              <Text variant={'titleLarge'}>Descripción</Text>
+            {/* DESCRIPTION */}
+            <BookInfoDescription
+              description={data.description}
+              descriptionLang={data.descriptionLang}
+            />
 
-              <Text variant={'bodyMedium'}>
-                {data?.description || 'No hay descripción disponible'}
-              </Text>
+            <Divider />
+
+            {/* GENEROS */}
+            <View className={'gap-[8]'}>
+              <Text variant={'titleLarge'}>Géneros</Text>
+
+              <View
+                className={'w-full flex-row flex-wrap justify-start gap-[12]'}
+              >
+                {data.genders?.map((gender) => (
+                  <Chip
+                    key={`gender-${gender.value}`}
+                    mode={'outlined'}
+                    // onPress={() => onPressGender(gender)}
+                  >
+                    {gender.name}
+                  </Chip>
+                ))}
+              </View>
             </View>
           </SafeArea.View>
         </LoadingErrorContent>

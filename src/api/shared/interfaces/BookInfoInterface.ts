@@ -21,6 +21,7 @@ export interface BookInfoInterface {
 
   status?: BookStatus | null;
   description?: string;
+  descriptionLang?: Language;
   wallpaper?: string;
 
   genders?: GenderInterface[];

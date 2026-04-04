@@ -540,6 +540,12 @@ export class MangaDexScrapping implements IScrappingService {
             v.type === RelationShipType.Artist,
         );
 
+        const Description = val.attributes.description?.['es']
+          ? ['es', val.attributes.description['es']]
+          : val.attributes.description?.['en']
+            ? ['en', val.attributes.description['en']]
+            : Object.entries(val.attributes.description ?? {})[0];
+
         const id = val.id;
         const url = `https://mangadex.org/title/${id}/`;
 
@@ -569,10 +575,10 @@ export class MangaDexScrapping implements IScrappingService {
           ),
 
           status: this.getStatus(val.attributes.status),
-          description:
-            val.attributes.description?.['es'] ??
-            val.attributes.description?.['en'] ??
-            Object.values(val.attributes.description)[0]!,
+          description: Description[1],
+          descriptionLang: Description[0]
+            ? this.getLanguageEnum(Description[0])
+            : undefined,
           wallpaper:
             'https://mangadex.org/covers/' +
             id +
@@ -974,6 +980,12 @@ export class MangaDexScrapping implements IScrappingService {
           v.type === RelationShipType.Artist,
       );
 
+      const Description = BookInfo.attributes.description?.['es']
+        ? ['es', BookInfo.attributes.description['es']]
+        : BookInfo.attributes.description?.['en']
+          ? ['en', BookInfo.attributes.description['en']]
+          : Object.entries(BookInfo.attributes.description ?? {})[0];
+
       return {
         path: id,
         url: url,
@@ -1001,10 +1013,10 @@ export class MangaDexScrapping implements IScrappingService {
         ),
 
         status: this.getStatus(BookInfo.attributes.status),
-        description:
-          BookInfo.attributes.description?.['es'] ??
-          BookInfo.attributes.description?.['en'] ??
-          Object.values(BookInfo.attributes.description)[0]!,
+        description: Description[1],
+        descriptionLang: Description[0]
+          ? this.getLanguageEnum(Description[0])
+          : undefined,
         wallpaper:
           'https://mangadex.org/covers/' +
           id +
