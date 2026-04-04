@@ -58,6 +58,9 @@ export function BookInfoScreen(props: IProps) {
         expandDisableLeft
         expandDisableRight
         className={'flex-1 z-1'}
+        contentContainerStyle={{
+          flexGrow: loading || error ? 1 : undefined,
+        }}
         onScroll={onScroll}
       >
         <View className={'w-full relative'} style={{ height: coverSize }}>
@@ -86,7 +89,7 @@ export function BookInfoScreen(props: IProps) {
           <SafeArea.View
             expandDisableTop
             expandArea={{ horizontal: 16 }}
-            className={'w-full gap-[24]'}
+            className={'w-full gap-[24] my-4'}
           >
             {/* TITLES */}
             <View className={'gap-[8]'}>
@@ -128,6 +131,14 @@ export function BookInfoScreen(props: IProps) {
                 <Divider />
               </React.Fragment>
             ) : null}
+
+            <View className={'gap-[8]'}>
+              <Text variant={'titleLarge'}>Descripción</Text>
+
+              <Text variant={'bodyMedium'}>
+                {data?.description || 'No hay descripción disponible'}
+              </Text>
+            </View>
           </SafeArea.View>
         </LoadingErrorContent>
       </SafeArea.ScrollView>

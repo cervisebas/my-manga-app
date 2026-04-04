@@ -80,7 +80,7 @@ export function BookStatusTabs() {
               }}
             >
               <UNativePressable
-                className={'flex-1 flex-col'}
+                className={'flex-1 flex-col relative'}
                 onPress={() => onPressCell(row)}
               >
                 <View className={'gap-[8] flex-1 items-center flex-row p-[8]'}>
@@ -99,7 +99,7 @@ export function BookStatusTabs() {
                 </View>
 
                 <View
-                  className={'w-full h-[4]'}
+                  className={'w-full h-[3] absolute bottom-0 left-0'}
                   style={{
                     backgroundColor: row.color,
                     opacity: Number(row.selected ?? 0),
