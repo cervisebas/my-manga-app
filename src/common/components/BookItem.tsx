@@ -2,7 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { UImage, UNativePressable } from './UniwindElements';
 import { Text, useTheme } from 'react-native-paper';
-import { Languages } from '../constants/Languages';
+import { LanguageIcons } from '../constants/LanguageIcons';
 import { IScrappingService } from '@/api/interfaces/IScrappingService';
 import { Language } from '../../api/shared/enums/Language';
 
@@ -37,7 +37,7 @@ export const BookItem = React.memo(function (props: IProps) {
         {props.language && (
           <View className={'absolute bottom-0 left-0 z-2 m-2'}>
             <UImage
-              source={Languages[props.language]}
+              source={LanguageIcons[props.language]}
               className={'w-[25] h-[16]'}
             />
           </View>

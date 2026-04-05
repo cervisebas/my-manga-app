@@ -62,7 +62,7 @@ import Logo_PL from '@/assets/languages/pl.svg';
 import Logo_SA from '@/assets/languages/sa.svg';
 import Logo_TH from '@/assets/languages/th.svg';
 
-export const Languages = {
+export const LanguageIcons = {
   [Language.AD]: Logo_AD,
   [Language.CZ]: Logo_CZ,
   [Language.FI]: Logo_FI,

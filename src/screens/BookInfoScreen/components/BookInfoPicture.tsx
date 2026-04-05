@@ -1,6 +1,6 @@
 import { Language } from '@/api/shared/enums/Language';
 import { UImage, UNativePressable } from '@/common/components/UniwindElements';
-import { Languages } from '@/common/constants/Languages';
+import { LanguageIcons } from '@/common/constants/LanguageIcons';
 import { StyleSheet, View } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 import StarIcon from '@/assets/icons/star.svg';
@@ -30,7 +30,7 @@ export function BookInfoPicture(props: IProps) {
       {props.language && (
         <View className={'absolute bottom-0 left-0 z-2 m-2'}>
           <UImage
-            source={Languages[props.language]}
+            source={LanguageIcons[props.language]}
             className={'w-[25] h-[16]'}
           />
         </View>
