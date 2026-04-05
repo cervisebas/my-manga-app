@@ -1,5 +1,5 @@
 import { Language } from '@/api/shared/enums/Language';
-import { View } from 'react-native';
+import { ToastAndroid, View } from 'react-native';
 import { Button, Text } from 'react-native-paper';
 import { translate } from '@modules/translate-text';
 import { useRef, useState } from 'react';
@@ -31,13 +31,18 @@ export function BookInfoDescription(props: IProps) {
       cacheTranslateValue.current = value.text;
     } catch (error) {
       console.error(error);
+
+      ToastAndroid.show(
+        'No se pudo realizar la traducción',
+        ToastAndroid.SHORT,
+      );
     } finally {
       setTranslating(false);
     }
   };
 
   const clearTranslateText = () => {
-    setTranslateValue('');
+    setTranslateValue(null);
   };
 
   return (

@@ -101,5 +101,3 @@ export const translate = async (
 
   return result;
 };
-
-// export { langs, getCode, isSupported } from './util/language.js';
