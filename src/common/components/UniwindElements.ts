@@ -6,7 +6,7 @@ import {
 import { withUniwind } from 'uniwind';
 import { Image } from 'expo-image';
 import { NativePressable } from './NativePressable';
-import { Surface } from 'react-native-paper';
+import { Button, Chip, Surface, Text } from 'react-native-paper';
 
 export const UHost = withUniwind(Host);
 export const UCircularProgressIndicator = withUniwind(
@@ -18,3 +18,6 @@ export const UCircularWavyProgressIndicator = withUniwind(
 export const UImage = withUniwind(Image);
 export const UNativePressable = withUniwind(NativePressable);
 export const USurface = withUniwind(Surface);
+export const UChip = withUniwind(Chip);
+export const UText = withUniwind(Text);
+export const UButton = withUniwind(Button);

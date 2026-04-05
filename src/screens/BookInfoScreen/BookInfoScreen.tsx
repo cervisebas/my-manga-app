@@ -19,6 +19,7 @@ import { BookStatusColors } from '@/api/shared/constants/BookStatusColors';
 import { BookStatusTranslate } from '@/api/shared/translate/BookStatusTranslate';
 import { BookInfoDescription } from './components/BookInfoDescription';
 import { BookInfoLanguages } from './components/BookInfoLanguages';
+import { BookInfoChapters } from './components/BookInfoChapters';
 
 type IProps = NativeStackScreenProps<ParamListBase, 'book-info'>;
 
@@ -165,6 +166,11 @@ export function BookInfoScreen(props: IProps) {
 
             {/* Lenguaje */}
             <BookInfoLanguages languages={data.languages} />
+
+            <Divider />
+
+            {/* Capitulos */}
+            <BookInfoChapters chapters={data.chapters} />
           </SafeArea.View>
         </LoadingErrorContent>
       </SafeArea.ScrollView>

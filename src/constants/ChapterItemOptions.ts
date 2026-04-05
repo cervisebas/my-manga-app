@@ -1,0 +1,3 @@
+export const CHAPTER_HEIGHT_ITEMS = 64;
+export const CHAPTER_HEIGHT_WITHOUT_DESCRIPTION_ITEMS = 52;
+export const CHAPTER_LEFT_ICON = 'play';

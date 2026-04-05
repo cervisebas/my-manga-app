@@ -30,6 +30,7 @@ import dayjs from 'dayjs';
 import { Buffer } from 'buffer';
 import { Language } from '../shared/enums/Language';
 import { HandleErrors } from '../shared/decorators/HandleErrors';
+import { OrderChapters } from '../shared/decorators/OrderChapters';
 
 /* const ORDER_OPTIONS: SearchFilterOption[] = [
   {
@@ -893,11 +894,10 @@ export class MangaDexScrapping implements IScrappingService {
   }
 
   private collectionMapToArray(map: Map<string, ChapterInterface>) {
-    return Array.from(map)
-      .map((val) => val[1])
-      .sort((a, b) => a.chapter_number - b.chapter_number);
+    return Array.from(map).map((val) => val[1]);
   }
 
+  @OrderChapters()
   private async getAllChapters(id: string, url: string) {
     let collect = new Map<string, ChapterInterface>();
     let offset = 0,
@@ -905,16 +905,16 @@ export class MangaDexScrapping implements IScrappingService {
 
     try {
       do {
-        let limit = 0;
+        const limit = this.EXTRACT_CHAPTERS;
 
-        if (
+        /* if (
           (total && this.EXTRACT_CHAPTERS > total && offset < total) ||
           (total && offset === this.EXTRACT_CHAPTERS)
         ) {
           limit = total - offset;
         } else {
           limit = this.EXTRACT_CHAPTERS - offset;
-        }
+        } */
 
         const { data } = await axios.get<MangaDexChapterResponse>(
           `https://api.mangadex.org/manga/${id}/feed?limit=${limit}&includes[]=scanlation_group&includes[]=user&order[volume]=desc&order[chapter]=desc&offset=${offset}&contentRating[]=safe&contentRating[]=suggestive&contentRating[]=erotica&contentRating[]=pornographic&includeUnavailable=0&excludeExternalUrl=blinktoon.com`,
@@ -927,6 +927,8 @@ export class MangaDexScrapping implements IScrappingService {
           total = _total;
         }
 
+        console.info(`Limit: ${limit} - Offset: ${offset} - Total: ${total}`);
+
         offset += data.data.length;
 
         collect = this.collectChapters(data, collect);
@@ -934,7 +936,7 @@ export class MangaDexScrapping implements IScrappingService {
         total &&
         total > this.EXTRACT_CHAPTERS &&
         offset !== total &&
-        offset > total
+        offset < total
       );
     } catch (error) {
       console.error(error);
