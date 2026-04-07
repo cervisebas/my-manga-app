@@ -48,7 +48,10 @@ export function BookInfoScreen(props: IProps) {
     : Object.values(data.altTitles);
 
   return (
-    <View className={'flex-1 relative'}>
+    <View
+      className={'flex-1 relative'}
+      style={{ backgroundColor: theme.colors.surface }}
+    >
       <BookInfoHeader
         title={data.title}
         className={'absolute top-0 left-0 z-10'}
@@ -170,7 +173,7 @@ export function BookInfoScreen(props: IProps) {
             <Divider />
 
             {/* Capitulos */}
-            <BookInfoChapters chapters={data.chapters} />
+            <BookInfoChapters bookInfo={data} chapters={data.chapters} />
           </SafeArea.View>
         </LoadingErrorContent>
       </SafeArea.ScrollView>

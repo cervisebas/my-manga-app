@@ -1,3 +1,4 @@
+import { BookInfoInterface } from '@/api/shared/interfaces/BookInfoInterface';
 import { ChapterInterface } from '@/api/shared/interfaces/ChapterInterface';
 import { UButton } from '@/common/components/UniwindElements';
 import {
@@ -5,19 +6,30 @@ import {
   CHAPTER_HEIGHT_WITHOUT_DESCRIPTION_ITEMS,
   CHAPTER_LEFT_ICON,
 } from '@/constants/ChapterItemOptions';
+import { refNavegation } from '@/constants/Refs';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Divider, List, Text, useTheme } from 'react-native-paper';
 
 interface IProps {
+  bookInfo: BookInfoInterface;
   chapters?: ChapterInterface[];
 }
 
 const MAX_ITEMS_SHOW = 8;
 
 export function BookInfoChapters(props: IProps) {
-  const theme = useTheme();
   const chapters = props.chapters?.slice(-MAX_ITEMS_SHOW).reverse() ?? [];
+
+  // Hooks
+  const theme = useTheme();
+
+  // Methods
+  const goToChapterList = () => {
+    refNavegation.current?.navigate('book-chapter-list', {
+      bookInfo: props.bookInfo,
+    });
+  };
 
   return (
     <View className={'gap-[8]'}>
@@ -40,6 +52,7 @@ export function BookInfoChapters(props: IProps) {
                 </Text>
               }
               description={chapter.title}
+              descriptionNumberOfLines={1}
               style={chapter.title ? styles.item : styles.item_with_description}
               // ########################################
               // Iconos
@@ -61,6 +74,7 @@ export function BookInfoChapters(props: IProps) {
         contentClassName={'flex-row-reverse'}
         mode={'contained'}
         icon={'arrow-right'}
+        onPress={goToChapterList}
       >
         Mostrar todo
       </UButton>
