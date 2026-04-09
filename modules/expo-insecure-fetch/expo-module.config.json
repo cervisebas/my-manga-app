@@ -1,0 +1,9 @@
+{
+  "platforms": ["android"],
+  "apple": {
+    "modules": ["ExpoInsecureFetchModule"]
+  },
+  "android": {
+    "modules": ["com.cervisebas.insecurefetch.ExpoInsecureFetchModule"]
+  }
+}

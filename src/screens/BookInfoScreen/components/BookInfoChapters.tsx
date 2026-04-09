@@ -6,7 +6,7 @@ import {
   CHAPTER_HEIGHT_WITHOUT_DESCRIPTION_ITEMS,
   CHAPTER_LEFT_ICON,
 } from '@/constants/ChapterItemOptions';
-import { refNavegation } from '@/constants/Refs';
+import { refDialogs, refNavegation } from '@/constants/Refs';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Divider, List, Text, useTheme } from 'react-native-paper';
@@ -29,6 +29,22 @@ export function BookInfoChapters(props: IProps) {
     refNavegation.current?.navigate('book-chapter-list', {
       bookInfo: props.bookInfo,
     });
+  };
+
+  const onClickChapter = (chapter: ChapterInterface) => {
+    return () => {
+      refDialogs.current?.open({
+        title: 'Velit nisi laborum ad sunt veniam culpa mollit velit.',
+        message: 'Ipsum laborum et voluptate voluptate voluptate voluptate proident.',
+        dismissable: true,
+        confirmButton: {
+          label: 'Wenas',
+        },
+        cancelButton: {
+          label: 'Wenas',
+        },
+      });
+    };
   };
 
   return (
@@ -63,6 +79,7 @@ export function BookInfoChapters(props: IProps) {
                   color={theme.colors.primary}
                 />
               )}
+              onPress={onClickChapter(chapter)}
             />
 
             {array.length - 1 !== index && <Divider />}

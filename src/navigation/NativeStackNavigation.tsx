@@ -3,6 +3,7 @@ import { BottomNavigation } from './BottomNavigation';
 import { BookInfoScreen } from '@/screens/BookInfoScreen/BookInfoScreen';
 import { useTheme } from 'react-native-paper';
 import { BookChapterListScreen } from '@/screens/BookChapterListScreen/BookChapterListScreen';
+import { ViewChapterScreen } from '@/screens/ViewChapterScreen/ViewChapterScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -25,6 +26,7 @@ export function NativeStackNavigation() {
         name={'book-chapter-list'}
         component={BookChapterListScreen}
       />
+      <Stack.Screen name={'view-chapter'} component={ViewChapterScreen} />
     </Stack.Navigator>
   );
 }
