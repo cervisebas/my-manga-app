@@ -4,7 +4,7 @@ import { ParamListBase } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { View } from 'react-native';
 import { BookInfoHeader } from './components/BookInfoHeader';
-import useSafeArea from '@/common/hooks/useSafeArea';
+import { useSafeArea } from '@/common/hooks/useSafeArea';
 import { modeAppbarHeight } from 'react-native-paper/src/components/Appbar/utils';
 import { Chip, Divider, Text, useTheme } from 'react-native-paper';
 import { getInstanceById } from '@/api/utils/getInstanceById';

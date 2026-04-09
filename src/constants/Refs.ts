@@ -1,3 +1,4 @@
+import { BottomSheetOptionsRef } from '@/common/components/BottomSheetOptions';
 import { IDialogRef } from '@/common/components/Dialogs';
 import {
   NavigationContainerRef,
@@ -7,3 +8,4 @@ import { createRef } from 'react';
 
 export const refNavegation = createRef<NavigationContainerRef<ParamListBase>>();
 export const refDialogs = createRef<IDialogRef>();
+export const refBottomSheetOptions = createRef<BottomSheetOptionsRef>();

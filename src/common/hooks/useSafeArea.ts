@@ -10,7 +10,7 @@ export interface SafeAreaResponse {
   vertical: number;
 }
 
-export default function (
+export function useSafeArea(
   horizontal?: number,
   vertical?: number,
 ): SafeAreaResponse {

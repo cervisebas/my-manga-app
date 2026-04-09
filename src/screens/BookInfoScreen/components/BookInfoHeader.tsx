@@ -14,7 +14,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { useEffect } from 'react';
 import { modeAppbarHeight } from 'react-native-paper/src/components/Appbar/utils';
-import useSafeArea from '@/common/hooks/useSafeArea';
+import { useSafeArea } from '@/common/hooks/useSafeArea';
 import Color from 'color';
 
 interface IProps {

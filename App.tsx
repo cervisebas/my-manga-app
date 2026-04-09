@@ -3,11 +3,13 @@ import './global.css';
 import { StatusBar } from 'expo-status-bar';
 import { View } from 'react-native';
 import { ThemeProvider } from '@/providers/ThemeProvider';
-import { UHost } from '@/common/components/UniwindElements';
 import { NativeStackNavigation } from '@/navigation/NativeStackNavigation';
 import { LogBox } from 'react-native';
 import { Dialogs } from '@/common/components/Dialogs';
-import { refDialogs } from '@/constants/Refs';
+import { refBottomSheetOptions, refDialogs } from '@/constants/Refs';
+import { BottomSheetOptions } from '@/common/components/BottomSheetOptions';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 
 LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
@@ -18,10 +20,16 @@ export default function App() {
     <View className={'flex-1'}>
       <StatusBar style="auto" />
 
-      <ThemeProvider>
-        <NativeStackNavigation />
-        <Dialogs ref={refDialogs} />
-      </ThemeProvider>
+      <GestureHandlerRootView>
+        <BottomSheetModalProvider>
+          <ThemeProvider>
+            <NativeStackNavigation />
+
+            <Dialogs ref={refDialogs} />
+            <BottomSheetOptions ref={refBottomSheetOptions} />
+          </ThemeProvider>
+        </BottomSheetModalProvider>
+      </GestureHandlerRootView>
     </View>
   );
 }
