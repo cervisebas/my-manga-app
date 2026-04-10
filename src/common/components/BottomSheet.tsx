@@ -18,6 +18,8 @@ import {
 import { useSafeArea } from '../hooks/useSafeArea';
 import { useDimension } from '../hooks/useDimension';
 import { usePreventBackHandler } from '../hooks/usePreventBackHandler';
+import { NavigationProp } from '@react-navigation/native';
+import { usePreventBackNavigation } from '../hooks/usePreventBackNavigation';
 
 interface IProps {
   title?: string;
@@ -29,6 +31,7 @@ interface IProps {
   height?: (number | `${number}%`) | (number | `${number}%`)[];
   useScrollView?: boolean;
   footerComponent?: BottomSheetProps['footerComponent'];
+  navigation?: NavigationProp<ReactNavigation.RootParamList>;
   onClose?(): void;
 }
 
@@ -111,6 +114,10 @@ export const BottomSheet = forwardRef(function (
   usePreventBackHandler(() => {
     refBottomSheetModal.current?.dismiss();
   }, visible);
+
+  usePreventBackNavigation(props.navigation, visible, () =>
+    refBottomSheetModal.current?.dismiss(),
+  );
 
   // Ref component
   useImperativeHandle(ref, () => ({

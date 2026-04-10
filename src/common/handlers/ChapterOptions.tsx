@@ -7,6 +7,7 @@ import { Language } from '@/api/shared/enums/Language';
 import { refBottomSheetOptions } from '@/constants/Refs';
 import { LanguageIcons } from '../constants/LanguageIcons';
 import { UImage } from '../components/UniwindElements';
+import { NavigationProp } from '@react-navigation/native';
 
 export class ChapterOptions {
   private bookInfo: BookInfoInterface;
@@ -15,12 +16,20 @@ export class ChapterOptions {
   private options: BottomSheetOptionsInterface[];
   private information: BottomSheetOptionsInterface[];
 
-  constructor(bookInfo: BookInfoInterface, chapter: ChapterInterface) {
+  private navigation?: NavigationProp<ReactNavigation.RootParamList>;
+
+  constructor(
+    bookInfo: BookInfoInterface,
+    chapter: ChapterInterface,
+    navigation?: NavigationProp<ReactNavigation.RootParamList>,
+  ) {
     this.bookInfo = bookInfo;
     this.chapter = chapter;
 
     this.options = [];
     this.information = [];
+
+    this.navigation = navigation;
 
     this.makeOptions();
     this.makeInformation();
@@ -107,6 +116,7 @@ export class ChapterOptions {
   }
 
   public show() {
+    refBottomSheetOptions.current?.setNavigation(this.navigation);
     refBottomSheetOptions?.current?.open('Opciónes del capítulo', {
       'Información ': this.information,
       'Opciónes de lectura': this.options,

@@ -8,6 +8,7 @@ import {
   CHAPTER_HEIGHT_WITHOUT_DESCRIPTION_ITEMS,
 } from '@/constants/ChapterItemOptions';
 import { refNavegation } from '@/constants/Refs';
+import { useNavigation } from '@react-navigation/native';
 import dayjs from 'dayjs';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
@@ -21,6 +22,9 @@ interface IProps {
 const MAX_ITEMS_SHOW = 8;
 
 export function BookInfoChapters(props: IProps) {
+  const navigation = useNavigation();
+
+  // Variables
   const now = dayjs();
   const chapters = props.chapters?.slice(-MAX_ITEMS_SHOW).reverse() ?? [];
   const chapterDiffDate = chapters.map((chapter) =>
@@ -36,7 +40,11 @@ export function BookInfoChapters(props: IProps) {
 
   const onClickChapter = (chapter: ChapterInterface) => {
     return () => {
-      const chapterOptions = new ChapterOptions(props.bookInfo, chapter);
+      const chapterOptions = new ChapterOptions(
+        props.bookInfo,
+        chapter,
+        navigation as never,
+      );
       chapterOptions.show();
     };
   };

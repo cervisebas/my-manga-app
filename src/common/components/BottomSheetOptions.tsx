@@ -11,6 +11,7 @@ import { List, ListItemProps } from 'react-native-paper';
 import { ItemWithIcon } from './ItemWithIcon';
 import { UDivider } from './UniwindElements';
 import { ImageSourcePropType } from 'react-native';
+import { NavigationProp } from '@react-navigation/native';
 
 export interface BottomSheetOptionsInterface {
   label: string;
@@ -32,17 +33,26 @@ type Options =
   | Record<string, BottomSheetOptionsInterface[]>;
 
 export interface BottomSheetOptionsRef {
-  open: (title: string, options: Options) => void;
-  close: () => void;
+  open(title: string, options: Options): void;
+  close(): void;
+  setNavigation(
+    nav: NavigationProp<ReactNavigation.RootParamList> | undefined,
+  ): void;
 }
 
 export const BottomSheetOptions = forwardRef(function (
   _: object,
   ref: React.Ref<BottomSheetOptionsRef>,
 ) {
+  // States
   const [title, setTitle] = useState('');
   const [section, setSection] = useState(false);
   const [options, setOptions] = useState<Options>([]);
+  const [navigation, setNavigation] = useState<
+    NavigationProp<ReactNavigation.RootParamList> | undefined
+  >(undefined);
+
+  // Refs
   const refBottomSheet = useRef<BottomSheetRef>(null);
 
   const sections = useMemo(() => {
@@ -90,6 +100,10 @@ export const BottomSheetOptions = forwardRef(function (
     [],
   );
 
+  const onClose = () => {
+    setNavigation(undefined);
+  };
+
   useImperativeHandle(ref, () => ({
     open: (title, options) => {
       setTitle(title);
@@ -100,6 +114,9 @@ export const BottomSheetOptions = forwardRef(function (
     close: () => {
       refBottomSheet.current?.hide();
     },
+    setNavigation(nav) {
+      setNavigation(nav);
+    },
   }));
 
   return (
@@ -108,6 +125,8 @@ export const BottomSheetOptions = forwardRef(function (
       title={title}
       alwaysOnTop={true}
       useScrollView={true}
+      navigation={navigation}
+      onClose={onClose}
     >
       <React.Fragment>
         {!Array.isArray(options)
