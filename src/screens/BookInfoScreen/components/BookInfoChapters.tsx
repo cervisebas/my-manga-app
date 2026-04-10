@@ -2,11 +2,12 @@ import { BookInfoInterface } from '@/api/shared/interfaces/BookInfoInterface';
 import { ChapterInterface } from '@/api/shared/interfaces/ChapterInterface';
 import { ChapterItem } from '@/common/components/ChapterItem';
 import { UButton } from '@/common/components/UniwindElements';
+import { ChapterOptions } from '@/common/handlers/ChapterOptions';
 import {
   CHAPTER_HEIGHT_ITEMS,
   CHAPTER_HEIGHT_WITHOUT_DESCRIPTION_ITEMS,
 } from '@/constants/ChapterItemOptions';
-import { refDialogs, refNavegation } from '@/constants/Refs';
+import { refNavegation } from '@/constants/Refs';
 import dayjs from 'dayjs';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
@@ -35,18 +36,8 @@ export function BookInfoChapters(props: IProps) {
 
   const onClickChapter = (chapter: ChapterInterface) => {
     return () => {
-      refDialogs.current?.open({
-        title: 'Velit nisi laborum ad sunt veniam culpa mollit velit.',
-        message:
-          'Ipsum laborum et voluptate voluptate voluptate voluptate proident.',
-        dismissable: true,
-        confirmButton: {
-          label: 'Wenas',
-        },
-        cancelButton: {
-          label: 'Wenas',
-        },
-      });
+      const chapterOptions = new ChapterOptions(props.bookInfo, chapter);
+      chapterOptions.show();
     };
   };
 

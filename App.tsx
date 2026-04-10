@@ -21,14 +21,14 @@ export default function App() {
       <StatusBar style="auto" />
 
       <GestureHandlerRootView>
-        <BottomSheetModalProvider>
-          <ThemeProvider>
+        <ThemeProvider>
+          <BottomSheetModalProvider>
             <NativeStackNavigation />
 
             <Dialogs ref={refDialogs} />
             <BottomSheetOptions ref={refBottomSheetOptions} />
-          </ThemeProvider>
-        </BottomSheetModalProvider>
+          </BottomSheetModalProvider>
+        </ThemeProvider>
       </GestureHandlerRootView>
     </View>
   );

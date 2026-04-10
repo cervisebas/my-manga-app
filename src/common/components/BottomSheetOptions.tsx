@@ -7,19 +7,23 @@ import React, {
   useState,
 } from 'react';
 import { BottomSheet, BottomSheetRef } from './BottomSheet';
-import { List } from 'react-native-paper';
+import { List, ListItemProps } from 'react-native-paper';
 import { ItemWithIcon } from './ItemWithIcon';
 import { UDivider } from './UniwindElements';
+import { ImageSourcePropType } from 'react-native';
 
 export interface BottomSheetOptionsInterface {
   label: string;
   description?: string;
-  leftIcon?: string;
+  leftIcon?: string | ImageSourcePropType;
+  leftIconSize?: number;
   leftIconColor?: string;
-  rightIcon?: string;
+  rightIcon?: string | ImageSourcePropType;
+  rightIconSize?: number;
   rightIconColor?: string;
   disabled?: boolean;
   selected?: boolean;
+  right?: ListItemProps['right'];
   onPress?(): void;
 }
 
@@ -62,14 +66,21 @@ export const BottomSheetOptions = forwardRef(function (
             title={value.label}
             disabled={value.selected || value.disabled}
             leftIcon={value.leftIcon}
+            leftIconSize={value.leftIconSize}
             leftIconColor={value.leftIconColor}
             rightIcon={value.selected ? 'check' : value.rightIcon}
+            rightIconSize={value.rightIconSize}
             rightIconColor={value.rightIconColor}
             description={value.description}
-            onPress={() => {
-              refBottomSheet.current?.hide();
-              value.onPress?.();
-            }}
+            right={value.right}
+            onPress={
+              value.onPress
+                ? () => {
+                    refBottomSheet.current?.hide();
+                    value.onPress?.();
+                  }
+                : undefined
+            }
           />
 
           {array[index + 1] && <UDivider className={'mx-[8]'} />}

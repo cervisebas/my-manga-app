@@ -1,13 +1,20 @@
 import React from 'react';
-import { StyleProp, TextStyle, ViewStyle } from 'react-native';
+import {
+  ImageSourcePropType,
+  StyleProp,
+  TextStyle,
+  ViewStyle,
+} from 'react-native';
 import { List, ListItemProps } from 'react-native-paper';
 
 interface IProps {
   title: string;
   description?: string | React.ReactNode;
-  leftIcon?: string;
+  leftIcon?: string | ImageSourcePropType;
+  leftIconSize?: number;
   leftIconColor?: string;
-  rightIcon?: string;
+  rightIcon?: string | ImageSourcePropType;
+  rightIconSize?: number;
   rightIconColor?: string;
   fixHeight?: number;
   disabled?: boolean;
@@ -31,6 +38,12 @@ export function ItemWithIcon(props: IProps) {
                 {...p}
                 icon={props.leftIcon!}
                 color={props.leftIconColor ?? p.color}
+                style={[
+                  p.style,
+                  props.leftIconSize
+                    ? { width: props.leftIconSize, height: props.leftIconSize }
+                    : undefined,
+                ]}
               />
             )
           : undefined
@@ -43,6 +56,15 @@ export function ItemWithIcon(props: IProps) {
                 {...p}
                 icon={props.rightIcon!}
                 color={props.rightIconColor ?? p.color}
+                style={[
+                  p.style,
+                  props.rightIconSize
+                    ? {
+                        width: props.rightIconSize,
+                        height: props.rightIconSize,
+                      }
+                    : undefined,
+                ]}
               />
             )
           : undefined)
