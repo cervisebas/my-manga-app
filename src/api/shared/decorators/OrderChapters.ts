@@ -16,7 +16,7 @@ export function OrderChapters() {
 
       for (const chapter of chapters) {
         chapter.options = chapter.options.sort(
-          (a, b) => a.date.getTime() - b.date.getTime(),
+          (a, b) => a.date.unix() - b.date.unix(),
         );
       }
 

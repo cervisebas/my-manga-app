@@ -20,9 +20,10 @@ interface IProps {
 const MAX_ITEMS_SHOW = 8;
 
 export function BookInfoChapters(props: IProps) {
+  const now = dayjs();
   const chapters = props.chapters?.slice(-MAX_ITEMS_SHOW).reverse() ?? [];
   const chapterDiffDate = chapters.map((chapter) =>
-    dayjs().diff(dayjs(chapter.options.at(0)?.date), 'days'),
+    now.diff(chapter.options.at(0)?.date, 'days'),
   );
 
   // Methods

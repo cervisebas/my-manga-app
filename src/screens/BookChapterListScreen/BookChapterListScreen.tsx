@@ -21,9 +21,11 @@ interface BookChapterListParams {
 
 export function BookChapterListScreen(props: IProps) {
   const params = props.route.params as BookChapterListParams;
+
+  const now = dayjs();
   const chapters = params.bookInfo.chapters ?? [];
   const chapterDiffDate = chapters.map((chapter) =>
-    dayjs().diff(dayjs(chapter.options.at(0)?.date), 'days'),
+    now.diff(chapter.options.at(0)?.date, 'days'),
   );
 
   // Hooks

@@ -869,7 +869,7 @@ export class MangaDexScrapping implements IScrappingService {
 
       const options = {
         title: scanlationGroup?.attributes?.name ?? '',
-        date: dayjs(item.attributes.publishAt).toDate(),
+        date: dayjs(item.attributes.publishAt),
         url: `https://mangadex.org/chapter/${item.id}`,
         language: this.getLanguageEnum(item.attributes.translatedLanguage),
       };
