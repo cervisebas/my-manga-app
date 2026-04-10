@@ -22,6 +22,6 @@ export function ChipNewChapter() {
 
 const styles = StyleSheet.create({
   text: {
-    fontSize: 10,
+    fontSize: 8,
   },
 });

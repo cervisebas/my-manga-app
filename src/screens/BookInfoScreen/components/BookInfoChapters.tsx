@@ -45,6 +45,7 @@ export function BookInfoChapters(props: IProps) {
         chapter,
         navigation as never,
       );
+
       chapterOptions.show();
     };
   };
@@ -66,6 +67,10 @@ export function BookInfoChapters(props: IProps) {
               title={chapter.title}
               diffDate={chapterDiffDate[index]}
               chapterNumber={chapter.chapter_number}
+              availableSpanishLanguage={chapter.availableSpanishLanguage}
+              availableSpanishLATAMLanguage={
+                chapter.availableSpanishLATAMLanguage
+              }
               onPress={onClickChapter(chapter)}
             />
 

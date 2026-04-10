@@ -7,5 +7,7 @@ export interface ChapterInterface {
   chapter_number: number;
   language?: Language;
   languages?: Language[];
+  availableSpanishLanguage?: boolean;
+  availableSpanishLATAMLanguage?: boolean;
   options: ChapterOptionInterface[];
 }

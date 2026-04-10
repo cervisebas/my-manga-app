@@ -867,7 +867,7 @@ export class MangaDexScrapping implements IScrappingService {
 
       const alreadyExist = collect.get(item.attributes.chapter);
 
-      const options = {
+      const option = {
         title: scanlationGroup?.attributes?.name ?? '',
         date: dayjs(item.attributes.publishAt),
         url: `https://mangadex.org/chapter/${item.id}`,
@@ -879,14 +879,22 @@ export class MangaDexScrapping implements IScrappingService {
           alreadyExist.title = item.attributes.title;
         }
 
-        alreadyExist.options.push(options);
+        alreadyExist.options.push(option);
+        alreadyExist.availableSpanishLanguage = alreadyExist.options.some(
+          (option) => option.language === Language.ES,
+        );
+        alreadyExist.availableSpanishLATAMLanguage = alreadyExist.options.some(
+          (option) => option.language === Language.MX,
+        );
         continue;
       }
 
       collect.set(item.attributes.chapter, {
         title: item.attributes.title,
         chapter_number: Number(item.attributes.chapter),
-        options: [options],
+        options: [option],
+        availableSpanishLanguage: option.language === Language.ES,
+        availableSpanishLATAMLanguage: option.language === Language.MX,
       });
     }
 

@@ -3,6 +3,7 @@ import { ChapterInterface } from '@/api/shared/interfaces/ChapterInterface';
 import { ChapterItem } from '@/common/components/ChapterItem';
 import SafeArea from '@/common/components/SafeArea';
 import { UDivider } from '@/common/components/UniwindElements';
+import { ChapterOptions } from '@/common/handlers/ChapterOptions';
 import {
   CHAPTER_HEIGHT_ITEMS,
   CHAPTER_HEIGHT_WITHOUT_DESCRIPTION_ITEMS,
@@ -32,6 +33,18 @@ export function BookChapterListScreen(props: IProps) {
   const theme = useTheme();
 
   // Methods
+  const onClickChapter = (chapter: ChapterInterface) => {
+    return () => {
+      const chapterOptions = new ChapterOptions(
+        params.bookInfo,
+        chapter,
+        props.navigation as never,
+      );
+
+      chapterOptions.show();
+    };
+  };
+
   const renderItems = ({
     item: chapter,
     index,
@@ -41,6 +54,9 @@ export function BookChapterListScreen(props: IProps) {
       title={chapter.title}
       diffDate={chapterDiffDate[index]}
       chapterNumber={chapter.chapter_number}
+      availableSpanishLanguage={chapter.availableSpanishLanguage}
+      availableSpanishLATAMLanguage={chapter.availableSpanishLATAMLanguage}
+      onPress={onClickChapter(chapter)}
     />
   );
 
