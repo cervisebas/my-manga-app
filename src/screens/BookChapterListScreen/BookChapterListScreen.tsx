@@ -1,16 +1,17 @@
 import { BookInfoInterface } from '@/api/shared/interfaces/BookInfoInterface';
 import { ChapterInterface } from '@/api/shared/interfaces/ChapterInterface';
+import { ChapterItem } from '@/common/components/ChapterItem';
 import SafeArea from '@/common/components/SafeArea';
 import { UDivider } from '@/common/components/UniwindElements';
 import {
   CHAPTER_HEIGHT_ITEMS,
   CHAPTER_HEIGHT_WITHOUT_DESCRIPTION_ITEMS,
-  CHAPTER_LEFT_ICON,
 } from '@/constants/ChapterItemOptions';
 import { ParamListBase } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { ListRenderItemInfo, StyleSheet, View } from 'react-native';
-import { Appbar, List, Text, useTheme } from 'react-native-paper';
+import dayjs from 'dayjs';
+import { ListRenderItemInfo, View } from 'react-native';
+import { Appbar, useTheme } from 'react-native-paper';
 
 type IProps = NativeStackScreenProps<ParamListBase, 'book-chapter-list'>;
 
@@ -21,6 +22,9 @@ interface BookChapterListParams {
 export function BookChapterListScreen(props: IProps) {
   const params = props.route.params as BookChapterListParams;
   const chapters = params.bookInfo.chapters ?? [];
+  const chapterDiffDate = chapters.map((chapter) =>
+    dayjs().diff(dayjs(chapter.options.at(0)?.date), 'days'),
+  );
 
   // Hooks
   const theme = useTheme();
@@ -28,27 +32,13 @@ export function BookChapterListScreen(props: IProps) {
   // Methods
   const renderItems = ({
     item: chapter,
+    index,
   }: ListRenderItemInfo<ChapterInterface>) => (
-    <List.Item
+    <ChapterItem
       key={`chapter-item-list-${chapter.chapter_number}`}
-      title={
-        <Text>
-          {`Capítulo ${chapter.chapter_number} `}
-          {/* <ChipNewChapter /> */}
-        </Text>
-      }
-      description={chapter.title}
-      descriptionNumberOfLines={1}
-      style={chapter.title ? styles.item : styles.item_with_description}
-      // ########################################
-      // Iconos
-      left={(lProps) => (
-        <List.Icon
-          {...lProps}
-          icon={CHAPTER_LEFT_ICON}
-          color={theme.colors.primary}
-        />
-      )}
+      title={chapter.title}
+      diffDate={chapterDiffDate[index]}
+      chapterNumber={chapter.chapter_number}
     />
   );
 
@@ -85,12 +75,3 @@ export function BookChapterListScreen(props: IProps) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  item: {
-    height: CHAPTER_HEIGHT_ITEMS,
-  },
-  item_with_description: {
-    height: CHAPTER_HEIGHT_WITHOUT_DESCRIPTION_ITEMS,
-  },
-});

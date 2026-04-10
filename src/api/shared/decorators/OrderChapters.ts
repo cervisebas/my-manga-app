@@ -9,9 +9,18 @@ export function OrderChapters() {
     const originalMethod = descriptor.value;
 
     descriptor.value = async function (...args: unknown[]) {
-      const value: ChapterInterface[] = await originalMethod.apply(this, args);
+      const chapters: ChapterInterface[] = await originalMethod.apply(
+        this,
+        args,
+      );
 
-      return value.sort((a, b) => a.chapter_number - b.chapter_number);
+      for (const chapter of chapters) {
+        chapter.options = chapter.options.sort(
+          (a, b) => a.date.getTime() - b.date.getTime(),
+        );
+      }
+
+      return chapters.sort((a, b) => a.chapter_number - b.chapter_number);
     };
 
     return descriptor;

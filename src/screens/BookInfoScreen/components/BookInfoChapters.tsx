@@ -1,15 +1,16 @@
 import { BookInfoInterface } from '@/api/shared/interfaces/BookInfoInterface';
 import { ChapterInterface } from '@/api/shared/interfaces/ChapterInterface';
+import { ChapterItem } from '@/common/components/ChapterItem';
 import { UButton } from '@/common/components/UniwindElements';
 import {
   CHAPTER_HEIGHT_ITEMS,
   CHAPTER_HEIGHT_WITHOUT_DESCRIPTION_ITEMS,
-  CHAPTER_LEFT_ICON,
 } from '@/constants/ChapterItemOptions';
 import { refDialogs, refNavegation } from '@/constants/Refs';
+import dayjs from 'dayjs';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Divider, List, Text, useTheme } from 'react-native-paper';
+import { Divider, Text } from 'react-native-paper';
 
 interface IProps {
   bookInfo: BookInfoInterface;
@@ -20,9 +21,9 @@ const MAX_ITEMS_SHOW = 8;
 
 export function BookInfoChapters(props: IProps) {
   const chapters = props.chapters?.slice(-MAX_ITEMS_SHOW).reverse() ?? [];
-
-  // Hooks
-  const theme = useTheme();
+  const chapterDiffDate = chapters.map((chapter) =>
+    dayjs().diff(dayjs(chapter.options.at(0)?.date), 'days'),
+  );
 
   // Methods
   const goToChapterList = () => {
@@ -35,7 +36,8 @@ export function BookInfoChapters(props: IProps) {
     return () => {
       refDialogs.current?.open({
         title: 'Velit nisi laborum ad sunt veniam culpa mollit velit.',
-        message: 'Ipsum laborum et voluptate voluptate voluptate voluptate proident.',
+        message:
+          'Ipsum laborum et voluptate voluptate voluptate voluptate proident.',
         dismissable: true,
         confirmButton: {
           label: 'Wenas',
@@ -57,28 +59,13 @@ export function BookInfoChapters(props: IProps) {
         </Text>
       </View>
 
-      <View className={'w-full flex-col justify-start'}>
+      <View className={'w-full flex-col'}>
         {chapters.map((chapter, index, array) => (
           <React.Fragment key={`chapter-${chapter.chapter_number}`}>
-            <List.Item
-              title={
-                <Text>
-                  {`Capítulo ${chapter.chapter_number} `}
-                  {/* <ChipNewChapter /> */}
-                </Text>
-              }
-              description={chapter.title}
-              descriptionNumberOfLines={1}
-              style={chapter.title ? styles.item : styles.item_with_description}
-              // ########################################
-              // Iconos
-              left={(lProps) => (
-                <List.Icon
-                  {...lProps}
-                  icon={CHAPTER_LEFT_ICON}
-                  color={theme.colors.primary}
-                />
-              )}
+            <ChapterItem
+              title={chapter.title}
+              diffDate={chapterDiffDate[index]}
+              chapterNumber={chapter.chapter_number}
               onPress={onClickChapter(chapter)}
             />
 

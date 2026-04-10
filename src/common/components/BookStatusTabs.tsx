@@ -76,7 +76,7 @@ export function BookStatusTabs() {
               className={'overflow-hidden h-[64]'}
               style={{
                 width: `${100 / rows.length}%`,
-                backgroundColor: theme.colors.elevation.level5,
+                backgroundColor: theme.colors.elevation.level2,
               }}
             >
               <UNativePressable
