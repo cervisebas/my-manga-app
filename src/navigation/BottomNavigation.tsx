@@ -1,6 +1,6 @@
 import React from 'react';
 import { HomeScreen } from '@/screens/HomeScreen/HomeScreen';
-import { LibraryScreen } from '@/screens/LibraryScreen';
+import { LibraryScreen } from '@/screens/LibraryScreen/LibraryScreen';
 import { SettingScreen } from '@/screens/SettingScreen';
 import { createNativeBottomTabNavigator } from '@bottom-tabs/react-navigation';
 import { useTheme } from 'react-native-paper';
@@ -25,7 +25,7 @@ export function BottomNavigation() {
       tabBarInactiveTintColor={theme.colors.onSurfaceDisabled}
     >
       <Tab.Screen name={'Populares'} component={HomeScreen} />
-      <Tab.Screen name={'Buscar'} component={LibraryScreen} />
+      <Tab.Screen name={'Biblioteca'} component={LibraryScreen} />
       <Tab.Screen name={'Perfil'} component={SettingScreen} />
     </Tab.Navigator>
   );

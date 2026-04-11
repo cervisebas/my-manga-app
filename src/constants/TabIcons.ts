@@ -11,6 +11,6 @@ import AccountCircleOutlineIcon from '@/assets/icons/account-circle-outline.svg'
 
 export const TAB_ICONS: Parameters<typeof tabBarIcon>[0] = {
   Populares: [FireOutlineIcon, FireIcon],
-  Buscar: [SearchIcon, ManageSearchIcon],
+  Biblioteca: [SearchIcon, ManageSearchIcon],
   Perfil: [AccountCircleOutlineIcon, AccountCircleIcon],
 };
