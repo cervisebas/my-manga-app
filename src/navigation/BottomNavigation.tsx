@@ -6,11 +6,13 @@ import { createNativeBottomTabNavigator } from '@bottom-tabs/react-navigation';
 import { useTheme } from 'react-native-paper';
 import { tabBarIcon } from '@/utils/tabBarIcon';
 import { TAB_ICONS } from '@/constants/TabIcons';
+import { useKeyboard } from '@/common/hooks/useKeyboard';
 
 const Tab = createNativeBottomTabNavigator();
 
 export function BottomNavigation() {
   const theme = useTheme();
+  const { isKeyboardVisible } = useKeyboard();
 
   return (
     <Tab.Navigator
@@ -21,6 +23,7 @@ export function BottomNavigation() {
       tabBarStyle={{
         backgroundColor: theme.colors.elevation.level2,
       }}
+      tabBar={isKeyboardVisible ? () => <></> : undefined}
       tabBarActiveTintColor={theme.colors.primary}
       tabBarInactiveTintColor={theme.colors.onSurfaceDisabled}
     >
