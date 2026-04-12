@@ -7,6 +7,7 @@ import { withUniwind } from 'uniwind';
 import { Image } from 'expo-image';
 import { NativePressable } from './NativePressable';
 import { Button, Chip, Divider, Surface, Text } from 'react-native-paper';
+import SafeArea from './SafeArea';
 
 export const UHost = withUniwind(Host);
 export const UCircularProgressIndicator = withUniwind(
@@ -22,3 +23,4 @@ export const UChip = withUniwind(Chip);
 export const UText = withUniwind(Text);
 export const UButton = withUniwind(Button);
 export const UDivider = withUniwind(Divider);
+export const USafeAreaFAB = withUniwind(SafeArea.FAB);

@@ -14,9 +14,9 @@ import { useSafeArea, SafeAreaResponse } from '../hooks/useSafeArea';
 import {
   Divider as DividerNative,
   DividerProps,
-  FAB as FABNative,
   FABProps,
 } from 'react-native-paper';
+import { FAB as NativeFAB } from './FAB';
 
 type ExpandType = 'margin' | 'padding';
 type ExpandDisable = {
@@ -133,7 +133,7 @@ namespace SafeArea {
     'contentContainerStyle',
   );
   export const FAB = createComponent<FABProps>(
-    FABNative,
+    NativeFAB,
     undefined,
     undefined,
     {

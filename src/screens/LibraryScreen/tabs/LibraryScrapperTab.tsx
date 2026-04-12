@@ -4,10 +4,11 @@ import { BookInfoInterface } from '@/api/shared/interfaces/BookInfoInterface';
 import { BookItem } from '@/common/components/BookItem';
 import { LoadingErrorContent } from '@/common/components/LoadingErrorContent';
 import SafeArea from '@/common/components/SafeArea';
+import { USafeAreaFAB } from '@/common/components/UniwindElements';
 import { useScrollEvent } from '@/common/hooks/useScrollEvent';
 import { goToBookInfo } from '@/utils/goToBookInfo';
 import { useEffect, useRef, useState } from 'react';
-import { ListRenderItemInfo } from 'react-native';
+import { ListRenderItemInfo, View } from 'react-native';
 
 interface IProps {
   searchValue: string;
@@ -15,11 +16,12 @@ interface IProps {
   updateLoading(state: boolean): void;
 }
 
-const OFFSET_FRACTION_LOAD_MORE = 1 / 8;
+const OFFSET_FRACTION_LOAD_MORE = 0.85;
 
 export function LibraryScrapperTab(props: IProps) {
   const [data, setData] = useState<BookInfoInterface[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [refresh, setRefresh] = useState(false);
   const [error, setError] = useState<ApiError | null>(null);
 
   // Hooks
@@ -30,6 +32,9 @@ export function LibraryScrapperTab(props: IProps) {
   const page = useRef<number>(1);
   const total = useRef<number | undefined>(1);
 
+  const count = useRef<number>(0);
+  const waitingForData = useRef(true);
+
   // Logica para la carga infinita
   const scrollPosition = scrollEvent
     ? scrollEvent.contentOffset.y + scrollEvent.layoutMeasurement.height
@@ -38,24 +43,29 @@ export function LibraryScrapperTab(props: IProps) {
 
   // Metodos de la busqueda
   const goSearch = async (value: string) => {
-    setLoading(true);
     setError(null);
+    setRefresh(true);
+
+    waitingForData.current = true;
 
     try {
       const _data = await props.instance.search(value, [], {
         page: page.current,
         offset: offset.current,
       });
-      setData(_data.books);
+      setData((_current) => [..._current, ..._data.books]);
 
       offset.current = _data.offset;
       page.current = _data.page;
-      total.current = _data.total;
+      total.current = (total.current ?? 0) + (_data.total ?? 0);
+      count.current += _data.books.length;
     } catch (_error) {
       setError(_error as never);
       console.error(_error);
     } finally {
       setLoading(false);
+      setRefresh(false);
+      waitingForData.current = false;
     }
   };
 
@@ -85,26 +95,56 @@ export function LibraryScrapperTab(props: IProps) {
   };
 
   useEffect(() => {
+    if (!waitingForData.current) {
+      const loadMore = scrollPosition >= scrollSize * OFFSET_FRACTION_LOAD_MORE;
+
+      if (loadMore) {
+        page.current += 1;
+        offset.current = count.current;
+        searchNow();
+      }
+    }
+  }, [scrollPosition, scrollSize]);
+
+  useEffect(() => {
     props.updateLoading(loading);
   }, [loading]);
 
   useEffect(() => {
+    setLoading(true);
+    setData([]);
+    count.current = 0;
+
     searchNow();
   }, [props.searchValue]);
 
   return (
-    <LoadingErrorContent loading={loading} error={error} onRetry={searchNow}>
-      <SafeArea.FlatList
-        data={data}
-        numColumns={2}
-        keyExtractor={_keyExtractor}
-        renderItem={_renderItem}
-        expandDisableTop
+    <View className={'relative flex-1'}>
+      <LoadingErrorContent loading={loading} error={error} onRetry={searchNow}>
+        <SafeArea.FlatList
+          data={data}
+          numColumns={2}
+          keyExtractor={_keyExtractor}
+          renderItem={_renderItem}
+          expandDisableTop
+          expandArea={{
+            top: 16,
+          }}
+          onScroll={onScroll}
+        />
+      </LoadingErrorContent>
+
+      <USafeAreaFAB
+        icon={'loading'}
+        loading={true}
+        visible={!loading && refresh}
+        className={'absolute right-0 bottom-0 z-10'}
+        expandDisableBottom
         expandArea={{
-          top: 16,
+          right: 16,
+          bottom: 16,
         }}
-        onScroll={onScroll}
       />
-    </LoadingErrorContent>
+    </View>
   );
 }
