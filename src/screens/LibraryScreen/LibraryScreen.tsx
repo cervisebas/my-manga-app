@@ -81,7 +81,7 @@ export function LibraryScreen(_props: IProps) {
                 tabBarLabel(tabProps) {
                   return (
                     <View className={'flex-row items-center gap-2.5'}>
-                      {loading[scrapper.getIdName()] ? (
+                      {loading[scrapper.getIdName()] && !tabProps.focused ? (
                         <NativeActivityIndicator size={20} strokeWidth={2} />
                       ) : (
                         <UImage

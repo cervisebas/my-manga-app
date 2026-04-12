@@ -30,7 +30,7 @@ export function LibraryScrapperTab(props: IProps) {
   // const infinite = useRef<boolean | undefined>(undefined);
   const offset = useRef<number | undefined>(undefined);
   const page = useRef<number>(1);
-  const total = useRef<number | undefined>(1);
+  const total = useRef<number | undefined>(undefined);
 
   const count = useRef<number>(0);
   const waitingForData = useRef(true);
@@ -114,6 +114,9 @@ export function LibraryScrapperTab(props: IProps) {
     setLoading(true);
     setData([]);
     count.current = 0;
+    page.current = 1;
+    offset.current = undefined;
+    total.current = undefined;
 
     searchNow();
   }, [props.searchValue]);
