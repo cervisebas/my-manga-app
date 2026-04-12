@@ -22,6 +22,7 @@ export function LibraryScreen(_props: IProps) {
   const theme = useTheme();
 
   // States
+  const [searchValue, setSearchValue] = useState('');
   const [loading, setLoading] = useState<Record<string, boolean>>(
     Scrappers.reduce(
       (current, scrapper) =>
@@ -44,7 +45,7 @@ export function LibraryScreen(_props: IProps) {
         <AppbarHeader>
           <Appbar.Content title={'Biblioteca'} />
         </AppbarHeader>
-        <LibrarySearchBar />
+        <LibrarySearchBar onSearch={setSearchValue} />
 
         {/* CONTENIDO */}
         <Tab.Navigator
@@ -71,6 +72,7 @@ export function LibraryScreen(_props: IProps) {
               // eslint-disable-next-line react/no-children-prop
               children={() => (
                 <LibraryScrapperTab
+                  searchValue={searchValue}
                   instance={scrapper}
                   updateLoading={changeLoadingTab(scrapper.getIdName())}
                 />

@@ -41,7 +41,7 @@ export function BookInfoScreen(props: IProps) {
   const scrapper = getInstanceById(params.instance);
 
   // Hook de datos
-  const { data, loading, error } = useBookInfo(scrapper, info);
+  const { data, loading, error, loadData } = useBookInfo(scrapper, info);
 
   const altTitles = Array.isArray(data.altTitles)
     ? data.altTitles
@@ -91,7 +91,7 @@ export function BookInfoScreen(props: IProps) {
 
         <BookStatusTabs />
 
-        <LoadingErrorContent loading={loading} error={error}>
+        <LoadingErrorContent loading={loading} error={error} onRetry={loadData}>
           <SafeArea.View
             expandDisableTop
             expandArea={{ horizontal: 16 }}

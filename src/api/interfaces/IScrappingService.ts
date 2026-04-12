@@ -3,6 +3,7 @@ import type { BookInfoInterface } from '@api/shared/interfaces/BookInfoInterface
 import type { SearchFilter } from '@api/shared/interfaces/SearchFilter';
 import type { SearchResult } from '@api/shared/interfaces/SearchResult';
 import { ImageSourcePropType } from 'react-native';
+import { SearchPaginated } from '../shared/interfaces/SearchPaginated';
 
 export interface IScrappingService {
   readonly searchType: SearchType;
@@ -15,7 +16,11 @@ export interface IScrappingService {
 
   // Extract data
   getPopular(): Promise<BookInfoInterface[]>;
-  search(value: string, filters: SearchFilter[]): Promise<SearchResult>;
+  search(
+    value: string,
+    filters: SearchFilter[],
+    paginated?: SearchPaginated,
+  ): Promise<SearchResult>;
   bookInfo(url: string): Promise<BookInfoInterface>;
   getDataChapter(url: string): Promise<string[]>;
   loadChapterImage(url: string): Promise<string>;

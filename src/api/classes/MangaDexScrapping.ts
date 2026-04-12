@@ -541,11 +541,11 @@ export class MangaDexScrapping implements IScrappingService {
             v.type === RelationShipType.Artist,
         );
 
-        const Description = val.attributes.description?.['es']
-          ? ['es', val.attributes.description['es']]
-          : val.attributes.description?.['en']
-            ? ['en', val.attributes.description['en']]
-            : Object.entries(val.attributes.description ?? {})[0];
+        const Description = val?.attributes?.description?.['es']
+          ? ['es', val?.attributes?.description['es']]
+          : val?.attributes?.description?.['en']
+            ? ['en', val?.attributes?.description['en']]
+            : Object.entries(val?.attributes?.description ?? {})[0];
 
         const id = val.id;
         const url = `https://mangadex.org/title/${id}/`;
@@ -576,9 +576,9 @@ export class MangaDexScrapping implements IScrappingService {
           ),
 
           status: this.getStatus(val.attributes.status),
-          description: Description[1],
-          descriptionLang: Description[0]
-            ? this.getLanguageEnum(Description[0])
+          description: Description?.[1] || '',
+          descriptionLang: Description?.[0]
+            ? this.getLanguageEnum(Description?.[0])
             : undefined,
           wallpaper:
             'https://mangadex.org/covers/' +

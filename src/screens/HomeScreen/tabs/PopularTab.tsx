@@ -20,7 +20,7 @@ export function PopularTab(props: IProps) {
   const _renderItem = ({ item }: ListRenderItemInfo<BookInfoInterface>) => {
     return (
       <BookItem
-        key={`${item.path}`}
+        key={`popular-${item.path}`}
         type={item.type}
         title={item.title}
         stars={item.stars}
@@ -39,6 +39,7 @@ export function PopularTab(props: IProps) {
 
   const loadData = async () => {
     setLoading(true);
+    setError(null);
 
     try {
       const _data = await props.instance.getPopular();
