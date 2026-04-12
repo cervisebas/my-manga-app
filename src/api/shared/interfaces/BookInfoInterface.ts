@@ -8,6 +8,7 @@ import type { GenderInterface } from '@api/shared/interfaces/GenderInterface';
 export interface BookInfoInterface {
   id?: number;
 
+  provider: string;
   path: string;
   url: string;
   title: string;

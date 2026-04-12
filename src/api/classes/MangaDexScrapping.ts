@@ -551,6 +551,7 @@ export class MangaDexScrapping implements IScrappingService {
         const url = `https://mangadex.org/title/${id}/`;
 
         return {
+          provider: this.getIdName(),
           path: id,
           url: url,
           title:
@@ -997,6 +998,7 @@ export class MangaDexScrapping implements IScrappingService {
           : Object.entries(BookInfo.attributes.description ?? {})[0];
 
       return {
+        provider: this.getIdName(),
         path: id,
         url: url,
         title:
