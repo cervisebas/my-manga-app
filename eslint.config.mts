@@ -9,7 +9,13 @@ import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 
 export default defineConfig([
   {
-    ignores: ['**/node_modules', 'metro.config.js', '**/.vscode', '**/.yarn'],
+    ignores: [
+      '**/node_modules',
+      'metro.config.js',
+      'uniwind-types.d.ts',
+      '**/.vscode',
+      '**/.yarn',
+    ],
   },
   {
     ...pluginReact.configs.flat.recommended,

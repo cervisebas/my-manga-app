@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios';
-import { ErrorCode } from '../enums/ErrorCode';
-import { ErrorMensages } from '../translate/ErrorMessages';
+import { ApiErrorCode } from '../enums/ApiErrorCode';
+import { ApiErrorMessages } from '../translate/ApiErrorMessages';
 
 export class ApiError {
   private message: string | object | unknown;
@@ -12,31 +12,31 @@ export class ApiError {
   public getError() {
     if (this.message instanceof AxiosError) {
       if (!this.message.response) {
-        return ErrorCode.NO_INTERNET;
+        return ApiErrorCode.NO_INTERNET;
       }
 
       switch (this.message.response?.status) {
         case 500:
         case 502:
         case 503:
-          return ErrorCode.SERVICE_NOT_AVAILABLE;
+          return ApiErrorCode.SERVICE_NOT_AVAILABLE;
 
         case 400:
         case 404:
-          return ErrorCode.NOT_FOUND;
+          return ApiErrorCode.NOT_FOUND;
 
         case 401:
         case 403:
-          return ErrorCode.BLOCKED;
+          return ApiErrorCode.BLOCKED;
       }
 
-      return ErrorCode.UNKNOWN;
+      return ApiErrorCode.UNKNOWN;
     }
 
-    return ErrorCode.INTERNAL_ERROR;
+    return ApiErrorCode.INTERNAL_ERROR;
   }
 
   public getMessage() {
-    return ErrorMensages[this.getError()];
+    return ApiErrorMessages[this.getError()];
   }
 }

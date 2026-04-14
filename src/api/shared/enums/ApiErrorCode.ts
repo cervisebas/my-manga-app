@@ -1,4 +1,4 @@
-export enum ErrorCode {
+export enum ApiErrorCode {
   NO_INTERNET,
   SERVICE_NOT_AVAILABLE,
   NOT_FOUND,

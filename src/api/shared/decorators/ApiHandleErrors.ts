@@ -1,6 +1,6 @@
 import { ApiError } from '../errors/ApiError';
 
-export function HandleErrors() {
+export function ApiHandleErrors() {
   return function (
     target: object,
     propertyKey: string,
