@@ -76,6 +76,8 @@ export function useBookInfo(
       } finally {
         setRefresh(false);
       }
+    } else if (cached) {
+      setRefresh(false);
     }
   };
 
