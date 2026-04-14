@@ -6,6 +6,7 @@ export const BookGenderByBookInfoModel = sqliteTable(
   {
     id_bookinfo: integer().notNull(),
     id_bookgender: integer().notNull(),
+    updateAt: integer({ mode: 'timestamp' }).$onUpdate(() => new Date()),
   },
   (table) => [
     unique('unique_book_gender').on(table.id_bookinfo, table.id_bookgender),

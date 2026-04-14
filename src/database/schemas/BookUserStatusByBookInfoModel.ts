@@ -9,6 +9,7 @@ export const BookUserStatusByBookInfoModel = sqliteTable(
     status: text().notNull().$type<UserBookStatus>(),
     value: text().notNull(),
     marked: integer({ mode: 'boolean' }).$type<boolean>(),
+    updateAt: integer({ mode: 'timestamp' }).$onUpdate(() => new Date()),
   },
   (table) => [unique('unique_book_status').on(table.id_bookinfo, table.status)],
 );

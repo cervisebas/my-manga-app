@@ -67,7 +67,13 @@ export class BookInfoDatabase {
               url: gender.url,
               value: gender.value,
             })
-            .onConflictDoNothing()
+            .onConflictDoUpdate({
+              target: [BookGenderModel.url],
+              set: {
+                name: gender.name,
+                value: gender.value,
+              },
+            })
             .returning({ idGender: BookGenderModel.id });
 
           await tx
@@ -165,16 +171,11 @@ export class BookInfoDatabase {
   }
 
   @DatabaseHandleErrors()
-  public static async getBookInfo(
-    provider: string,
-    url: string,
-  ): Promise<BookInfoInterface | null> {
+  public static async getBookInfo(url: string): Promise<BookInfoInterface> {
     const [book] = await db
       .select()
       .from(BookInfoModel)
-      .where(
-        and(eq(BookInfoModel.provider, provider), eq(BookInfoModel.url, url)),
-      )
+      .where(and(eq(BookInfoModel.url, url)))
       .limit(1);
 
     if (!book) throw null;

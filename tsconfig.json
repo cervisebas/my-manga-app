@@ -5,7 +5,9 @@
     "paths": {
       "@/*": ["./src/*"],
       "@api/*": ["./src/api/*"],
-      "@modules/*": ["./modules/*"]
+      "@database/*": ["./src/database/*"],
+      "@modules/*": ["./modules/*"],
+      "@drizzle/*": ["./drizzle/*"]
     },
     "experimentalDecorators": true
   }

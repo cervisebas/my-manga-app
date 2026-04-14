@@ -7,4 +7,5 @@ export const BookStaffModel = sqliteTable(DatabaseTableName.BOOK_STAFF, {
   name: text().notNull(),
   picture: text(),
   search_name: text().notNull(),
+  updateAt: integer({ mode: 'timestamp' }).$onUpdate(() => new Date()),
 });

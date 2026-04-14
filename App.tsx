@@ -10,6 +10,8 @@ import { refBottomSheetOptions, refDialogs } from '@/constants/Refs';
 import { BottomSheetOptions } from '@/common/components/BottomSheetOptions';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import { FloatToast } from '@/common/components/FloatToast';
+import { DatabaseProvider } from '@database/provider/DatabaseProvider';
 
 LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
@@ -22,12 +24,15 @@ export default function App() {
 
       <GestureHandlerRootView>
         <ThemeProvider>
-          <BottomSheetModalProvider>
-            <NativeStackNavigation />
+          <DatabaseProvider>
+            <BottomSheetModalProvider>
+              <NativeStackNavigation />
 
-            <Dialogs ref={refDialogs} />
-            <BottomSheetOptions ref={refBottomSheetOptions} />
-          </BottomSheetModalProvider>
+              <FloatToast />
+              <Dialogs ref={refDialogs} />
+              <BottomSheetOptions ref={refBottomSheetOptions} />
+            </BottomSheetModalProvider>
+          </DatabaseProvider>
         </ThemeProvider>
       </GestureHandlerRootView>
     </View>

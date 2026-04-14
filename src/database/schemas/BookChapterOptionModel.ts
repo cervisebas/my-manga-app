@@ -10,6 +10,7 @@ export const BookChapterOptionModel = sqliteTable(
     date: integer({ mode: 'timestamp' }).notNull(),
     url: text().notNull(),
     language: text().$type<Language>(),
+    updateAt: integer({ mode: 'timestamp' }).$onUpdate(() => new Date()),
   },
   (table) => [unique('unique_chapter_option').on(table.id_chapter, table.url)],
 );

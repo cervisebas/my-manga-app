@@ -9,7 +9,7 @@ import { modeAppbarHeight } from 'react-native-paper/src/components/Appbar/utils
 import { Chip, Divider, Text, useTheme } from 'react-native-paper';
 import { getInstanceById } from '@/api/utils/getInstanceById';
 import { BookInfoParams } from './interfaces/BookInfoParams';
-import { UImage } from '@/common/components/UniwindElements';
+import { UImage, USafeAreaFAB } from '@/common/components/UniwindElements';
 import { BookInfoPicture } from './components/BookInfoPicture';
 import { BookStatusTabs } from '@/common/components/BookStatusTabs';
 import { useBookInfo } from './hooks/useBookInfo';
@@ -41,7 +41,10 @@ export function BookInfoScreen(props: IProps) {
   const scrapper = getInstanceById(params.instance);
 
   // Hook de datos
-  const { data, loading, error, loadData } = useBookInfo(scrapper, info);
+  const { data, loading, refresh, error, loadData } = useBookInfo(
+    scrapper,
+    info,
+  );
 
   const altTitles = Array.isArray(data.altTitles)
     ? data.altTitles
@@ -94,7 +97,7 @@ export function BookInfoScreen(props: IProps) {
         <LoadingErrorContent loading={loading} error={error} onRetry={loadData}>
           <SafeArea.View
             expandDisableTop
-            expandArea={{ horizontal: 16 }}
+            expandArea={{ horizontal: 16, bottom: 60 }}
             className={'w-full gap-[24] my-4'}
           >
             {/* TITLES */}
@@ -177,6 +180,17 @@ export function BookInfoScreen(props: IProps) {
           </SafeArea.View>
         </LoadingErrorContent>
       </SafeArea.ScrollView>
+
+      <USafeAreaFAB
+        icon={'loading'}
+        loading={true}
+        visible={!loading && refresh}
+        className={'absolute right-0 bottom-0 z-10'}
+        expandArea={{
+          right: 16,
+          bottom: 16,
+        }}
+      />
     </View>
   );
 }

@@ -22,4 +22,5 @@ export const BookInfoModel = sqliteTable(DatabaseTableName.BOOKS_INFO, {
   description: text(),
   descriptionLang: text().$type<Language>(),
   wallpaper: text(),
+  updateAt: integer({ mode: 'timestamp' }).$onUpdate(() => new Date()),
 });

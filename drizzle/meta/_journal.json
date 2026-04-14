@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1776127868757,
+      "tag": "0000_medical_dracula",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1776129554264,
+      "tag": "0001_gorgeous_human_cannonball",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1776130082071,
+      "tag": "0002_parallel_madrox",
+      "breakpoints": true
+    }
+  ]
+}

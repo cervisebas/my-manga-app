@@ -13,6 +13,7 @@ export const BookChapterModel = sqliteTable(
     languages: text({ mode: 'json' }).$type<Language[]>(),
     availableSpanishLanguage: integer({ mode: 'boolean' }),
     availableSpanishLATAMLanguage: integer({ mode: 'boolean' }),
+    updateAt: integer({ mode: 'timestamp' }).$onUpdate(() => new Date()),
   },
   (table) => [
     unique('unique_book_chapter').on(table.id_bookinfo, table.chapter_number),

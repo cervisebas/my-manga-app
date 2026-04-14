@@ -7,6 +7,7 @@ export const BookStaffByBookInfoModel = sqliteTable(
     id_bookinfo: integer().notNull(),
     id_bookstaff: integer().notNull(),
     work_position: text().notNull(),
+    updateAt: integer({ mode: 'timestamp' }).$onUpdate(() => new Date()),
   },
   (table) => [
     unique('unique_all').on(

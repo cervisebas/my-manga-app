@@ -9,5 +9,6 @@ export const BookUserChapterBookHistoryModel = sqliteTable(
     id_chapter: integer().notNull(),
     path_option: text().notNull(),
     progress: numeric().notNull(),
+    updateAt: integer({ mode: 'timestamp' }).$onUpdate(() => new Date()),
   },
 );

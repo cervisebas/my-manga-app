@@ -8,5 +8,6 @@ export const BookUserChapterHistoryModel = sqliteTable(
     id_bookinfo: integer().notNull(),
     id_chapter: integer().notNull(),
     date: integer({ mode: 'timestamp' }).notNull(),
+    updateAt: integer({ mode: 'timestamp' }).$onUpdate(() => new Date()),
   },
 );
