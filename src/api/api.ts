@@ -1,3 +1,4 @@
+import './interceptors/UserAgentInterceptor';
 import { MangaDexScrapping } from './classes/MangaDexScrapping';
 import { IScrappingService } from './interfaces/IScrappingService';
 

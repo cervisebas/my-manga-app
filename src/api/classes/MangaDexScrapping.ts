@@ -27,10 +27,11 @@ import { ImageSourcePropType } from 'react-native';
 import LogoImage from '@api/assets/mangadex-logo.webp';
 import axios from 'axios';
 import dayjs from 'dayjs';
-import { Buffer } from 'buffer';
 import { Language } from '../shared/enums/Language';
 import { ApiHandleErrors } from '../shared/decorators/ApiHandleErrors';
 import { OrderChapters } from '../shared/decorators/OrderChapters';
+import expoInsecureFetch from '@modules/expo-insecure-fetch';
+import { UserAgents } from '../shared/constants/UserAgents';
 
 /* const ORDER_OPTIONS: SearchFilterOption[] = [
   {
@@ -1076,12 +1077,12 @@ export class MangaDexScrapping implements IScrappingService {
 
   @ApiHandleErrors()
   public async loadChapterImage(url: string): Promise<string> {
-    const { data } = await axios.get(url, {
-      headers: { Referer: 'https://mangadex.org/' },
-      responseType: 'arraybuffer',
+    const data = await expoInsecureFetch.fetch(url, 'GET', {
+      Referer: 'https://mangadex.org/',
+      'User-Agent': UserAgents.DEFAULT,
     });
 
-    return Buffer.from(data, 'binary').toString('base64');
+    return data.body;
   }
 
   @ApiHandleErrors()
