@@ -6,12 +6,17 @@ import { ThemeProvider } from '@/providers/ThemeProvider';
 import { NativeStackNavigation } from '@/navigation/NativeStackNavigation';
 import { LogBox } from 'react-native';
 import { Dialogs } from '@/common/components/Dialogs';
-import { refBottomSheetOptions, refDialogs } from '@/constants/Refs';
+import {
+  refBottomSheetOptions,
+  refDialogLoadingRef,
+  refDialogs,
+} from '@/constants/Refs';
 import { BottomSheetOptions } from '@/common/components/BottomSheetOptions';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { FloatToast } from '@/common/components/FloatToast';
 import { DatabaseProvider } from '@database/provider/DatabaseProvider';
+import { DialogLoading } from '@/common/components/DialogLoading';
 
 LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
@@ -30,6 +35,7 @@ export default function App() {
 
               <FloatToast />
               <Dialogs ref={refDialogs} />
+              <DialogLoading ref={refDialogLoadingRef} />
               <BottomSheetOptions ref={refBottomSheetOptions} />
             </BottomSheetModalProvider>
           </DatabaseProvider>
