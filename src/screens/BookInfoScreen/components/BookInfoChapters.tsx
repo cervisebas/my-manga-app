@@ -1,3 +1,4 @@
+import { IScrappingService } from '@/api/interfaces/IScrappingService';
 import { BookInfoInterface } from '@/api/shared/interfaces/BookInfoInterface';
 import { ChapterInterface } from '@/api/shared/interfaces/ChapterInterface';
 import { ChapterItem } from '@/common/components/ChapterItem';
@@ -17,6 +18,7 @@ import { Divider, Text } from 'react-native-paper';
 interface IProps {
   bookInfo: BookInfoInterface;
   chapters?: ChapterInterface[];
+  instance: IScrappingService;
 }
 
 const MAX_ITEMS_SHOW = 8;
@@ -43,6 +45,7 @@ export function BookInfoChapters(props: IProps) {
       const chapterOptions = new ChapterOptions(
         props.bookInfo,
         chapter,
+        props.instance,
         navigation as never,
       );
 

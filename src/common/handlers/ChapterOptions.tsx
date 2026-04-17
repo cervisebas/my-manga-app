@@ -8,6 +8,8 @@ import { refBottomSheetOptions } from '@/constants/Refs';
 import { LanguageIcons } from '../constants/LanguageIcons';
 import { UImage } from '../components/UniwindElements';
 import { NavigationProp } from '@react-navigation/native';
+import { goToChapterView } from '@/utils/goToChapterView';
+import { IScrappingService } from '@/api/interfaces/IScrappingService';
 
 export class ChapterOptions {
   private bookInfo: BookInfoInterface;
@@ -16,11 +18,13 @@ export class ChapterOptions {
   private options: BottomSheetOptionsInterface[];
   private information: BottomSheetOptionsInterface[];
 
+  private instance: IScrappingService;
   private navigation?: NavigationProp<ReactNavigation.RootParamList>;
 
   constructor(
     bookInfo: BookInfoInterface,
     chapter: ChapterInterface,
+    instance: IScrappingService,
     navigation?: NavigationProp<ReactNavigation.RootParamList>,
   ) {
     this.bookInfo = bookInfo;
@@ -29,6 +33,7 @@ export class ChapterOptions {
     this.options = [];
     this.information = [];
 
+    this.instance = instance;
     this.navigation = navigation;
 
     this.makeOptions();
@@ -50,6 +55,9 @@ export class ChapterOptions {
               />
             )
           : undefined,
+        onPress: () => {
+          goToChapterView(this.instance, this.bookInfo, this.chapter, option);
+        },
       });
     }
   }

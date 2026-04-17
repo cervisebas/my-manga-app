@@ -10,4 +10,4 @@ import { createRef } from 'react';
 export const refNavegation = createRef<NavigationContainerRef<ParamListBase>>();
 export const refDialogs = createRef<IDialogRef>();
 export const refBottomSheetOptions = createRef<BottomSheetOptionsRef>();
-export const refDialogLoadingRef = createRef<DialogLoadingRef>();
+export const refDialogLoading = createRef<DialogLoadingRef>();

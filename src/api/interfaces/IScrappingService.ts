@@ -26,6 +26,9 @@ export interface IScrappingService {
   loadChapterImage(url: string): Promise<string>;
   loadChapterImages(
     urls: string[],
-    progress?: (index: number, source: string) => void,
+    _continue?: () => boolean,
+    exist?: (index: number) => boolean,
+    progress?: (index: number, source: string) => Promise<void>,
+    onError?: (index: number) => Promise<void>,
   ): Promise<string[]>;
 }

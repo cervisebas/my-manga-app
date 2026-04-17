@@ -176,7 +176,11 @@ export function BookInfoScreen(props: IProps) {
             <Divider />
 
             {/* Capitulos */}
-            <BookInfoChapters bookInfo={data} chapters={data.chapters} />
+            <BookInfoChapters
+              instance={scrapper}
+              bookInfo={data}
+              chapters={data.chapters}
+            />
           </SafeArea.View>
         </LoadingErrorContent>
       </SafeArea.ScrollView>

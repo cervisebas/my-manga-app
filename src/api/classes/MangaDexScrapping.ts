@@ -1088,16 +1088,34 @@ export class MangaDexScrapping implements IScrappingService {
   @ApiHandleErrors()
   public async loadChapterImages(
     urls: string[],
-    progress?: (index: number, source: string) => void,
+    _continue?: () => boolean,
+    exist?: (index: number) => boolean,
+    progress?: (index: number, source: string) => Promise<void>,
+    onError?: (index: number) => Promise<void>,
   ): Promise<string[]> {
     try {
       const images: string[] = [];
 
       for (let index = 0; index < urls.length; index++) {
-        const url = urls[index] ?? '';
-        const image = await retry(this.loadChapterImage(url), 5, 250);
-        progress?.(index, image);
-        images.push(image);
+        const _iCanContinue = _continue?.() ?? true;
+
+        if (!_iCanContinue) {
+          break;
+        }
+
+        if (exist?.(index) ?? false) {
+          continue;
+        }
+
+        try {
+          const url = urls[index] ?? '';
+          const image = await retry(this.loadChapterImage(url), 5, 250);
+          await progress?.(index, image);
+          images.push(image);
+        } catch (error) {
+          console.error(error);
+          await onError?.(index);
+        }
       }
 
       return images;

@@ -8,7 +8,7 @@ import { LogBox } from 'react-native';
 import { Dialogs } from '@/common/components/Dialogs';
 import {
   refBottomSheetOptions,
-  refDialogLoadingRef,
+  refDialogLoading,
   refDialogs,
 } from '@/constants/Refs';
 import { BottomSheetOptions } from '@/common/components/BottomSheetOptions';
@@ -35,7 +35,7 @@ export default function App() {
 
               <FloatToast />
               <Dialogs ref={refDialogs} />
-              <DialogLoading ref={refDialogLoadingRef} />
+              <DialogLoading ref={refDialogLoading} />
               <BottomSheetOptions ref={refBottomSheetOptions} />
             </BottomSheetModalProvider>
           </DatabaseProvider>
