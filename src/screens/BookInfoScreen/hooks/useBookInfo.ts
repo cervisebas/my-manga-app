@@ -62,21 +62,25 @@ export function useBookInfo(
 
     // Guardar en base de datos
     if (response) {
-      setRefresh(true);
-
-      try {
-        console.info('Guardando..');
-        await BookInfoDatabase.saveBookInfo(response);
-        console.info('Guardado!');
-      } catch (error) {
-        console.error(error);
-        if (error instanceof DatabaseError) {
-          toast.error(error.getMessage());
-        }
-      } finally {
-        setRefresh(false);
-      }
+      saveInLocalDatabase(response);
     } else if (cached) {
+      setRefresh(false);
+    }
+  };
+
+  const saveInLocalDatabase = async (response: BookInfoInterface) => {
+    setRefresh(true);
+
+    try {
+      console.info('Guardando..');
+      await BookInfoDatabase.saveBookInfo(response);
+      console.info('Guardado!');
+    } catch (error) {
+      console.error(error);
+      if (error instanceof DatabaseError) {
+        toast.error(error.getMessage());
+      }
+    } finally {
       setRefresh(false);
     }
   };
