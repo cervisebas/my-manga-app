@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import Fuse from 'fuse.js';
 
+const PRECISION = 0.6;
+
 export default function <T = []>(data: T, keys: string[]) {
   const [resultData, setResultData] = useState(data);
   const [search, setSearch] = useState('');
@@ -12,6 +14,7 @@ export default function <T = []>(data: T, keys: string[]) {
     }
 
     const fuse = new Fuse<T>(data as never[], {
+      useTokenSearch: true,
       includeScore: true,
       findAllMatches: true,
       ignoreLocation: true,
@@ -20,10 +23,10 @@ export default function <T = []>(data: T, keys: string[]) {
     });
     const list = fuse.search(search);
 
-    const res = list.map((v) => ({
-      ...v.item,
-      hide: (v.score ?? 1) > 0.5,
-    }));
+    const res = list
+      .filter((v) => (v.score ?? 0) <= PRECISION)
+      .sort((a, b) => (a.score ?? 0) - (b.score ?? 0))
+      .map((v) => v.item);
 
     setResultData(res as never);
   }

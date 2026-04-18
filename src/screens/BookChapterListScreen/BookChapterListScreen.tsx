@@ -2,7 +2,7 @@ import { BookInfoInterface } from '@/api/shared/interfaces/BookInfoInterface';
 import { ChapterInterface } from '@/api/shared/interfaces/ChapterInterface';
 import { ChapterItem } from '@/common/components/ChapterItem';
 import SafeArea from '@/common/components/SafeArea';
-import { UDivider } from '@/common/components/UniwindElements';
+import { UDivider, USafeAreaFAB } from '@/common/components/UniwindElements';
 import { ChapterOptions } from '@/common/handlers/ChapterOptions';
 import {
   CHAPTER_HEIGHT_ITEMS,
@@ -11,8 +11,11 @@ import {
 import { ParamListBase } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import dayjs from 'dayjs';
+import { useMemo, useState } from 'react';
 import { ListRenderItemInfo, View } from 'react-native';
 import { Appbar, useTheme } from 'react-native-paper';
+import { BookChapterListSearchBar } from './components/BookChapterListSearchBar';
+import useSearchArray from '@/common/hooks/useSearchArray';
 
 type IProps = NativeStackScreenProps<ParamListBase, 'book-chapter-list'>;
 
@@ -23,8 +26,21 @@ interface BookChapterListParams {
 export function BookChapterListScreen(props: IProps) {
   const params = props.route.params as BookChapterListParams;
 
-  const now = dayjs();
-  const chapters = params.bookInfo.chapters ?? [];
+  // States
+  const [reverse, setReverse] = useState(false);
+
+  // Variables
+  const now = useMemo(() => dayjs(), []);
+  const _chapters = params.bookInfo.chapters ?? [];
+
+  // Search
+  const { resultData: resultChapters, setSearch } = useSearchArray(_chapters, [
+    'title',
+    'chapter_number',
+  ]);
+
+  // Chapter List
+  const chapters = reverse ? [...resultChapters].reverse() : resultChapters;
   const chapterDiffDate = chapters.map((chapter) =>
     now.diff(chapter.options.at(0)?.date, 'days'),
   );
@@ -82,6 +98,9 @@ export function BookChapterListScreen(props: IProps) {
         <Appbar.BackAction onPress={props.navigation.goBack} />
         <Appbar.Content title={params.bookInfo.title} />
       </Appbar.Header>
+
+      <BookChapterListSearchBar onSearch={setSearch} />
+
       <SafeArea.FlatList
         data={chapters}
         keyExtractor={keyExtractor}
@@ -89,6 +108,21 @@ export function BookChapterListScreen(props: IProps) {
         renderItem={renderItems}
         expandDisableTop={true}
         ItemSeparatorComponent={ItemSeparatorComponent}
+        expandArea={{
+          bottom: 100,
+        }}
+      />
+
+      <USafeAreaFAB
+        className={'absolute bottom-0 right-0'}
+        expandDisableBottom={false}
+        expandArea={{
+          bottom: 16,
+          right: 16,
+        }}
+        icon={reverse ? 'sort-numeric-descending' : 'sort-numeric-ascending'}
+        animated={true}
+        onPress={() => setReverse((val) => !val)}
       />
     </View>
   );

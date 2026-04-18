@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "my-manga-app",
-    "slug": "my-manga-app",
+    "name": "My Manga App",
+    "slug": "MMA",
     "version": "1.0.0",
     "experiments": {
       "tsconfigPaths": true,
@@ -39,7 +39,7 @@
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
       "predictiveBackGestureEnabled": false,
-      "package": "com.anonymous.mymangaapp"
+      "package": "com.cervisebas.mymangaapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
