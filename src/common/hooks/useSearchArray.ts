@@ -18,13 +18,13 @@ export default function <T = []>(data: T, keys: string[]) {
       includeScore: true,
       findAllMatches: true,
       ignoreLocation: true,
-      threshold: 1,
+      threshold: PRECISION,
       keys: keys,
     });
     const list = fuse.search(search);
 
     const res = list
-      .filter((v) => (v.score ?? 0) <= PRECISION)
+      // .filter((v) => (v.score ?? 0) <= PRECISION)
       .sort((a, b) => (a.score ?? 0) - (b.score ?? 0))
       .map((v) => v.item);
 
