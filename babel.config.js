@@ -3,10 +3,5 @@ export default function (api) {
   return {
     presets: ['babel-preset-expo'],
     plugins: [['inline-import', { extensions: ['.sql'] }]],
-    env: {
-      production: {
-        plugins: ['react-native-paper/babel'],
-      },
-    },
   };
 }

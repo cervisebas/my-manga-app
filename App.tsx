@@ -27,9 +27,9 @@ export default function App() {
     <View className={'flex-1'}>
       <StatusBar style="auto" />
 
-      <GestureHandlerRootView>
-        <ThemeProvider>
-          <DatabaseProvider>
+      <DatabaseProvider>
+        <GestureHandlerRootView>
+          <ThemeProvider>
             <BottomSheetModalProvider>
               <NativeStackNavigation />
 
@@ -38,9 +38,9 @@ export default function App() {
               <DialogLoading ref={refDialogLoading} />
               <BottomSheetOptions ref={refBottomSheetOptions} />
             </BottomSheetModalProvider>
-          </DatabaseProvider>
-        </ThemeProvider>
-      </GestureHandlerRootView>
+          </ThemeProvider>
+        </GestureHandlerRootView>
+      </DatabaseProvider>
     </View>
   );
 }
