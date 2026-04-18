@@ -116,7 +116,7 @@ export class ChapterOptions {
           : null;
 
       this.information.push({
-        label: 'Disponible español',
+        label: 'Disponible en español',
         leftIcon: 'web',
         description: spanish || spanishLatam ? `Sí (${langShow})` : 'No',
       });
