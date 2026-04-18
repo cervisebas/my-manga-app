@@ -21,11 +21,14 @@ export class ChapterOptions {
   private instance: IScrappingService;
   private navigation?: NavigationProp<ReactNavigation.RootParamList>;
 
+  private activeChapterView: boolean;
+
   constructor(
     bookInfo: BookInfoInterface,
     chapter: ChapterInterface,
     instance: IScrappingService,
     navigation?: NavigationProp<ReactNavigation.RootParamList>,
+    activeChapterView?: boolean,
   ) {
     this.bookInfo = bookInfo;
     this.chapter = chapter;
@@ -35,6 +38,8 @@ export class ChapterOptions {
 
     this.instance = instance;
     this.navigation = navigation;
+
+    this.activeChapterView = activeChapterView ?? false;
 
     this.makeOptions();
     this.makeInformation();
@@ -56,7 +61,13 @@ export class ChapterOptions {
             )
           : undefined,
         onPress: () => {
-          goToChapterView(this.instance, this.bookInfo, this.chapter, option);
+          goToChapterView(
+            this.instance,
+            this.bookInfo,
+            this.chapter,
+            option,
+            this.activeChapterView,
+          );
         },
       });
     }

@@ -11,11 +11,16 @@ export async function goToChapterView(
   bookInfo: BookInfoInterface,
   chapter: ChapterInterface,
   option: ChapterOptionInterface,
+  activeChapterView: boolean,
 ) {
   refDialogLoading.current?.show('Obteniendo información...');
 
   try {
     const images = await instance.getDataChapter(option.url);
+
+    if (activeChapterView) {
+      refNavegation.current?.goBack();
+    }
 
     refNavegation.current?.navigate('chapter-view', {
       bookInfo: bookInfo,

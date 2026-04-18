@@ -11,6 +11,7 @@ import { getInstanceById } from '@/api/utils/getInstanceById';
 import { useEffect, useRef } from 'react';
 import { toast } from 'sonner-native';
 import { ChapterViewVisualizer } from './components/ChapterViewVisualizer';
+import { ChapterSheetOptions } from './classes/ChapterSheetOptions';
 
 type IProps = NativeBottomTabScreenProps<ParamListBase, 'chapter-view'>;
 
@@ -37,11 +38,27 @@ export function ChapterViewScreen(props: IProps) {
   // Refs
   const unmount = useRef(false);
   const progressRef = useRef<string | number | undefined>(undefined);
+  const optionsRef = useRef<ChapterSheetOptions | undefined>(undefined);
 
   // Variables
   const title =
     `Capítulo ${params.chapter.chapter_number}` +
     (params.chapter.title ? ` - ${params.chapter.title}` : '');
+
+  // Metodos
+  const showOptions = () => {
+    if (!optionsRef.current) {
+      optionsRef.current = new ChapterSheetOptions(
+        scrapper,
+        props.navigation as never,
+        params.bookInfo,
+        params.chapter,
+        params.option,
+      );
+    }
+
+    optionsRef.current.show();
+  };
 
   // Effects
   useEffect(() => {
@@ -57,7 +74,9 @@ export function ChapterViewScreen(props: IProps) {
     }
 
     if (!loading) {
-      toast.dismiss(progressRef.current);
+      setTimeout(() => {
+        toast.dismiss(progressRef.current);
+      }, 150);
     }
   }, [progress, loading]);
 
@@ -76,8 +95,9 @@ export function ChapterViewScreen(props: IProps) {
       <AppbarHeader>
         <Appbar.BackAction onPress={props.navigation.goBack} />
         <Appbar.Content title={title} />
-        <Appbar.Action icon={'cog-outline'} />
+        <Appbar.Action icon={'cog-outline'} onPress={showOptions} />
       </AppbarHeader>
+
       <ChapterViewVisualizer images={images} />
     </View>
   );
