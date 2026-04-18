@@ -37,6 +37,7 @@ export function BookInfoChapters(props: IProps) {
   const goToChapterList = () => {
     refNavegation.current?.navigate('book-chapter-list', {
       bookInfo: props.bookInfo,
+      instance: props.instance.getIdName(),
     });
   };
 

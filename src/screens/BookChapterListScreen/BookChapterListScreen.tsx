@@ -16,15 +16,19 @@ import { ListRenderItemInfo, View } from 'react-native';
 import { Appbar, useTheme } from 'react-native-paper';
 import { BookChapterListSearchBar } from './components/BookChapterListSearchBar';
 import useSearchArray from '@/common/hooks/useSearchArray';
+import { getInstanceById } from '@/api/utils/getInstanceById';
 
 type IProps = NativeStackScreenProps<ParamListBase, 'book-chapter-list'>;
 
 interface BookChapterListParams {
   bookInfo: BookInfoInterface;
+  instance: string;
 }
 
 export function BookChapterListScreen(props: IProps) {
   const params = props.route.params as BookChapterListParams;
+
+  const scrapper = getInstanceById(params.instance);
 
   // States
   const [reverse, setReverse] = useState(false);
@@ -54,6 +58,7 @@ export function BookChapterListScreen(props: IProps) {
       const chapterOptions = new ChapterOptions(
         params.bookInfo,
         chapter,
+        scrapper,
         props.navigation as never,
       );
 

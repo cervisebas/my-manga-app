@@ -30,6 +30,7 @@ export async function goToChapterView(
       instance: instance.getIdName(),
     } as ChapterViewScreenParams);
   } catch (error) {
+    console.error(error);
     refDialogs.current?.open({
       message:
         error instanceof ApiError
