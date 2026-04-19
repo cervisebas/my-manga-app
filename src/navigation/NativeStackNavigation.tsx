@@ -4,11 +4,19 @@ import { BookInfoScreen } from '@/screens/BookInfoScreen/BookInfoScreen';
 import { useTheme } from 'react-native-paper';
 import { BookChapterListScreen } from '@/screens/BookChapterListScreen/BookChapterListScreen';
 import { ChapterViewScreen } from '@/screens/ChapterViewScreen/ChapterViewScreen';
+import { useEffect } from 'react';
+import BootSplash from 'react-native-bootsplash';
 
 const Stack = createNativeStackNavigator();
 
 export function NativeStackNavigation() {
   const theme = useTheme();
+
+  useEffect(() => {
+    BootSplash.hide({
+      fade: true,
+    });
+  }, []);
 
   return (
     <Stack.Navigator
