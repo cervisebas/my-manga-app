@@ -4,13 +4,15 @@ import journal from './meta/_journal.json';
 import m0000 from './0000_medical_dracula.sql';
 import m0001 from './0001_gorgeous_human_cannonball.sql';
 import m0002 from './0002_parallel_madrox.sql';
+import m0003 from './0003_left_tony_stark.sql';
 
   export default {
     journal,
     migrations: {
       m0000,
 m0001,
-m0002
+m0002,
+m0003
     }
   }
   

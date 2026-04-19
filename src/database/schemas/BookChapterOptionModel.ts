@@ -5,6 +5,7 @@ import { Language } from '@api/shared/enums/Language';
 export const BookChapterOptionModel = sqliteTable(
   DatabaseTableName.BOOK_CHAPTER_OPTIONS,
   {
+    id: integer().primaryKey({ autoIncrement: true }).notNull(),
     id_chapter: integer().notNull(),
     title: text(),
     date: integer({ mode: 'timestamp' }).notNull(),

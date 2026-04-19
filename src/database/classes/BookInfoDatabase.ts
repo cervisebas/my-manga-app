@@ -1,5 +1,5 @@
 import { BookInfoInterface } from '@/api/shared/interfaces/BookInfoInterface';
-import { and, eq, inArray } from 'drizzle-orm';
+import { and, eq, inArray, not, sql } from 'drizzle-orm';
 import dayjs from 'dayjs';
 import { BookInfoModel } from '../schemas/BookInfoModel';
 import { BookGenderModel } from '../schemas/BookGenderModel';
@@ -9,12 +9,15 @@ import { BookStaffByBookInfoModel } from '../schemas/BookStaffByBookInfoModel';
 import { BookChapterModel } from '../schemas/BookChapterModel';
 import { BookChapterOptionModel } from '../schemas/BookChapterOptionModel';
 import { db } from '../constants/database';
-import { ChapterOptionInterface } from '@/api/shared/interfaces/ChapterOptionInterface';
 import { DatabaseHandleErrors } from '../decorators/DatabaseHandleErrors';
+import { BookChapterList } from './BookChapterList';
 
 export class BookInfoDatabase {
   @DatabaseHandleErrors()
-  public static async saveBookInfo(bookInfo: BookInfoInterface) {
+  public static async saveBookInfo(
+    bookInfo: BookInfoInterface,
+    omitChapters = false,
+  ) {
     return await db.transaction(async (tx) => {
       // 1. Info Book
       const [{ idBookInfo }] = await tx
@@ -59,111 +62,140 @@ export class BookInfoDatabase {
 
       // 2. Genders
       if (bookInfo.genders && bookInfo.genders.length > 0) {
-        for (const gender of bookInfo.genders) {
-          const [{ idGender }] = await tx
-            .insert(BookGenderModel)
-            .values({
+        const genders = await tx
+          .insert(BookGenderModel)
+          .values(
+            bookInfo.genders.map((gender) => ({
               name: gender.name,
               url: gender.url,
               value: gender.value,
-            })
-            .onConflictDoUpdate({
-              target: [BookGenderModel.url],
-              set: {
-                name: gender.name,
-                value: gender.value,
-              },
-            })
-            .returning({ idGender: BookGenderModel.id });
+            })),
+          )
+          .onConflictDoUpdate({
+            target: [BookGenderModel.url],
+            set: {
+              name: sql`excluded.name`,
+              value: sql`excluded.value`,
+            },
+          })
+          .returning({ idGender: BookGenderModel.id });
 
-          await tx
-            .insert(BookGenderByBookInfoModel)
-            .values({
+        await tx
+          .insert(BookGenderByBookInfoModel)
+          .values(
+            genders.map((gender) => ({
               id_bookinfo: idBookInfo,
-              id_bookgender: idGender,
-            })
-            .onConflictDoNothing();
-        }
+              id_bookgender: gender.idGender,
+            })),
+          )
+          .onConflictDoNothing();
       }
 
       // 3. Staff
       if (bookInfo.staff && bookInfo.staff.length > 0) {
-        for (const staff of bookInfo.staff) {
-          const [{ idStaff }] = await tx
-            .insert(BookStaffModel)
-            .values({
+        const staffs = await tx
+          .insert(BookStaffModel)
+          .values(
+            bookInfo.staff.map((staff) => ({
               url: staff.url,
               name: staff.name,
               picture: staff.picture,
               search_name: staff.search_name,
-            })
-            .onConflictDoUpdate({
-              target: [BookStaffModel.url],
-              set: {
-                name: staff.name,
-                picture: staff.picture,
-                search_name: staff.search_name,
-              },
-            })
-            .returning({ idStaff: BookStaffModel.id });
+            })),
+          )
+          .onConflictDoUpdate({
+            target: [BookStaffModel.url],
+            set: {
+              name: sql`excluded.name`,
+              picture: sql`excluded.picture`,
+              search_name: sql`excluded.search_name`,
+            },
+          })
+          .returning({ idStaff: BookStaffModel.id });
 
-          await tx
-            .insert(BookStaffByBookInfoModel)
-            .values({
+        await tx
+          .insert(BookStaffByBookInfoModel)
+          .values(
+            staffs.map((staff, index) => ({
               id_bookinfo: idBookInfo,
-              id_bookstaff: idStaff,
-              work_position: staff.work_position,
-            })
-            .onConflictDoNothing();
-        }
+              id_bookstaff: staff.idStaff,
+              work_position: bookInfo.staff?.[index].work_position ?? '',
+            })),
+          )
+          .onConflictDoNothing();
       }
 
       // 4. Chapters
-      if (bookInfo.chapters && bookInfo.chapters.length > 0) {
-        for (const chap of bookInfo.chapters) {
-          const [{ idChapter }] = await tx
-            .insert(BookChapterModel)
-            .values({
+      if (!omitChapters && bookInfo.chapters && bookInfo.chapters.length > 0) {
+        const chapters = await tx
+          .insert(BookChapterModel)
+          .values(
+            bookInfo.chapters.map((chapter) => ({
               id_bookinfo: idBookInfo,
-              title: chap.title ?? null,
-              chapter_number: chap.chapter_number,
-              language: chap.language,
-              languages: chap.languages,
-              availableSpanishLanguage: chap.availableSpanishLanguage,
-              availableSpanishLATAMLanguage: chap.availableSpanishLATAMLanguage,
-            })
-            .onConflictDoUpdate({
-              target: [
-                BookChapterModel.id_bookinfo,
-                BookChapterModel.chapter_number,
-              ],
-              set: {
-                title: chap.title,
-                language: chap.language,
-                languages: chap.languages,
-                availableSpanishLanguage: chap.availableSpanishLanguage,
-                availableSpanishLATAMLanguage:
-                  chap.availableSpanishLATAMLanguage,
-              },
-            })
-            .returning({ idChapter: BookChapterModel.id });
+              title: chapter.title ?? null,
+              chapter_number: chapter.chapter_number,
+              language: chapter.language,
+              languages: chapter.languages,
+              availableSpanishLanguage: chapter.availableSpanishLanguage,
+              availableSpanishLATAMLanguage:
+                chapter.availableSpanishLATAMLanguage,
+            })),
+          )
+          .onConflictDoUpdate({
+            target: [
+              BookChapterModel.id_bookinfo,
+              BookChapterModel.chapter_number,
+            ],
+            set: {
+              title: sql`excluded.title`,
+              language: sql`excluded.language`,
+              languages: sql`excluded.languages`,
+              availableSpanishLanguage: sql`excluded.availableSpanishLanguage`,
+              availableSpanishLATAMLanguage: sql`excluded.availableSpanishLATAMLanguage`,
+            },
+          })
+          .returning({ idChapter: BookChapterModel.id });
 
-          // Options
-          await tx
-            .delete(BookChapterOptionModel)
-            .where(eq(BookChapterOptionModel.id_chapter, idChapter));
+        const options = await tx
+          .insert(BookChapterOptionModel)
+          .values(
+            chapters
+              .map((chapter, index) =>
+                bookInfo.chapters![index].options.map((opt) => ({
+                  id_chapter: chapter.idChapter,
+                  title: opt.title,
+                  date: dayjs(opt.date).toDate(),
+                  url: opt.url,
+                  language: opt.language,
+                })),
+              )
+              .flat(),
+          )
+          .onConflictDoUpdate({
+            target: [
+              BookChapterOptionModel.id_chapter,
+              BookChapterOptionModel.url,
+            ],
+            set: {
+              language: sql`excluded.language`,
+            },
+          })
+          .returning({ idOption: BookChapterOptionModel.id });
 
-          if (chap.options && chap.options.length > 0) {
-            const optionsToInsert = chap.options.map((opt) => ({
-              id_chapter: idChapter,
-              title: opt.title,
-              date: dayjs(opt.date).toDate(),
-              url: opt.url,
-              language: opt.language,
-            }));
-            await tx.insert(BookChapterOptionModel).values(optionsToInsert);
-          }
-        }
+        await tx.delete(BookChapterOptionModel).where(
+          and(
+            not(
+              inArray(
+                BookChapterOptionModel.id,
+                options.map((option) => option.idOption),
+              ),
+            ),
+            inArray(
+              BookChapterOptionModel.id_chapter,
+              chapters.map((chapter) => chapter.idChapter),
+            ),
+          ),
+        );
       }
 
       return idBookInfo;
@@ -222,46 +254,7 @@ export class BookInfoDatabase {
       work_position: s.work_position,
     }));
 
-    const chaptersRecords = await db
-      .select()
-      .from(BookChapterModel)
-      .where(eq(BookChapterModel.id_bookinfo, book.id));
-
-    const chaptersIds = chaptersRecords.map((c) => c.id);
-
-    let optionsRecords: (typeof BookChapterOptionModel.$inferSelect)[] = [];
-    if (chaptersIds.length > 0) {
-      optionsRecords = await db
-        .select()
-        .from(BookChapterOptionModel)
-        .where(inArray(BookChapterOptionModel.id_chapter, chaptersIds));
-    }
-
-    const optionsByChapter = optionsRecords.reduce(
-      (acc, opt) => {
-        if (!acc[opt.id_chapter]) acc[opt.id_chapter] = [];
-        acc[opt.id_chapter].push({
-          title: opt.title ?? undefined,
-          date: dayjs(opt.date),
-          url: opt.url,
-          language: opt.language ?? undefined,
-        });
-        return acc;
-      },
-      {} as Record<number, ChapterOptionInterface[]>,
-    );
-
-    const chapters = chaptersRecords.map((chap) => ({
-      id: chap.id,
-      title: chap.title ?? null,
-      chapter_number: chap.chapter_number,
-      language: chap.language ?? undefined,
-      languages: chap.languages ?? undefined,
-      availableSpanishLanguage: chap.availableSpanishLanguage ?? undefined,
-      availableSpanishLATAMLanguage:
-        chap.availableSpanishLATAMLanguage ?? undefined,
-      options: optionsByChapter[chap.id] || [],
-    }));
+    const chapters = await BookChapterList.restoreChapterList(book.id);
 
     return {
       id: book.id,
@@ -283,5 +276,16 @@ export class BookInfoDatabase {
       staff: staff,
       chapters: chapters,
     };
+  }
+
+  @DatabaseHandleErrors()
+  public static async getBookInfoId(url: string) {
+    const [book] = await db
+      .select({ id: BookInfoModel.id })
+      .from(BookInfoModel)
+      .where(and(eq(BookInfoModel.url, url)))
+      .limit(1);
+
+    return book.id;
   }
 }

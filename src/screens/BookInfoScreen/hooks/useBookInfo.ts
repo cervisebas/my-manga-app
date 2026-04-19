@@ -2,10 +2,10 @@ import { IScrappingService } from '@/api/interfaces/IScrappingService';
 import { ApiError } from '@/api/shared/errors/ApiError';
 import { BookInfoInterface } from '@/api/shared/interfaces/BookInfoInterface';
 import { refDialogs } from '@/constants/Refs';
+import { BookChapterList } from '@/database/classes/BookChapterList';
 import { BookInfoDatabase } from '@/database/classes/BookInfoDatabase';
 import { DatabaseError } from '@/database/errors/DatabaseError';
 import { useEffect, useState } from 'react';
-import { toast } from 'sonner-native';
 
 export function useBookInfo(
   scrapper: IScrappingService,
@@ -40,14 +40,24 @@ export function useBookInfo(
     let response: BookInfoInterface | undefined;
     try {
       response = await scrapper.bookInfo(info.url);
-      setData(response);
+
+      // Guardar en base de datos
+      console.time('Guardado en DB');
+      const idBookInfo = await BookInfoDatabase.saveBookInfo(response);
+      console.timeEnd('Guardado en DB');
+
+      // Recuperar lista de capitulos de la DB
+      const chapters = await BookChapterList.restoreChapterList(idBookInfo);
+
+      setData({ ...response, chapters });
     } catch (error) {
+      console.error(error);
       if (!cached) {
         setError(error as never);
       } else {
         refDialogs.current?.open({
           message:
-            error instanceof ApiError
+            error instanceof ApiError || error instanceof DatabaseError
               ? error.getMessage()
               : 'Ocurrió un error al obtener la información del libro',
           cancelButton: {
@@ -57,30 +67,6 @@ export function useBookInfo(
       }
     } finally {
       setLoading(false);
-      setRefresh(true);
-    }
-
-    // Guardar en base de datos
-    if (response) {
-      saveInLocalDatabase(response);
-    } else if (cached) {
-      setRefresh(false);
-    }
-  };
-
-  const saveInLocalDatabase = async (response: BookInfoInterface) => {
-    setRefresh(true);
-
-    try {
-      console.info('Guardando..');
-      await BookInfoDatabase.saveBookInfo(response);
-      console.info('Guardado!');
-    } catch (error) {
-      console.error(error);
-      if (error instanceof DatabaseError) {
-        toast.error(error.getMessage());
-      }
-    } finally {
       setRefresh(false);
     }
   };
