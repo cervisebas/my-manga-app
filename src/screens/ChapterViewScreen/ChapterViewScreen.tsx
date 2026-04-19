@@ -10,8 +10,15 @@ import { useLoadChapterImages } from './hooks/useLoadChapterImages';
 import { getInstanceById } from '@/api/utils/getInstanceById';
 import { useEffect, useRef } from 'react';
 import { toast } from 'sonner-native';
-import { ChapterViewVisualizer } from './components/ChapterViewVisualizer';
+import {
+  ChapterViewVisualizer,
+  ChapterViewVisualizerRef,
+} from './components/ChapterViewVisualizer';
 import { ChapterSheetOptions } from './classes/ChapterSheetOptions';
+import { useChapterHistory } from './hooks/useChapterHistory';
+import { useChapterPosition } from './hooks/useChapterPosition';
+import { MiniBanner } from '@/common/components/MiniBanner';
+import { usePreventBackNavigation } from '@/common/hooks/usePreventBackNavigation';
 
 type IProps = NativeBottomTabScreenProps<ParamListBase, 'chapter-view'>;
 
@@ -26,6 +33,13 @@ export interface ChapterViewScreenParams {
 export function ChapterViewScreen(props: IProps) {
   const params = props.route.params as ChapterViewScreenParams;
 
+  // Refs
+  const unmount = useRef(false);
+  const progressRef = useRef<string | number | undefined>(undefined);
+  const optionsRef = useRef<ChapterSheetOptions | undefined>(undefined);
+
+  const refChapterViewVisualizer = useRef<ChapterViewVisualizerRef>(null);
+
   // Hooks
   const theme = useTheme();
   const scrapper = getInstanceById(params.instance);
@@ -35,10 +49,17 @@ export function ChapterViewScreen(props: IProps) {
     params.bookInfo.path,
   );
 
-  // Refs
-  const unmount = useRef(false);
-  const progressRef = useRef<string | number | undefined>(undefined);
-  const optionsRef = useRef<ChapterSheetOptions | undefined>(undefined);
+  const {
+    restorePosition,
+    restoreLastPosition,
+    noRestoreLastPosition,
+    saveCurrentPosition,
+  } = useChapterPosition(
+    params.chapter,
+    params.option,
+    () => refChapterViewVisualizer.current?.getPosition(),
+    (pos) => refChapterViewVisualizer.current?.setPosition(pos),
+  );
 
   // Variables
   const title =
@@ -61,6 +82,8 @@ export function ChapterViewScreen(props: IProps) {
   };
 
   // Effects
+  useChapterHistory(params.chapter);
+
   useEffect(() => {
     if (!unmount.current) {
       progressRef.current = toast.loading(
@@ -87,6 +110,16 @@ export function ChapterViewScreen(props: IProps) {
     };
   }, []);
 
+  // Back Handler
+  usePreventBackNavigation(props.navigation as never, true, (removePrevent) => {
+    saveCurrentPosition();
+
+    setTimeout(() => {
+      removePrevent?.();
+      props.navigation.goBack();
+    }, 10);
+  });
+
   return (
     <View
       className={'flex-1'}
@@ -98,7 +131,28 @@ export function ChapterViewScreen(props: IProps) {
         <Appbar.Action icon={'cog-outline'} onPress={showOptions} />
       </AppbarHeader>
 
-      <ChapterViewVisualizer images={images} />
+      <MiniBanner
+        visible={restorePosition}
+        message={'¿Reestablecer ultima posición?'}
+        actions={[
+          {
+            label: 'No',
+            onPress() {
+              noRestoreLastPosition();
+            },
+          },
+          {
+            label: 'Si',
+            loading: loading,
+            mode: 'contained',
+            onPress() {
+              restoreLastPosition();
+            },
+          },
+        ]}
+      />
+
+      <ChapterViewVisualizer ref={refChapterViewVisualizer} images={images} />
     </View>
   );
 }

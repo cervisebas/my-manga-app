@@ -1,9 +1,11 @@
 CREATE TABLE `book-chapter-history` (
 	`id_chapter` integer NOT NULL,
-	`status` integer NOT NULL
+	`status` integer NOT NULL,
+	`updateAt` integer
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX `book-chapter-history_id_chapter_unique` ON `book-chapter-history` (`id_chapter`);--> statement-breakpoint
+CREATE UNIQUE INDEX `unique_chapter_history` ON `book-chapter-history` (`id_chapter`);--> statement-breakpoint
 CREATE TABLE `book-chapters` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`id_bookinfo` integer NOT NULL,
@@ -12,22 +14,26 @@ CREATE TABLE `book-chapters` (
 	`language` text,
 	`languages` text,
 	`availableSpanishLanguage` integer,
-	`availableSpanishLATAMLanguage` integer
+	`availableSpanishLATAMLanguage` integer,
+	`updateAt` integer
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX `unique_book_chapter` ON `book-chapters` (`id_bookinfo`,`chapter_number`);--> statement-breakpoint
 CREATE TABLE `book-chapters-options` (
+	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`id_chapter` integer NOT NULL,
 	`title` text,
 	`date` integer NOT NULL,
 	`url` text NOT NULL,
-	`language` text
+	`language` text,
+	`updateAt` integer
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX `unique_chapter_option` ON `book-chapters-options` (`id_chapter`,`url`);--> statement-breakpoint
 CREATE TABLE `book-gender-by-book-info` (
 	`id_bookinfo` integer NOT NULL,
-	`id_bookgender` integer NOT NULL
+	`id_bookgender` integer NOT NULL,
+	`updateAt` integer
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX `unique_book_gender` ON `book-gender-by-book-info` (`id_bookinfo`,`id_bookgender`);--> statement-breakpoint
@@ -35,9 +41,11 @@ CREATE TABLE `book-genders` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`url` text,
 	`name` text NOT NULL,
-	`value` text
+	`value` text,
+	`updateAt` integer
 );
 --> statement-breakpoint
+CREATE UNIQUE INDEX `unique_gender` ON `book-genders` (`url`);--> statement-breakpoint
 CREATE TABLE `books-info` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`provider` text NOT NULL,
@@ -53,14 +61,16 @@ CREATE TABLE `books-info` (
 	`status` text,
 	`description` text,
 	`descriptionLang` text,
-	`wallpaper` text
+	`wallpaper` text,
+	`updateAt` integer
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX `books-info_url_unique` ON `books-info` (`url`);--> statement-breakpoint
 CREATE TABLE `book-staff-by-book-info` (
 	`id_bookinfo` integer NOT NULL,
 	`id_bookstaff` integer NOT NULL,
-	`work_position` text NOT NULL
+	`work_position` text NOT NULL,
+	`updateAt` integer
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX `unique_all` ON `book-staff-by-book-info` (`id_bookinfo`,`id_bookstaff`,`work_position`);--> statement-breakpoint
@@ -69,31 +79,37 @@ CREATE TABLE `book-staff` (
 	`url` text NOT NULL,
 	`name` text NOT NULL,
 	`picture` text,
-	`search_name` text NOT NULL
+	`search_name` text NOT NULL,
+	`updateAt` integer
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX `book-staff_url_unique` ON `book-staff` (`url`);--> statement-breakpoint
 CREATE TABLE `book-user-chapter-book-history` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
-	`id_bookinfo` integer NOT NULL,
 	`id_chapter` integer NOT NULL,
 	`path_option` text NOT NULL,
-	`progress` numeric NOT NULL
+	`progressY` real NOT NULL,
+	`progressX` real NOT NULL,
+	`progressZ` real NOT NULL,
+	`updateAt` integer
 );
 --> statement-breakpoint
-CREATE UNIQUE INDEX `book-user-chapter-book-history_id_bookinfo_unique` ON `book-user-chapter-book-history` (`id_bookinfo`);--> statement-breakpoint
+CREATE UNIQUE INDEX `unique_user_chapter_book_history` ON `book-user-chapter-book-history` (`id_chapter`,`path_option`);--> statement-breakpoint
 CREATE TABLE `book-user-chapter-history-model` (
 	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
 	`id_bookinfo` integer NOT NULL,
 	`id_chapter` integer NOT NULL,
-	`date` integer NOT NULL
+	`date` integer NOT NULL,
+	`updateAt` integer
 );
 --> statement-breakpoint
+CREATE UNIQUE INDEX `unique_user_chapter_history` ON `book-user-chapter-history-model` (`id_chapter`,`id_bookinfo`);--> statement-breakpoint
 CREATE TABLE `book-user-status-by-book-info` (
 	`id_bookinfo` integer NOT NULL,
 	`status` text NOT NULL,
 	`value` text NOT NULL,
-	`marked` integer
+	`marked` integer,
+	`updateAt` integer
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX `unique_book_status` ON `book-user-status-by-book-info` (`id_bookinfo`,`status`);

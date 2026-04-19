@@ -2,7 +2,7 @@ import { ChapterInterface } from '@/api/shared/interfaces/ChapterInterface';
 import { ChapterViewedInterface } from '../interfaces/ChapterViewedInterface';
 import { db } from '../constants/database';
 import { BookChapterHistoryModel } from '../schemas/BookChapterHistoryModel';
-import { and, eq, inArray, not, sql } from 'drizzle-orm';
+import { eq, inArray } from 'drizzle-orm';
 import { ChapterOptionInterface } from '@/api/shared/interfaces/ChapterOptionInterface';
 import dayjs from 'dayjs';
 import { BookChapterModel } from '../schemas/BookChapterModel';
@@ -12,11 +12,7 @@ import { DatabaseHandleErrors } from '../decorators/DatabaseHandleErrors';
 export class BookChapterList {
   @DatabaseHandleErrors()
   public static async getViewedChapters(chapters: ChapterInterface[]) {
-    const chapterMap = new Map<number, ChapterInterface>();
-
-    chapters.forEach((chapter) => {
-      chapterMap.set(Number(chapter.id), chapter);
-    });
+    const historyMap = new Map<number, boolean>();
 
     const history = await db
       .select({
@@ -27,15 +23,19 @@ export class BookChapterList {
       .where(
         inArray(
           BookChapterHistoryModel.id_chapter,
-          Array.from(chapters.keys()),
+          chapters.map((chapter) => chapter.id!),
         ),
       );
 
-    return history.map<ChapterViewedInterface>((item) => {
-      return {
-        ...chapterMap.get(item.id_chapter)!,
-        viewed: item.status,
-      };
+    history.forEach((item) => {
+      historyMap.set(item.id_chapter, item.status);
+    });
+
+    console.info('getViewedChapters =>', history, chapters);
+    return chapters.map<ChapterViewedInterface>((chapter) => {
+      return Object.assign(chapter, {
+        viewed: historyMap.get(chapter.id!) ?? false,
+      });
     });
   }
 
@@ -81,74 +81,5 @@ export class BookChapterList {
         chap.availableSpanishLATAMLanguage ?? undefined,
       options: optionsByChapter[chap.id] || [],
     }));
-  }
-
-  @DatabaseHandleErrors()
-  public static async saveChapterList(
-    idBookInfo: number,
-    chapterList: ChapterInterface[],
-  ) {
-    const chapters = await db
-      .insert(BookChapterModel)
-      .values(
-        chapterList.map((chapter) => ({
-          id_bookinfo: idBookInfo,
-          title: chapter.title ?? null,
-          chapter_number: chapter.chapter_number,
-          language: chapter.language,
-          languages: chapter.languages,
-          availableSpanishLanguage: chapter.availableSpanishLanguage,
-          availableSpanishLATAMLanguage: chapter.availableSpanishLATAMLanguage,
-        })),
-      )
-      .onConflictDoUpdate({
-        target: [BookChapterModel.id_bookinfo, BookChapterModel.chapter_number],
-        set: {
-          title: sql`excluded.title`,
-          language: sql`excluded.language`,
-          languages: sql`excluded.languages`,
-          availableSpanishLanguage: sql`excluded.availableSpanishLanguage`,
-          availableSpanishLATAMLanguage: sql`excluded.availableSpanishLATAMLanguage`,
-        },
-      })
-      .returning({ idChapter: BookChapterModel.id });
-
-    const options = await db
-      .insert(BookChapterOptionModel)
-      .values(
-        chapters
-          .map((chapter, index) =>
-            chapterList![index].options.map((opt) => ({
-              id_chapter: chapter.idChapter,
-              title: opt.title,
-              date: dayjs(opt.date).toDate(),
-              url: opt.url,
-              language: opt.language,
-            })),
-          )
-          .flat(),
-      )
-      .onConflictDoUpdate({
-        target: [BookChapterOptionModel.id_chapter, BookChapterOptionModel.url],
-        set: {
-          language: sql`excluded.language`,
-        },
-      })
-      .returning({ idOption: BookChapterOptionModel.id });
-
-    await db.delete(BookChapterOptionModel).where(
-      and(
-        not(
-          inArray(
-            BookChapterOptionModel.id,
-            options.map((option) => option.idOption),
-          ),
-        ),
-        inArray(
-          BookChapterOptionModel.id_chapter,
-          chapters.map((chapter) => chapter.idChapter),
-        ),
-      ),
-    );
   }
 }

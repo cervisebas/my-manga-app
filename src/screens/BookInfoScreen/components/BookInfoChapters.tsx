@@ -9,6 +9,7 @@ import {
   CHAPTER_HEIGHT_WITHOUT_DESCRIPTION_ITEMS,
 } from '@/constants/ChapterItemOptions';
 import { refNavegation } from '@/constants/Refs';
+import { useViewedChapters } from '@/database/hooks/useViewedChapters';
 import { useNavigation } from '@react-navigation/native';
 import dayjs from 'dayjs';
 import React from 'react';
@@ -28,10 +29,13 @@ export function BookInfoChapters(props: IProps) {
 
   // Variables
   const now = dayjs();
-  const chapters = props.chapters?.slice(-MAX_ITEMS_SHOW).reverse() ?? [];
-  const chapterDiffDate = chapters.map((chapter) =>
+  const _chapters = props.chapters?.slice(-MAX_ITEMS_SHOW).reverse() ?? [];
+  const chapterDiffDate = _chapters.map((chapter) =>
     now.diff(chapter.options.at(0)?.date, 'days'),
   );
+
+  // Hooks
+  const { chapters } = useViewedChapters(_chapters);
 
   // Methods
   const goToChapterList = () => {
@@ -70,6 +74,7 @@ export function BookInfoChapters(props: IProps) {
             <ChapterItem
               title={chapter.title}
               diffDate={chapterDiffDate[index]}
+              userSeenIt={chapter.viewed}
               chapterNumber={chapter.chapter_number}
               availableSpanishLanguage={chapter.availableSpanishLanguage}
               availableSpanishLATAMLanguage={

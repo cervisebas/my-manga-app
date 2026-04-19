@@ -17,6 +17,8 @@ import { Appbar, useTheme } from 'react-native-paper';
 import { BookChapterListSearchBar } from './components/BookChapterListSearchBar';
 import useSearchArray from '@/common/hooks/useSearchArray';
 import { getInstanceById } from '@/api/utils/getInstanceById';
+import { useViewedChapters } from '@/database/hooks/useViewedChapters';
+import { ChapterViewedInterface } from '@/database/interfaces/ChapterViewedInterface';
 
 type IProps = NativeStackScreenProps<ParamListBase, 'book-chapter-list'>;
 
@@ -35,7 +37,8 @@ export function BookChapterListScreen(props: IProps) {
 
   // Variables
   const now = useMemo(() => dayjs(), []);
-  const _chapters = params.bookInfo.chapters ?? [];
+  const __chapters = params.bookInfo.chapters ?? [];
+  const { chapters: _chapters } = useViewedChapters(__chapters);
 
   // Search
   const { resultData: resultChapters, setSearch } = useSearchArray(_chapters, [
@@ -69,11 +72,12 @@ export function BookChapterListScreen(props: IProps) {
   const renderItems = ({
     item: chapter,
     index,
-  }: ListRenderItemInfo<ChapterInterface>) => (
+  }: ListRenderItemInfo<ChapterViewedInterface>) => (
     <ChapterItem
       key={`chapter-item-list-${chapter.chapter_number}`}
       title={chapter.title}
       diffDate={chapterDiffDate[index]}
+      userSeenIt={chapter.viewed}
       chapterNumber={chapter.chapter_number}
       availableSpanishLanguage={chapter.availableSpanishLanguage}
       availableSpanishLATAMLanguage={chapter.availableSpanishLATAMLanguage}

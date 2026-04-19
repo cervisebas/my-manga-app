@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "52b04b8c-2eae-47d5-a220-caa2fcecde87",
+  "id": "7b1ab580-e1f6-45e5-b656-710469ce55e6",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "book-chapter-history": {
@@ -20,11 +20,25 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
+        },
+        "updateAt": {
+          "name": "updateAt",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
         }
       },
       "indexes": {
         "book-chapter-history_id_chapter_unique": {
           "name": "book-chapter-history_id_chapter_unique",
+          "columns": [
+            "id_chapter"
+          ],
+          "isUnique": true
+        },
+        "unique_chapter_history": {
+          "name": "unique_chapter_history",
           "columns": [
             "id_chapter"
           ],
@@ -95,6 +109,13 @@
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
+        },
+        "updateAt": {
+          "name": "updateAt",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
         }
       },
       "indexes": {
@@ -115,6 +136,13 @@
     "book-chapters-options": {
       "name": "book-chapters-options",
       "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
         "id_chapter": {
           "name": "id_chapter",
           "type": "integer",
@@ -146,6 +174,13 @@
         "language": {
           "name": "language",
           "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "updateAt": {
+          "name": "updateAt",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
@@ -181,6 +216,13 @@
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
+          "autoincrement": false
+        },
+        "updateAt": {
+          "name": "updateAt",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
           "autoincrement": false
         }
       },
@@ -229,9 +271,24 @@
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
+        },
+        "updateAt": {
+          "name": "updateAt",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "unique_gender": {
+          "name": "unique_gender",
+          "columns": [
+            "url"
+          ],
+          "isUnique": true
+        }
+      },
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
@@ -344,6 +401,13 @@
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
+        },
+        "updateAt": {
+          "name": "updateAt",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
         }
       },
       "indexes": {
@@ -382,6 +446,13 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true,
+          "autoincrement": false
+        },
+        "updateAt": {
+          "name": "updateAt",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
           "autoincrement": false
         }
       },
@@ -438,6 +509,13 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
+        },
+        "updateAt": {
+          "name": "updateAt",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
         }
       },
       "indexes": {
@@ -464,13 +542,6 @@
           "notNull": true,
           "autoincrement": true
         },
-        "id_bookinfo": {
-          "name": "id_bookinfo",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
         "id_chapter": {
           "name": "id_chapter",
           "type": "integer",
@@ -485,19 +556,41 @@
           "notNull": true,
           "autoincrement": false
         },
-        "progress": {
-          "name": "progress",
-          "type": "numeric",
+        "progressY": {
+          "name": "progressY",
+          "type": "real",
           "primaryKey": false,
           "notNull": true,
+          "autoincrement": false
+        },
+        "progressX": {
+          "name": "progressX",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "progressZ": {
+          "name": "progressZ",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "updateAt": {
+          "name": "updateAt",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
           "autoincrement": false
         }
       },
       "indexes": {
-        "book-user-chapter-book-history_id_bookinfo_unique": {
-          "name": "book-user-chapter-book-history_id_bookinfo_unique",
+        "unique_user_chapter_book_history": {
+          "name": "unique_user_chapter_book_history",
           "columns": [
-            "id_bookinfo"
+            "id_chapter",
+            "path_option"
           ],
           "isUnique": true
         }
@@ -537,9 +630,25 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
+        },
+        "updateAt": {
+          "name": "updateAt",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
         }
       },
-      "indexes": {},
+      "indexes": {
+        "unique_user_chapter_history": {
+          "name": "unique_user_chapter_history",
+          "columns": [
+            "id_chapter",
+            "id_bookinfo"
+          ],
+          "isUnique": true
+        }
+      },
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
@@ -571,6 +680,13 @@
         },
         "marked": {
           "name": "marked",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "updateAt": {
+          "name": "updateAt",
           "type": "integer",
           "primaryKey": false,
           "notNull": false,

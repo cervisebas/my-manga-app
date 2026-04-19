@@ -84,7 +84,11 @@ export function ChapterItem(props: IProps) {
         <List.Icon
           {...rProps}
           icon={props.userSeenIt ? CHAPTER_SHOW_ICON : CHAPTER_UNSHOW_ICON}
-          color={theme.colors.onSurfaceDisabled}
+          color={
+            props.userSeenIt
+              ? theme.colors.primary
+              : theme.colors.onSurfaceDisabled
+          }
         />
       )}
       // ########################################

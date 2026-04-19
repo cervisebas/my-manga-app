@@ -1,4 +1,4 @@
-import { integer, sqliteTable } from 'drizzle-orm/sqlite-core';
+import { integer, sqliteTable, unique } from 'drizzle-orm/sqlite-core';
 import { DatabaseTableName } from '../enums/DatabaseTableName';
 
 export const BookUserChapterHistoryModel = sqliteTable(
@@ -10,4 +10,10 @@ export const BookUserChapterHistoryModel = sqliteTable(
     date: integer({ mode: 'timestamp' }).notNull(),
     updateAt: integer({ mode: 'timestamp' }).$onUpdate(() => new Date()),
   },
+  (table) => [
+    unique('unique_user_chapter_history').on(
+      table.id_chapter,
+      table.id_bookinfo,
+    ),
+  ],
 );

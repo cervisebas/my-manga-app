@@ -24,7 +24,7 @@ export function useBookInfo(
     // Consulta en local
     try {
       const saved = await BookInfoDatabase.getBookInfo(info.url);
-      console.info('Found in DB:', saved);
+      console.info('Found in DB:', saved.id);
 
       cached = true;
       setData(saved);
@@ -37,9 +37,8 @@ export function useBookInfo(
     console.info('Cached:', cached);
 
     // Consulta a API
-    let response: BookInfoInterface | undefined;
     try {
-      response = await scrapper.bookInfo(info.url);
+      const response = await scrapper.bookInfo(info.url);
 
       // Guardar en base de datos
       console.time('Guardado en DB');
@@ -49,7 +48,8 @@ export function useBookInfo(
       // Recuperar lista de capitulos de la DB
       const chapters = await BookChapterList.restoreChapterList(idBookInfo);
 
-      setData({ ...response, chapters });
+      Object.assign(response, { chapters });
+      setData(response);
     } catch (error) {
       console.error(error);
       if (!cached) {
