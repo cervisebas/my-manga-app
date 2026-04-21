@@ -3,8 +3,6 @@ import React from 'react';
 import {
   ViewProps,
   View as ViewNative,
-  FlatListProps,
-  FlatList as FlatListNative,
   StyleProp,
   ViewStyle,
   ScrollViewProps,
@@ -17,6 +15,10 @@ import {
   FABProps,
 } from 'react-native-paper';
 import { FAB as NativeFAB } from './FAB';
+import {
+  FlashListProps,
+  FlashList as FlashListNative,
+} from '@shopify/flash-list';
 
 type ExpandType = 'margin' | 'padding';
 type ExpandDisable = {
@@ -128,10 +130,17 @@ namespace SafeArea {
       },
     },
   );
-  export const FlatList = createComponent<FlatListProps<any>>(
+
+  /* export const FlatList = createComponent<FlatListProps<any>>(
     FlatListNative,
     'contentContainerStyle',
+  ); */
+
+  export const FlashList = createComponent<FlashListProps<any>>(
+    FlashListNative,
+    'contentContainerStyle',
   );
+
   export const FAB = createComponent<FABProps>(
     NativeFAB,
     undefined,

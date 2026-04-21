@@ -7,8 +7,9 @@ import SafeArea from '@/common/components/SafeArea';
 import { USafeAreaFAB } from '@/common/components/UniwindElements';
 import { useScrollEvent } from '@/common/hooks/useScrollEvent';
 import { goToBookInfo } from '@/utils/goToBookInfo';
+import { ListRenderItemInfo } from '@shopify/flash-list';
 import { useEffect, useRef, useState } from 'react';
-import { ListRenderItemInfo, View } from 'react-native';
+import { View } from 'react-native';
 
 interface IProps {
   searchValue: string;
@@ -124,7 +125,7 @@ export function LibraryScrapperTab(props: IProps) {
   return (
     <View className={'relative flex-1'}>
       <LoadingErrorContent loading={loading} error={error} onRetry={searchNow}>
-        <SafeArea.FlatList
+        <SafeArea.FlashList
           data={data}
           numColumns={2}
           keyExtractor={_keyExtractor}

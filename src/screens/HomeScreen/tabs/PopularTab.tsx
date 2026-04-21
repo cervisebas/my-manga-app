@@ -5,8 +5,8 @@ import { BookItem } from '@/common/components/BookItem';
 import { LoadingErrorContent } from '@/common/components/LoadingErrorContent';
 import SafeArea from '@/common/components/SafeArea';
 import { goToBookInfo } from '@/utils/goToBookInfo';
+import { ListRenderItemInfo } from '@shopify/flash-list';
 import { useEffect, useState } from 'react';
-import { ListRenderItemInfo } from 'react-native';
 
 interface IProps {
   instance: IScrappingService;
@@ -58,7 +58,7 @@ export function PopularTab(props: IProps) {
 
   return (
     <LoadingErrorContent loading={loading} error={error}>
-      <SafeArea.FlatList
+      <SafeArea.FlashList
         data={data}
         numColumns={2}
         keyExtractor={_keyExtractor}

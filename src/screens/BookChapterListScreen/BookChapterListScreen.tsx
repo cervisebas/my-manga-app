@@ -12,13 +12,15 @@ import { ParamListBase } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import dayjs from 'dayjs';
 import { useMemo, useState } from 'react';
-import { ListRenderItemInfo, View } from 'react-native';
+import { View } from 'react-native';
 import { Appbar, useTheme } from 'react-native-paper';
 import { BookChapterListSearchBar } from './components/BookChapterListSearchBar';
 import useSearchArray from '@/common/hooks/useSearchArray';
 import { getInstanceById } from '@/api/utils/getInstanceById';
 import { useViewedChapters } from '@/database/hooks/useViewedChapters';
 import { ChapterViewedInterface } from '@/database/interfaces/ChapterViewedInterface';
+import { ListRenderItemInfo } from '@shopify/flash-list';
+import { OverrideItemLayout } from '@/common/types/OverrideItemLayout';
 
 type IProps = NativeStackScreenProps<ParamListBase, 'book-chapter-list'>;
 
@@ -89,12 +91,13 @@ export function BookChapterListScreen(props: IProps) {
     return `chapter-item-list-${chapter.chapter_number}`;
   };
 
-  const getItemLayout = (data: ChapterInterface, index: number) => {
+  const overrideItemLayout = ((layout, data: ChapterInterface) => {
     const ITEM_HEIGHT = data.title
       ? CHAPTER_HEIGHT_WITHOUT_DESCRIPTION_ITEMS
       : CHAPTER_HEIGHT_ITEMS;
-    return { length: ITEM_HEIGHT, offset: ITEM_HEIGHT * index, index };
-  };
+
+    layout.span = ITEM_HEIGHT;
+  }) as OverrideItemLayout;
 
   const ItemSeparatorComponent = () => <UDivider className={'mx-3'} />;
 
@@ -110,10 +113,11 @@ export function BookChapterListScreen(props: IProps) {
 
       <BookChapterListSearchBar onSearch={setSearch} />
 
-      <SafeArea.FlatList
+      <SafeArea.FlashList
         data={chapters}
         keyExtractor={keyExtractor}
-        getItemLayout={getItemLayout as never}
+        // getItemLayout={getItemLayout as never}
+        overrideItemLayout={overrideItemLayout}
         renderItem={renderItems}
         expandDisableTop={true}
         ItemSeparatorComponent={ItemSeparatorComponent}
