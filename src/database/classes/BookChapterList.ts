@@ -9,15 +9,20 @@ import { BookChapterModel } from '../schemas/BookChapterModel';
 import { BookChapterOptionModel } from '../schemas/BookChapterOptionModel';
 import { DatabaseHandleErrors } from '../decorators/DatabaseHandleErrors';
 
+interface HistoryItem {
+  status: boolean;
+  date: Date | null;
+}
 export class BookChapterList {
   @DatabaseHandleErrors()
   public static async getViewedChapters(chapters: ChapterInterface[]) {
-    const historyMap = new Map<number, boolean>();
+    const historyMap = new Map<number, HistoryItem>();
 
     const history = await db
       .select({
         id_chapter: BookChapterHistoryModel.id_chapter,
         status: BookChapterHistoryModel.status,
+        date: BookChapterHistoryModel.updateAt,
       })
       .from(BookChapterHistoryModel)
       .where(
@@ -28,13 +33,19 @@ export class BookChapterList {
       );
 
     history.forEach((item) => {
-      historyMap.set(item.id_chapter, item.status);
+      historyMap.set(item.id_chapter, {
+        status: item.status,
+        date: item.date,
+      });
     });
 
     console.info('getViewedChapters =>', history, chapters);
     return chapters.map<ChapterViewedInterface>((chapter) => {
+      const historyItem = historyMap.get(chapter.id!);
+
       return Object.assign(chapter, {
-        viewed: historyMap.get(chapter.id!) ?? false,
+        viewed: historyItem?.status ?? false,
+        viewedAt: historyItem?.date === undefined ? null : historyItem.date,
       });
     });
   }

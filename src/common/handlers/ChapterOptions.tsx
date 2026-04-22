@@ -10,10 +10,12 @@ import { UImage } from '../components/UniwindElements';
 import { NavigationProp } from '@react-navigation/native';
 import { goToChapterView } from '@/utils/goToChapterView';
 import { IScrappingService } from '@/api/interfaces/IScrappingService';
+import { ChapterViewedInterface } from '@/database/interfaces/ChapterViewedInterface';
+import { BookChapterHistory } from '@/database/classes/BookChapterHistory';
 
 export class ChapterOptions {
   private bookInfo: BookInfoInterface;
-  private chapter: ChapterInterface;
+  private chapter: ChapterInterface | ChapterViewedInterface;
 
   private options: BottomSheetOptionsInterface[];
   private information: BottomSheetOptionsInterface[];
@@ -126,6 +128,29 @@ export class ChapterOptions {
         leftIcon: 'web',
         description: spanish || spanishLatam ? `Sí (${langShow})` : 'No',
       });
+    }
+
+    if ('viewed' in this.chapter) {
+      if (this.chapter.viewed) {
+        this.information.push({
+          label: 'Marcar como no visto',
+          leftIcon: 'eye-off-outline',
+          description: dayjs(this.chapter.viewedAt).format(
+            'DD/MM/YYYY [-] HH:mm A',
+          ),
+          onPress: () => {
+            BookChapterHistory.setChapterStatus(this.chapter.id!, false);
+          },
+        });
+      } else {
+        this.information.push({
+          label: 'Marcar como visto',
+          leftIcon: 'eye-outline',
+          onPress: () => {
+            BookChapterHistory.setChapterStatus(this.chapter.id!, true);
+          },
+        });
+      }
     }
   }
 
