@@ -24,6 +24,7 @@ export interface BottomSheetOptionsInterface {
   rightIconColor?: string;
   disabled?: boolean;
   selected?: boolean;
+  clossable?: boolean;
   right?: ListItemProps['right'];
   onPress?(): void;
 }
@@ -86,7 +87,9 @@ export const BottomSheetOptions = forwardRef(function (
             onPress={
               value.onPress
                 ? () => {
-                    refBottomSheet.current?.hide();
+                    if (value.clossable ?? true) {
+                      refBottomSheet.current?.hide();
+                    }
                     value.onPress?.();
                   }
                 : undefined

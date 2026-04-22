@@ -5,6 +5,7 @@ import { ChapterInterface } from '@/api/shared/interfaces/ChapterInterface';
 import { ChapterOptionInterface } from '@/api/shared/interfaces/ChapterOptionInterface';
 import { refDialogLoading, refDialogs, refNavegation } from '@/constants/Refs';
 import { ChapterViewScreenParams } from '@/screens/ChapterViewScreen/ChapterViewScreen';
+import { StackActions } from '@react-navigation/native';
 
 export async function goToChapterView(
   instance: IScrappingService,
@@ -22,13 +23,17 @@ export async function goToChapterView(
       refNavegation.current?.goBack();
     }
 
-    refNavegation.current?.navigate('chapter-view', {
-      bookInfo: bookInfo,
-      chapter: chapter,
-      option: option,
-      images: images,
-      instance: instance.getIdName(),
-    } as ChapterViewScreenParams);
+    setTimeout(() => {
+      refNavegation.current?.dispatch(
+        StackActions.push('chapter-view', {
+          bookInfo: bookInfo,
+          chapter: chapter,
+          option: option,
+          images: images,
+          instance: instance.getIdName(),
+        } as ChapterViewScreenParams),
+      );
+    }, 300);
   } catch (error) {
     console.error(error);
     refDialogs.current?.open({

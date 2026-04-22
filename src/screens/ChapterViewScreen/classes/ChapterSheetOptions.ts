@@ -8,8 +8,6 @@ import { ChapterOptions } from '@/common/handlers/ChapterOptions';
 import { refBottomSheetOptions } from '@/constants/Refs';
 import { NavigationProp } from '@react-navigation/native';
 
-const TIMEOUT_ACTIONS = 400;
-
 export class ChapterSheetOptions {
   private bookInfo: BookInfoInterface;
   private chapter: ChapterInterface;
@@ -78,18 +76,17 @@ export class ChapterSheetOptions {
         label: 'Cambiar opción',
         leftIcon: 'list-box-outline',
         description: this.chapter.options.length + ' opciónes disponibles',
+        clossable: false,
         onPress: () => {
-          setTimeout(() => {
-            const chapterOptions = new ChapterOptions(
-              this.bookInfo,
-              this.chapter,
-              this.instance,
-              this.navigation,
-              true,
-            );
+          const chapterOptions = new ChapterOptions(
+            this.bookInfo,
+            this.chapter,
+            this.instance,
+            this.navigation,
+            true,
+          );
 
-            chapterOptions.show();
-          }, TIMEOUT_ACTIONS);
+          chapterOptions.show();
         },
       });
     }
@@ -109,18 +106,17 @@ export class ChapterSheetOptions {
           'Capítulo ' +
           chapter.chapter_number +
           (chapter.title ? ' - ' + chapter.title : ''),
+        clossable: false,
         onPress: () => {
-          setTimeout(() => {
-            const chapterOptions = new ChapterOptions(
-              this.bookInfo,
-              chapter,
-              this.instance,
-              this.navigation,
-              true,
-            );
+          const chapterOptions = new ChapterOptions(
+            this.bookInfo,
+            chapter,
+            this.instance,
+            this.navigation,
+            true,
+          );
 
-            chapterOptions.show();
-          }, TIMEOUT_ACTIONS);
+          chapterOptions.show();
         },
       });
     }
@@ -135,18 +131,17 @@ export class ChapterSheetOptions {
           'Capítulo ' +
           chapter.chapter_number +
           (chapter.title ? ' - ' + chapter.title : ''),
+        clossable: false,
         onPress: () => {
-          setTimeout(() => {
-            const chapterOptions = new ChapterOptions(
-              this.bookInfo,
-              chapter,
-              this.instance,
-              this.navigation,
-              true,
-            );
+          const chapterOptions = new ChapterOptions(
+            this.bookInfo,
+            chapter,
+            this.instance,
+            this.navigation,
+            true,
+          );
 
-            chapterOptions.show();
-          }, TIMEOUT_ACTIONS);
+          chapterOptions.show();
         },
       });
     }
