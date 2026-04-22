@@ -86,11 +86,6 @@ export class ChapterOptions {
           leftIcon: 'text',
           description: this.chapter.title ?? 'Sin nombre',
         },
-        {
-          label: 'Nombre del libro',
-          leftIcon: 'book-outline',
-          description: this.bookInfo.title,
-        },
       ],
     );
 
