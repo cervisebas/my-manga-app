@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from 'react';
 import { BookChapterHistory } from '@/database/classes/BookChapterHistory';
 import { ChapterInterface } from '@/api/shared/interfaces/ChapterInterface';
 import { useInterval } from '@/common/hooks/useInterval';
+import { useAppState } from '@/common/hooks/useAppState';
+import { AppStateStatusType } from '@/common/enums/AppStateStatus';
 
 export function useChapterPosition(
   chapter: ChapterInterface,
@@ -13,8 +15,13 @@ export function useChapterPosition(
 ) {
   const [restorePosition, setRestorePosition] = useState(false);
   const lastPosition = useRef<ChapterPosition | undefined>(undefined);
+  const pauseAutoSave = useRef(false);
 
   const saveCurrentPosition = () => {
+    if (pauseAutoSave.current) {
+      return;
+    }
+
     const position = getPosition();
 
     if (position) {
@@ -78,6 +85,13 @@ export function useChapterPosition(
   useEffect(() => {
     checkLastPosition();
   }, []);
+
+  useAppState(
+    (state) => {
+      pauseAutoSave.current = state === AppStateStatusType.BACKGROUND;
+    },
+    [AppStateStatusType.ACTIVE, AppStateStatusType.BACKGROUND],
+  );
 
   return {
     restorePosition,
