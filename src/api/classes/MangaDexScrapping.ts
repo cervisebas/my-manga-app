@@ -882,6 +882,7 @@ export class MangaDexScrapping implements IScrappingService {
         }
 
         alreadyExist.options.push(option);
+        alreadyExist.languages?.push(option.language);
         alreadyExist.availableSpanishLanguage = alreadyExist.options.some(
           (option) => option.language === Language.ES,
         );
@@ -895,6 +896,8 @@ export class MangaDexScrapping implements IScrappingService {
         title: item.attributes.title,
         chapter_number: Number(item.attributes.chapter),
         options: [option],
+        language: this.getLanguageEnum(item.attributes.translatedLanguage),
+        languages: [option.language],
         availableSpanishLanguage: option.language === Language.ES,
         availableSpanishLATAMLanguage: option.language === Language.MX,
       });

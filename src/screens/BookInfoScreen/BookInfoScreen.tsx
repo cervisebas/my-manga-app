@@ -20,10 +20,13 @@ import { BookStatusTranslate } from '@/api/shared/translate/BookStatusTranslate'
 import { BookInfoDescription } from './components/BookInfoDescription';
 import { BookInfoLanguages } from './components/BookInfoLanguages';
 import { BookInfoChapters } from './components/BookInfoChapters';
+import { Language } from '@/api/shared/enums/Language';
+import { BookInfoTranslateProgress } from './components/BookInfoTranslateProgress';
 
 type IProps = NativeStackScreenProps<ParamListBase, 'book-info'>;
 
 const COVER_HEIGHT = 240;
+const PREFFER_LANGUAGE = [Language.ES, Language.MX];
 
 export function BookInfoScreen(props: IProps) {
   const params = props.route.params as BookInfoParams;
@@ -168,6 +171,13 @@ export function BookInfoScreen(props: IProps) {
               </View>
             </View>
 
+            <Divider />
+
+            {/* Lenguaje */}
+            <BookInfoTranslateProgress
+              chapters={data.chapters ?? []}
+              languages={PREFFER_LANGUAGE}
+            />
             <Divider />
 
             {/* Lenguaje */}

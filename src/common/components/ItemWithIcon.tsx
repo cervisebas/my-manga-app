@@ -21,6 +21,7 @@ interface IProps {
   style?: StyleProp<ViewStyle>;
   descriptionStyle?: StyleProp<TextStyle>;
   descriptionNumberOfLines?: number;
+  left?: ListItemProps['left'];
   right?: ListItemProps['right'];
   onPress?: () => void;
 }
@@ -32,7 +33,8 @@ export function ItemWithIcon(props: IProps) {
       descriptionStyle={props.descriptionStyle}
       descriptionNumberOfLines={props.descriptionNumberOfLines}
       left={
-        props.leftIcon
+        props.left ??
+        (props.leftIcon
           ? (p) => (
               <List.Icon
                 {...p}
@@ -46,7 +48,7 @@ export function ItemWithIcon(props: IProps) {
                 ]}
               />
             )
-          : undefined
+          : undefined)
       }
       right={
         props.right ??
