@@ -1,9 +1,12 @@
+import { useSafeArea } from '@/common/hooks/useSafeArea';
+import { LayoutRectangle } from 'react-native';
 import { Gesture } from 'react-native-gesture-handler';
 import {
   SharedValue,
   useSharedValue,
   withDecay,
   withSpring,
+  withTiming,
 } from 'react-native-reanimated';
 
 interface Props {
@@ -11,7 +14,7 @@ interface Props {
   translateX: SharedValue<number>;
   translateY: SharedValue<number>;
   widthWindow: number;
-  containerLayoutHeight: number;
+  containerLayout: LayoutRectangle;
   totalHeight: number;
 }
 
@@ -20,9 +23,11 @@ export function useChapterGestures({
   translateX,
   translateY,
   widthWindow,
-  containerLayoutHeight,
+  containerLayout,
   totalHeight,
 }: Props) {
+  const { top: topSafeArea } = useSafeArea();
+
   const savedScale = useSharedValue(1);
   const offsetX = useSharedValue(0);
   const offsetY = useSharedValue(0);
@@ -36,32 +41,11 @@ export function useChapterGestures({
       let newScale = savedScale.value * e.scale;
       newScale = Math.max(1, Math.min(newScale, 5));
 
-      // Focal point en coordenadas del mundo (antes de aplicar nueva escala)
-      const worldX = (e.focalX - translateX.value) / scale.value;
-      const worldY = (e.focalY - translateY.value) / scale.value;
-
       scale.value = newScale;
-
-      // Mantener el punto focal debajo de los dedos calculando primero la translación deseada
-      const nextX = e.focalX - worldX * newScale;
-      const nextY = e.focalY - worldY * newScale;
-
-      // Limitar que el zoom no saque la imagen completamente del contenedor
-      const scaledWidth = widthWindow * newScale;
-      const scaledTotalHeight = totalHeight * newScale;
-
-      const maxTransX = Math.min(0, widthWindow - scaledWidth);
-      const maxTransY = Math.min(0, containerLayoutHeight - scaledTotalHeight);
-
-      // Clamp inmediato durante el pinch
-      translateX.value = Math.max(maxTransX, Math.min(0, nextX));
-      translateY.value = Math.max(maxTransY, Math.min(0, nextY));
     })
     .onEnd(() => {
       if (scale.value < 1) {
         scale.value = withSpring(1);
-        translateX.value = withSpring(0);
-        translateY.value = withSpring(0);
       }
     });
 
@@ -78,7 +62,7 @@ export function useChapterGestures({
 
       // Límites correctos (el contenido nunca puede quedar con espacio en blanco innecesario)
       const maxTransX = Math.min(0, widthWindow - scaledWidth);
-      const maxTransY = Math.min(0, containerLayoutHeight - scaledTotalHeight);
+      const maxTransY = Math.min(0, containerLayout.height - scaledTotalHeight);
 
       const nextX = offsetX.value + e.translationX;
       const nextY = offsetY.value + e.translationY;
@@ -89,28 +73,81 @@ export function useChapterGestures({
     })
     .onEnd((e) => {
       // Mantenemos los límites en el onEnd para que la inercia (decay) también los respete
-      const MaxScrollHorizontal = Math.min(
+      const MaxScrollX = Math.min(0, widthWindow - widthWindow * scale.value);
+      const MaxScrollY = Math.min(
         0,
-        widthWindow - widthWindow * scale.value,
-      );
-      const MaxVerticalScroll = Math.min(
-        0,
-        containerLayoutHeight - totalHeight * scale.value,
+        containerLayout.height - totalHeight * scale.value,
       );
 
       translateX.value = withDecay({
         velocity: e.velocityX,
-        clamp: [MaxScrollHorizontal, 0],
+        clamp: [MaxScrollX, 0],
         rubberBandEffect: false,
       });
       translateY.value = withDecay({
         velocity: e.velocityY,
-        clamp: [MaxVerticalScroll, 0],
+        clamp: [MaxScrollY, 0],
         rubberBandEffect: false,
       });
     });
 
-  const composed = Gesture.Simultaneous(pinch, pan);
+  const doubleTap = Gesture.Tap()
+    .numberOfTaps(2)
+    .maxDelay(250)
+    .onStart((e) => {
+      const fitScale = 1;
+      const zoomScale = 2;
+
+      const targetScale = scale.value > fitScale ? fitScale : zoomScale;
+
+      const tapX = e.absoluteX - containerLayout.width / 4;
+      const tapY =
+        e.absoluteY -
+        containerLayout.y -
+        topSafeArea -
+        containerLayout.height / 4;
+
+      const tX =
+        targetScale === fitScale
+          ? translateX.value * scale.value
+          : translateX.value / zoomScale;
+      const tY =
+        targetScale === fitScale
+          ? translateY.value * scale.value
+          : translateY.value / zoomScale;
+
+      const worldX = (tapX - tX) / scale.value;
+      const worldY = (tapY - tY) / scale.value;
+
+      let nextX: number;
+      let nextY: number;
+
+      if (targetScale === fitScale) {
+        nextX = 0;
+        nextY = tapY - worldY * targetScale;
+      } else {
+        nextX = tapX - worldX * targetScale;
+        nextY = tapY - worldY * targetScale;
+      }
+
+      const scaledWidth = widthWindow * targetScale;
+      const scaledHeight = totalHeight * targetScale;
+
+      const maxTransX = Math.min(0, widthWindow - scaledWidth);
+      const maxTransY = Math.min(0, containerLayout.height - scaledHeight);
+
+      scale.value = withTiming(targetScale, { duration: 220 });
+
+      translateX.value = withTiming(Math.max(maxTransX, Math.min(0, nextX)), {
+        duration: 220,
+      });
+
+      translateY.value = withTiming(Math.max(maxTransY, Math.min(0, nextY)), {
+        duration: 220,
+      });
+    });
+
+  const composed = Gesture.Simultaneous(pinch, doubleTap, pan);
 
   return { gesture: composed };
 }
