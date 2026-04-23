@@ -93,7 +93,9 @@ export function useChapterGestures({
 
   const doubleTap = Gesture.Tap()
     .numberOfTaps(2)
-    .maxDelay(250)
+    .maxDelay(200)
+    .maxDuration(200)
+    .maxDistance(20)
     .onStart((e) => {
       const fitScale = 1;
       const zoomScale = 2;
