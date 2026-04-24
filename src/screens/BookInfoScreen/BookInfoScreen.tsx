@@ -174,16 +174,25 @@ export function BookInfoScreen(props: IProps) {
             <Divider />
 
             {/* Lenguaje */}
-            <BookInfoTranslateProgress
-              chapters={data.chapters ?? []}
-              languages={PREFFER_LANGUAGE}
-            />
-            <Divider />
+            {data.languages && (
+              <React.Fragment>
+                <BookInfoTranslateProgress
+                  chapters={data.chapters ?? []}
+                  languages={PREFFER_LANGUAGE}
+                />
+
+                <Divider />
+              </React.Fragment>
+            )}
 
             {/* Lenguaje */}
-            <BookInfoLanguages languages={data.languages} />
+            {data.languages && (
+              <React.Fragment>
+                <BookInfoLanguages languages={data.languages} />
 
-            <Divider />
+                <Divider />
+              </React.Fragment>
+            )}
 
             {/* Capitulos */}
             <BookInfoChapters
