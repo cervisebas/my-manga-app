@@ -45,7 +45,6 @@ export class ChapterOptions {
 
     this.activeChapterView = activeChapterView ?? false;
     this.hideViewedOption = hideViewedOption ?? false;
-    console.log('hideViewedOption:', this.hideViewedOption, hideViewedOption);
 
     this.makeOptions();
     this.makeInformation();

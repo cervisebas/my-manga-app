@@ -46,7 +46,6 @@ export function BookInfoTranslateProgress(props: IProps) {
       />
     );
 
-  console.log(languageProgress, props.chapters.length);
   return (
     <View className={'gap-[8] flex-col'}>
       <Text variant={'titleLarge'}>Progreso de traducción</Text>

@@ -20,10 +20,6 @@ export function useViewedChapters(chapterList: ChapterInterface[]) {
   useTableChanges(
     DatabaseTableName.BOOK_CHAPTER_HISTORY,
     () => {
-      console.log(
-        'Detect Table Change => ',
-        DatabaseTableName.BOOK_CHAPTER_HISTORY,
-      );
       loadViewedChapters();
     },
     [chapterList],
