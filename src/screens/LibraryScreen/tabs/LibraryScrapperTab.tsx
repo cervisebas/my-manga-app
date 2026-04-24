@@ -10,6 +10,7 @@ import { goToBookInfo } from '@/utils/goToBookInfo';
 import { ListRenderItemInfo } from '@shopify/flash-list';
 import { useEffect, useRef, useState } from 'react';
 import { View } from 'react-native';
+import { Icon, Text } from 'react-native-paper';
 
 interface IProps {
   searchValue: string;
@@ -125,17 +126,27 @@ export function LibraryScrapperTab(props: IProps) {
   return (
     <View className={'relative flex-1'}>
       <LoadingErrorContent loading={loading} error={error} onRetry={searchNow}>
-        <SafeArea.FlashList
-          data={data}
-          numColumns={2}
-          keyExtractor={_keyExtractor}
-          renderItem={_renderItem}
-          expandDisableTop
-          expandArea={{
-            top: 16,
-          }}
-          onScroll={onScroll}
-        />
+        {!data.length ? (
+          <View
+            className={'flex-1 flex-col items-center justify-center gap-[12]'}
+          >
+            <Icon source={'book-search-outline'} size={64} />
+
+            <Text>No se encontraron resultados</Text>
+          </View>
+        ) : (
+          <SafeArea.FlashList
+            data={data}
+            numColumns={2}
+            keyExtractor={_keyExtractor}
+            renderItem={_renderItem}
+            expandDisableTop
+            expandArea={{
+              top: 16,
+            }}
+            onScroll={onScroll}
+          />
+        )}
       </LoadingErrorContent>
 
       <USafeAreaFAB
