@@ -8,11 +8,14 @@ import {
   LinkPressEvent,
 } from 'react-native-enriched-markdown';
 import { refDialogs } from '@/constants/Refs';
+import { truncateByChars } from '@/common/utils/truncateByChars';
 
 interface IProps {
   description?: string;
   descriptionLang?: Language;
 }
+
+const MAX_CHARS = 200;
 
 export function BookInfoDescription(props: IProps) {
   const theme = useTheme();
@@ -20,6 +23,15 @@ export function BookInfoDescription(props: IProps) {
   const [translateValue, setTranslateValue] = useState<string | null>(null);
   const [translating, setTranslating] = useState(false);
   const cacheTranslateValue = useRef<string | null>(null);
+
+  const [cropped, setCropped] = useState(true);
+
+  const processedDescription =
+    translateValue || props.description || 'No hay descripción disponible';
+
+  const showDescription = cropped
+    ? truncateByChars(processedDescription, MAX_CHARS)
+    : processedDescription;
 
   const onLinkPress = ({ url: link }: LinkPressEvent) => {
     refDialogs.current?.open({
@@ -68,6 +80,10 @@ export function BookInfoDescription(props: IProps) {
     setTranslateValue(null);
   };
 
+  const toggleCropping = () => {
+    setCropped((val) => !val);
+  };
+
   const textStyle = {
     ...theme.fonts['bodyMedium'],
     color: theme.colors.onSurface,
@@ -79,15 +95,11 @@ export function BookInfoDescription(props: IProps) {
   };
 
   return (
-    <View className={'gap-[8] flex-col'}>
+    <View className={'gap-[12] flex-col'}>
       <Text variant={'titleLarge'}>Descripción</Text>
 
       <EnrichedMarkdownText
-        markdown={
-          translateValue ||
-          props?.description ||
-          'No hay descripción disponible'
-        }
+        markdown={showDescription}
         markdownStyle={{
           paragraph: textStyle,
           h1: textStyle,
@@ -122,19 +134,39 @@ export function BookInfoDescription(props: IProps) {
           'No hay descripción disponible'}
       </Text> */}
 
-      {props.descriptionLang !== Language.ES &&
-        props.descriptionLang !== Language.MX &&
-        (translateValue ? (
-          <Button onPress={clearTranslateText}>Mostrar original</Button>
-        ) : (
+      <View className={'flex-col gap-[8]'}>
+        {processedDescription.length > MAX_CHARS && (
           <Button
-            loading={translating}
-            disabled={translating}
-            onPress={translateText}
+            mode={'contained-tonal'}
+            icon={cropped ? 'chevron-down' : 'chevron-up'}
+            onPress={toggleCropping}
           >
-            Traducir
+            {cropped ? 'Mostrar más' : 'Mostrar menos'}
           </Button>
-        ))}
+        )}
+
+        {props.descriptionLang !== Language.ES &&
+          props.descriptionLang !== Language.MX &&
+          (translateValue ? (
+            <Button
+              mode={'contained'}
+              icon={'translate'}
+              onPress={clearTranslateText}
+            >
+              Mostrar original
+            </Button>
+          ) : (
+            <Button
+              mode={'contained'}
+              icon={'translate'}
+              loading={translating}
+              disabled={translating}
+              onPress={translateText}
+            >
+              Traducir
+            </Button>
+          ))}
+      </View>
     </View>
   );
 }
