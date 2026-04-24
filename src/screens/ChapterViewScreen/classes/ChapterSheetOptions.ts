@@ -84,6 +84,7 @@ export class ChapterSheetOptions {
             this.instance,
             this.navigation,
             true,
+            true,
           );
 
           chapterOptions.show();
@@ -114,6 +115,7 @@ export class ChapterSheetOptions {
             this.instance,
             this.navigation,
             true,
+            true,
           );
 
           chapterOptions.show();
@@ -138,6 +140,7 @@ export class ChapterSheetOptions {
             chapter,
             this.instance,
             this.navigation,
+            true,
             true,
           );
 

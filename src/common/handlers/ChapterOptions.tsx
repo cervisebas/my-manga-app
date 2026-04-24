@@ -24,6 +24,7 @@ export class ChapterOptions {
   private navigation?: NavigationProp<ReactNavigation.RootParamList>;
 
   private activeChapterView: boolean;
+  private hideViewedOption = false;
 
   constructor(
     bookInfo: BookInfoInterface,
@@ -31,6 +32,7 @@ export class ChapterOptions {
     instance: IScrappingService,
     navigation?: NavigationProp<ReactNavigation.RootParamList>,
     activeChapterView?: boolean,
+    hideViewedOption?: boolean,
   ) {
     this.bookInfo = bookInfo;
     this.chapter = chapter;
@@ -42,6 +44,8 @@ export class ChapterOptions {
     this.navigation = navigation;
 
     this.activeChapterView = activeChapterView ?? false;
+    this.hideViewedOption = hideViewedOption ?? false;
+    console.log('hideViewedOption:', this.hideViewedOption, hideViewedOption);
 
     this.makeOptions();
     this.makeInformation();
@@ -130,7 +134,7 @@ export class ChapterOptions {
       });
     }
 
-    if ('viewed' in this.chapter) {
+    if ('viewed' in this.chapter && !this.hideViewedOption) {
       if (this.chapter.viewed) {
         this.information.push({
           label: 'Marcar como no visto',
