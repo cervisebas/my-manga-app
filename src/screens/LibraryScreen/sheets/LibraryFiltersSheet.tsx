@@ -9,7 +9,7 @@ import React, {
   useState,
 } from 'react';
 import { View } from 'react-native';
-import { Checkbox, List } from 'react-native-paper';
+import { Checkbox, List, useTheme } from 'react-native-paper';
 
 export interface LibraryFiltersSheetRef {
   open(scrapperId: string, filters: SearchFilter[]): void;
@@ -19,10 +19,26 @@ export const LibraryFiltersSheet = forwardRef(function (
   _: object,
   ref: React.Ref<LibraryFiltersSheetRef>,
 ) {
+  const theme = useTheme();
   const [filters, setFilters] = useState<SearchFilter[]>([]);
 
   const scrapperId = useRef('');
   const refBottomSheet = useRef<BottomSheetRef>(null);
+
+  const accordionTheme = {
+    ...theme,
+    colors: {
+      ...theme.colors,
+      background: theme.colors.elevation.level4,
+    },
+  };
+
+  const accordionStyles = {
+    backgroundColor: theme.colors.elevation.level2,
+    borderRadius: 2 * theme.roundness,
+    marginHorizontal: 8,
+    marginVertical: 4,
+  };
 
   const changeValue = (
     val: string | number | boolean,
@@ -70,40 +86,51 @@ export const LibraryFiltersSheet = forwardRef(function (
       useScrollView={true}
     >
       <React.Fragment>
-        {filters!.map((filter, filterIndex) => (
-          <List.Section key={`filter-section-${filter.label}`}>
-            <List.Subheader>{filter.label}</List.Subheader>
-
-            {filter.type === SearchFilterType.CHECKBOXS ? (
-              filter.options?.map((val, optionIndex) => (
-                <ItemWithIcon
-                  key={`filter-item-${filter.label}-${val.label}`}
-                  title={val.label}
-                  right={(rProps) => (
-                    <View style={rProps.style}>
-                      <Checkbox
-                        status={
-                          (val.defaultValue ?? val.selectedValue ?? false)
-                            ? 'checked'
-                            : 'unchecked'
-                        }
-                        onPress={() => {
-                          changeValue(
-                            !(val.defaultValue ?? val.selectedValue ?? false),
-                            filterIndex,
-                            optionIndex,
-                          );
-                        }}
-                      />
-                    </View>
-                  )}
-                />
-              ))
-            ) : (
-              <></>
-            )}
-          </List.Section>
-        ))}
+        <List.AccordionGroup>
+          {filters!.map((filter, filterIndex) => (
+            <List.Accordion
+              key={`filter-section-${filter.label}`}
+              id={filterIndex}
+              theme={accordionTheme}
+              title={filter.label}
+              style={accordionStyles}
+            >
+              {filter.type === SearchFilterType.CHECKBOXS ? (
+                filter.options?.map((val, optionIndex) => (
+                  <ItemWithIcon
+                    key={`filter-item-${filter.label}-${val.label}`}
+                    title={val.label}
+                    right={(rProps) => (
+                      <View style={rProps.style} pointerEvents={'none'}>
+                        <Checkbox
+                          status={
+                            (val.defaultValue ?? val.selectedValue ?? false)
+                              ? 'checked'
+                              : 'unchecked'
+                          }
+                        />
+                      </View>
+                    )}
+                    onPress={() => {
+                      changeValue(
+                        !(val.defaultValue ?? val.selectedValue ?? false),
+                        filterIndex,
+                        optionIndex,
+                      );
+                    }}
+                  />
+                ))
+              ) : filter.type === SearchFilterType.DROPDOWN ? (
+                <></>
+              ) : (
+                <></>
+              )}
+            </List.Accordion>
+          ))}
+        </List.AccordionGroup>
+        {/* <List.Section key={`filter-section-${filter.label}`}>
+          <List.Subheader>{filter.label}</List.Subheader>
+        </List.Section> */}
       </React.Fragment>
     </BottomSheet>
   );
