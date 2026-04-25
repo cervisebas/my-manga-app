@@ -2,6 +2,9 @@ import { SearchFilterType } from '@/api/shared/enums/SearchFilterType';
 import { SearchFilter } from '@/api/shared/interfaces/SearchFilter';
 import { BottomSheet, BottomSheetRef } from '@/common/components/BottomSheet';
 import { ItemWithIcon } from '@/common/components/ItemWithIcon';
+import { UButton } from '@/common/components/UniwindElements';
+import { useSafeArea } from '@/common/hooks/useSafeArea';
+import { BottomSheetFooter } from '@gorhom/bottom-sheet';
 import React, {
   forwardRef,
   useImperativeHandle,
@@ -20,6 +23,8 @@ export const LibraryFiltersSheet = forwardRef(function (
   ref: React.Ref<LibraryFiltersSheetRef>,
 ) {
   const theme = useTheme();
+  const { bottom, left, right } = useSafeArea(20);
+
   const [filters, setFilters] = useState<SearchFilter[]>([]);
 
   const scrapperId = useRef('');
@@ -84,6 +89,39 @@ export const LibraryFiltersSheet = forwardRef(function (
       title={'Filtros'}
       alwaysOnTop={true}
       useScrollView={true}
+      contentContainerStyle={{
+        paddingLeft: 10,
+        paddingRight: 10,
+        paddingBottom: bottom + 64,
+      }}
+      footerComponent={(p) => (
+        <BottomSheetFooter {...p} bottomInset={bottom}>
+          <View
+            style={{ paddingLeft: left, paddingRight: right }}
+            className={'w-full pb-[8] flex-row justify-between'}
+          >
+            <UButton
+              className={'rounded-[8]'}
+              mode={'contained'}
+              compact={true}
+              buttonColor={theme.colors.error}
+              textColor={theme.colors.errorContainer}
+              // onPress={clearFilters}
+            >
+              Limpiar
+            </UButton>
+
+            <UButton
+              className={'rounded-[8]'}
+              mode={'contained'}
+              compact={true}
+              // onPress={onFilter}
+            >
+              Guardar
+            </UButton>
+          </View>
+        </BottomSheetFooter>
+      )}
     >
       <React.Fragment>
         <List.AccordionGroup>
@@ -128,9 +166,6 @@ export const LibraryFiltersSheet = forwardRef(function (
             </List.Accordion>
           ))}
         </List.AccordionGroup>
-        {/* <List.Section key={`filter-section-${filter.label}`}>
-          <List.Subheader>{filter.label}</List.Subheader>
-        </List.Section> */}
       </React.Fragment>
     </BottomSheet>
   );
