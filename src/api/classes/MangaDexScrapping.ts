@@ -483,31 +483,31 @@ export class MangaDexScrapping implements IScrappingService {
       }, */
       {
         label: 'Filtro de generos',
-        type: SearchFilterType.CHECKBOX,
+        type: SearchFilterType.CHECKBOXS,
         queryKey: 'includedTags[]',
         options: GENDER_OPTIONS,
       },
       {
         label: 'Excluir generos',
-        type: SearchFilterType.CHECKBOX,
+        type: SearchFilterType.CHECKBOXS,
         queryKey: 'excludedTags[]',
         options: GENDER_OPTIONS,
       },
       {
         label: 'Contenido',
-        type: SearchFilterType.CHECKBOX,
+        type: SearchFilterType.CHECKBOXS,
         queryKey: 'contentRating[]',
         options: CONTENT_OPTIONS,
       },
       {
         label: 'Demografia',
-        type: SearchFilterType.CHECKBOX,
+        type: SearchFilterType.CHECKBOXS,
         queryKey: 'publicationDemographic[]',
         options: DEMOS_OPTIONS,
       },
       {
         label: 'Estado',
-        type: SearchFilterType.CHECKBOX,
+        type: SearchFilterType.CHECKBOXS,
         queryKey: 'status[]',
         options: STATUS_OPTIONS,
       },

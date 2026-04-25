@@ -2,7 +2,7 @@ export enum SearchFilterType {
   TEXT,
   DROPDOWN,
   MULTI_DROPDOWN,
-  CHECKBOX,
+  CHECKBOXS, // #
   RADIO,
   SELECT_LIST,
 }
