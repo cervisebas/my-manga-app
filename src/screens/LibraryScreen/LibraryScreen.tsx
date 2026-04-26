@@ -3,7 +3,7 @@ import { NativeBottomTabScreenProps } from '@bottom-tabs/react-navigation';
 import { ParamListBase } from '@react-navigation/native';
 import React, { useRef, useState } from 'react';
 import { Keyboard, TouchableWithoutFeedback, View } from 'react-native';
-import { Appbar, Text, useTheme } from 'react-native-paper';
+import { Appbar, Badge, Text, Tooltip, useTheme } from 'react-native-paper';
 import { LibrarySearchBar } from './components/LibrarySearchBar';
 import { Scrappers } from '@/api/api';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
@@ -16,6 +16,7 @@ import {
   LibraryFiltersSheetRef,
 } from './sheets/LibraryFiltersSheet';
 import { getInstanceById } from '@/api/utils/getInstanceById';
+import { SearchFilter } from '@/api/shared/interfaces/SearchFilter';
 
 type IProps = NativeBottomTabScreenProps<ParamListBase, 'Biblioteca'>;
 
@@ -27,6 +28,16 @@ export function LibraryScreen(_props: IProps) {
   const theme = useTheme();
 
   // States
+  const [filters, setFilters] = useState<Record<string, SearchFilter[]>>(
+    Scrappers.reduce(
+      (prev, scrapper) => ({ ...prev, [scrapper.getIdName()]: [] }),
+      {},
+    ),
+  );
+
+  const [currentIndex, setCurrentIndex] = useState<string | undefined>(
+    undefined,
+  );
   const [searchValue, setSearchValue] = useState('');
   const [loading, setLoading] = useState<Record<string, boolean>>(
     Scrappers.reduce(
@@ -36,8 +47,15 @@ export function LibraryScreen(_props: IProps) {
     ) as never,
   );
 
+  const [filterCount, setFilterCount] = useState<Record<string, number>>(
+    Scrappers.reduce(
+      (current, scrapper) =>
+        Object.assign(current, { [scrapper.getIdName()]: 0 }),
+      {} as never,
+    ) as never,
+  );
+
   // Refs
-  const currentIndex = useRef<string | undefined>(undefined);
   const refLibraryFiltersSheet = useRef<LibraryFiltersSheetRef>(null);
 
   // Methods
@@ -47,16 +65,59 @@ export function LibraryScreen(_props: IProps) {
     };
   };
 
+  const onFilter = (id: string, filter: SearchFilter[]) => {
+    console.info('FILTER ->', id, filter);
+    setFilters((filters) => ({ ...filters, [id]: filter }));
+
+    const countFilter = filter.reduce((prev, curr) => {
+      if (curr.selectedValue !== undefined) {
+        return prev + 1;
+      }
+
+      if (curr.options) {
+        let _total = 0;
+
+        for (const option of curr.options!) {
+          if (option.selectedValue) {
+            _total++;
+          }
+        }
+
+        return prev + _total;
+      }
+
+      return prev;
+    }, 0);
+
+    console.info('FILTER COUNT ->', id, countFilter);
+    setFilterCount((filterCount) => ({ ...filterCount, [id]: countFilter }));
+  };
+
   const openFilters = () => {
-    if (!currentIndex.current) {
+    if (!currentIndex) {
       return;
     }
 
-    const scrapper = getInstanceById(currentIndex.current);
-    refLibraryFiltersSheet.current?.open(
-      currentIndex.current,
-      scrapper.getSearchFilters(),
-    );
+    const scrapper = getInstanceById(currentIndex);
+    const _filters = scrapper.getSearchFilters();
+
+    if (filters[currentIndex]) {
+      for (const filter of filters[currentIndex]) {
+        const _filter = _filters.find(
+          (_filter) =>
+            _filter.label === filter.label &&
+            _filter.queryKey === filter.queryKey &&
+            _filter.type === filter.type,
+        );
+
+        if (_filter) {
+          _filter.selectedValue = filter.selectedValue;
+          _filter.options = filter.options;
+        }
+      }
+    }
+
+    refLibraryFiltersSheet.current?.open(currentIndex, _filters);
   };
 
   return (
@@ -66,7 +127,21 @@ export function LibraryScreen(_props: IProps) {
           {/* Appbar */}
           <AppbarHeader>
             <Appbar.Content title={'Biblioteca'} />
-            <Appbar.Action icon={'filter-variant'} onPress={openFilters} />
+
+            <View className={'relative'}>
+              <Tooltip title={'Filtros'}>
+                <Appbar.Action icon={'filter-variant'} onPress={openFilters} />
+              </Tooltip>
+              <Badge
+                className={'absolute right-[4] top-[4]'}
+                pointerEvents={'none'}
+                visible={
+                  currentIndex !== undefined && filterCount[currentIndex] > 0
+                }
+              >
+                {currentIndex && filterCount[currentIndex]}
+              </Badge>
+            </View>
           </AppbarHeader>
           <LibrarySearchBar onSearch={setSearchValue} />
 
@@ -89,8 +164,7 @@ export function LibraryScreen(_props: IProps) {
             }}
             screenListeners={{
               state: (event) => {
-                currentIndex.current =
-                  Scrappers[event.data.state.index].getIdName();
+                setCurrentIndex(Scrappers[event.data.state.index].getIdName());
               },
             }}
           >
@@ -101,6 +175,7 @@ export function LibraryScreen(_props: IProps) {
                 // eslint-disable-next-line react/no-children-prop
                 children={() => (
                   <LibraryScrapperTab
+                    filters={filters[scrapper.getIdName()]}
                     searchValue={searchValue}
                     instance={scrapper}
                     updateLoading={changeLoadingTab(scrapper.getIdName())}
@@ -135,7 +210,7 @@ export function LibraryScreen(_props: IProps) {
         </View>
       </TouchableWithoutFeedback>
 
-      <LibraryFiltersSheet ref={refLibraryFiltersSheet} />
+      <LibraryFiltersSheet ref={refLibraryFiltersSheet} onFilter={onFilter} />
     </React.Fragment>
   );
 }

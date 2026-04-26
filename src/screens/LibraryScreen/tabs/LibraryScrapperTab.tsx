@@ -1,6 +1,7 @@
 import { IScrappingService } from '@/api/interfaces/IScrappingService';
 import { ApiError } from '@/api/shared/errors/ApiError';
 import { BookInfoInterface } from '@/api/shared/interfaces/BookInfoInterface';
+import { SearchFilter } from '@/api/shared/interfaces/SearchFilter';
 import { BookItem } from '@/common/components/BookItem';
 import { LoadingErrorContent } from '@/common/components/LoadingErrorContent';
 import SafeArea from '@/common/components/SafeArea';
@@ -13,6 +14,7 @@ import { View } from 'react-native';
 import { Icon, Text } from 'react-native-paper';
 
 interface IProps {
+  filters: SearchFilter[];
   searchValue: string;
   instance: IScrappingService;
   updateLoading(state: boolean): void;
@@ -37,6 +39,8 @@ export function LibraryScrapperTab(props: IProps) {
   const count = useRef<number>(0);
   const waitingForData = useRef(true);
 
+  const effectFiltersInited = useRef(false);
+
   // Logica para la carga infinita
   const scrollPosition = scrollEvent
     ? scrollEvent.contentOffset.y + scrollEvent.layoutMeasurement.height
@@ -51,7 +55,7 @@ export function LibraryScrapperTab(props: IProps) {
     waitingForData.current = true;
 
     try {
-      const _data = await props.instance.search(value, [], {
+      const _data = await props.instance.search(value, props.filters, {
         page: page.current,
         offset: offset.current,
       });
@@ -95,6 +99,16 @@ export function LibraryScrapperTab(props: IProps) {
   const _keyExtractor = (item: BookInfoInterface) => {
     return item.path;
   };
+
+  useEffect(() => {
+    if (effectFiltersInited.current) {
+      setData([]);
+      setLoading(true);
+      searchNow();
+    } else {
+      effectFiltersInited.current = true;
+    }
+  }, [props.filters]);
 
   useEffect(() => {
     if (!waitingForData.current) {

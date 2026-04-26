@@ -18,8 +18,12 @@ export interface LibraryFiltersSheetRef {
   open(scrapperId: string, filters: SearchFilter[]): void;
 }
 
+interface IProps {
+  onFilter(scrapperId: string, filters: SearchFilter[]): void;
+}
+
 export const LibraryFiltersSheet = forwardRef(function (
-  _: object,
+  props: IProps,
   ref: React.Ref<LibraryFiltersSheetRef>,
 ) {
   const theme = useTheme();
@@ -75,6 +79,22 @@ export const LibraryFiltersSheet = forwardRef(function (
     );
   };
 
+  const onFilter = () => {
+    props.onFilter(
+      scrapperId.current,
+      filters.filter(
+        (val) =>
+          val.selectedValue || val.options?.some((val) => val.selectedValue),
+      ),
+    );
+    refBottomSheet.current?.hide();
+  };
+
+  const clearFilters = () => {
+    props.onFilter(scrapperId.current, []);
+    refBottomSheet.current?.hide();
+  };
+
   useImperativeHandle(ref, () => ({
     open(_scrapperId, filters) {
       scrapperId.current = _scrapperId;
@@ -106,7 +126,7 @@ export const LibraryFiltersSheet = forwardRef(function (
               compact={true}
               buttonColor={theme.colors.error}
               textColor={theme.colors.errorContainer}
-              // onPress={clearFilters}
+              onPress={clearFilters}
             >
               Limpiar
             </UButton>
@@ -115,7 +135,7 @@ export const LibraryFiltersSheet = forwardRef(function (
               className={'rounded-[8]'}
               mode={'contained'}
               compact={true}
-              // onPress={onFilter}
+              onPress={onFilter}
             >
               Guardar
             </UButton>
