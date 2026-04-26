@@ -14,6 +14,8 @@
 - [x] Ocultar "Marcar como visto" al cambiar de capitulo en el visor
 - [ ] Añadir seccion "Continuar leyendo" en el inicio (solo si esta guardado por un estado de usuario {"Pendiente", "Leyendo", etc})
 - [ ] Añadir seccion "Continuar leyendo" en la ventana de información de un libro
+- [ ] Priorizar el valor seleccionado del usuario en vez del por defecto en los filtros de busqueda
+- [ ] Arreglar ripple de los botones en los filtros de busqueda
 
 - [ ] Añadir opción de seleccionar que servicios se quiere usar y ordenar los mismos
 

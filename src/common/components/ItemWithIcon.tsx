@@ -32,6 +32,7 @@ export function ItemWithIcon(props: IProps) {
       description={props.description}
       descriptionStyle={props.descriptionStyle}
       descriptionNumberOfLines={props.descriptionNumberOfLines}
+      borderless={true}
       left={
         props.left ??
         (props.leftIcon

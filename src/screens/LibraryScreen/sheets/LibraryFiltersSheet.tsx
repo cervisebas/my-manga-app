@@ -162,7 +162,7 @@ export const LibraryFiltersSheet = forwardRef(function (
                       <View style={rProps.style} pointerEvents={'none'}>
                         <Checkbox
                           status={
-                            (val.defaultValue ?? val.selectedValue ?? false)
+                            (val.selectedValue ?? val.defaultValue ?? false)
                               ? 'checked'
                               : 'unchecked'
                           }
@@ -171,7 +171,7 @@ export const LibraryFiltersSheet = forwardRef(function (
                     )}
                     onPress={() => {
                       changeValue(
-                        !(val.defaultValue ?? val.selectedValue ?? false),
+                        !(val.selectedValue ?? val.defaultValue ?? false),
                         filterIndex,
                         optionIndex,
                       );
