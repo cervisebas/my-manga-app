@@ -15,6 +15,7 @@ export default defineConfig([
       'uniwind-types.d.ts',
       '**/.vscode',
       '**/.yarn',
+      '**/drizzle',
     ],
   },
   {

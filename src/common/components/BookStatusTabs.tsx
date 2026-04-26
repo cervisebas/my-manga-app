@@ -2,6 +2,7 @@ import { Icon, Text, useTheme } from 'react-native-paper';
 import { UNativePressable, USurface } from './UniwindElements';
 import { View } from 'react-native';
 import { UserBookStatus } from '@/api/shared/enums/UserBookStatus';
+import React from 'react';
 
 const STATUS_ROWS = [
   [
@@ -61,7 +62,9 @@ const STATUS_ROWS = [
 export type BookStatusCell = (typeof STATUS_ROWS)[0][0];
 
 interface IProps {
+  quantity?: Record<UserBookStatus, number>;
   selectedKey?: UserBookStatus;
+  backgroundColor?: string;
   onPressCell?(cell: BookStatusCell): void;
 }
 
@@ -79,7 +82,8 @@ export function BookStatusTabs(props: IProps) {
               className={'overflow-hidden h-[64]'}
               style={{
                 width: `${100 / rows.length}%`,
-                backgroundColor: theme.colors.elevation.level2,
+                backgroundColor:
+                  props.backgroundColor ?? theme.colors.elevation.level2,
               }}
             >
               <UNativePressable
@@ -97,7 +101,17 @@ export function BookStatusTabs(props: IProps) {
                     <Icon source={row.icon} size={32} color={row.color} />
                   )}
                   <View className={'gap-[4] flex-col'}>
-                    <Text variant={'labelSmall'}>{row.label}</Text>
+                    {props.quantity?.[row.key] !== undefined ? (
+                      <React.Fragment>
+                        <Text variant={'titleMedium'}>
+                          {props.quantity[row.key]}
+                        </Text>
+
+                        <Text variant={'labelSmall'}>{row.label}</Text>
+                      </React.Fragment>
+                    ) : (
+                      <Text variant={'labelSmall'}>{row.label}</Text>
+                    )}
                   </View>
                 </View>
 

@@ -1,0 +1,10 @@
+node_modules
+dist
+out
+drizzle
+.vscode
+.expo
+android
+ios
+metro.config.js
+uniwind-types.d.ts
