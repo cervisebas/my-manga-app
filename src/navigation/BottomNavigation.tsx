@@ -7,12 +7,18 @@ import { useTheme } from 'react-native-paper';
 import { tabBarIcon } from '@/utils/tabBarIcon';
 import { TAB_ICONS } from '@/constants/TabIcons';
 import { useKeyboard } from '@/common/hooks/useKeyboard';
+import Color from 'color';
 
 const Tab = createNativeBottomTabNavigator();
 
 export function BottomNavigation() {
   const theme = useTheme();
   const { isKeyboardVisible } = useKeyboard();
+
+  const activeIndicatorColor = Color(theme.colors.onPrimaryContainer)
+    .fade(0.85)
+    .rgb()
+    .string();
 
   return (
     <Tab.Navigator
@@ -26,6 +32,7 @@ export function BottomNavigation() {
       tabBar={isKeyboardVisible ? () => <></> : undefined}
       tabBarActiveTintColor={theme.colors.primary}
       tabBarInactiveTintColor={theme.colors.onSurfaceDisabled}
+      activeIndicatorColor={activeIndicatorColor}
     >
       <Tab.Screen name={'Populares'} component={HomeScreen} />
       <Tab.Screen name={'Biblioteca'} component={LibraryScreen} />

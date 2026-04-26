@@ -27,7 +27,7 @@ LogBox.ignoreLogs([
 export default function App() {
   return (
     <View className={'flex-1'}>
-      <SystemBars style={'auto'} />
+      <SystemBars style={'light'} />
 
       <DatabaseProvider>
         <GestureHandlerRootView>
