@@ -17,6 +17,7 @@ export const BookUserChapterBookHistoryModel = sqliteTable(
     progressY: real().notNull(),
     progressX: real().notNull(),
     progressZ: real().notNull(),
+    progress: real().notNull(),
     updateAt: integer({ mode: 'timestamp' }).$onUpdate(() => new Date()),
   },
   (table) => [

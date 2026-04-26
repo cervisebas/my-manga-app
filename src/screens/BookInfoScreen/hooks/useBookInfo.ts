@@ -48,7 +48,7 @@ export function useBookInfo(
       // Recuperar lista de capitulos de la DB
       const chapters = await BookChapterList.restoreChapterList(idBookInfo);
 
-      Object.assign(response, { chapters });
+      Object.assign(response, { id: idBookInfo, chapters });
       setData(response);
     } catch (error) {
       console.error(error);

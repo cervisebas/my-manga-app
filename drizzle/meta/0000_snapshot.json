@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "7b1ab580-e1f6-45e5-b656-710469ce55e6",
+  "id": "5ffcacc8-01f6-43f8-8b43-2d4b0feb877b",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "book-chapter-history": {
@@ -577,6 +577,13 @@
           "notNull": true,
           "autoincrement": false
         },
+        "progress": {
+          "name": "progress",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
         "updateAt": {
           "name": "updateAt",
           "type": "integer",
@@ -591,60 +598,6 @@
           "columns": [
             "id_chapter",
             "path_option"
-          ],
-          "isUnique": true
-        }
-      },
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
-      "checkConstraints": {}
-    },
-    "book-user-chapter-history-model": {
-      "name": "book-user-chapter-history-model",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "integer",
-          "primaryKey": true,
-          "notNull": true,
-          "autoincrement": true
-        },
-        "id_bookinfo": {
-          "name": "id_bookinfo",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "id_chapter": {
-          "name": "id_chapter",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "date": {
-          "name": "date",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "updateAt": {
-          "name": "updateAt",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        }
-      },
-      "indexes": {
-        "unique_user_chapter_history": {
-          "name": "unique_user_chapter_history",
-          "columns": [
-            "id_chapter",
-            "id_bookinfo"
           ],
           "isUnique": true
         }
@@ -671,20 +624,6 @@
           "notNull": true,
           "autoincrement": false
         },
-        "value": {
-          "name": "value",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "marked": {
-          "name": "marked",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
         "updateAt": {
           "name": "updateAt",
           "type": "integer",
@@ -694,11 +633,10 @@
         }
       },
       "indexes": {
-        "unique_book_status": {
-          "name": "unique_book_status",
+        "unique_user_book_status": {
+          "name": "unique_user_book_status",
           "columns": [
-            "id_bookinfo",
-            "status"
+            "id_bookinfo"
           ],
           "isUnique": true
         }

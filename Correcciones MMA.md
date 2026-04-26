@@ -4,7 +4,7 @@
 - [ ] Opción de ocultar los demás idiomas que no sea español
 - [x] Añadir un "Ver más" y "Ver menos" en la descripción
 - [x] Opción de "Marcar como visto" y "Marcar como no visto" en las "Opciones del capítulo"
-- [ ] Guardar el progreso de lectura del capítulo
+- [x] Guardar el progreso de lectura del capítulo
 - [x] Ventana de "No se encontró nada" en la biblioteca
 - [x] Un medidor de porcentaje de traducción
 - [x] Bug al pasar de capitulo

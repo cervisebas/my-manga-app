@@ -35,6 +35,7 @@ export function useChapterPosition(
         position.positionX,
         position.positionY,
         position.positionZ,
+        position.progress,
       );
     }
   };
@@ -75,6 +76,7 @@ export function useChapterPosition(
         positionX: position.progressX,
         positionY: position.progressY,
         positionZ: position.progressZ,
+        progress: position.progress,
       };
       setRestorePosition(true);
     } catch (error) {

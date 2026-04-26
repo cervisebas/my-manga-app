@@ -73,6 +73,7 @@ export const ChapterViewVisualizer = forwardRef(
           positionX: translateX.value,
           positionY: translateY.value,
           positionZ: scale.value,
+          progress: translateY.value / totalHeight,
         };
       },
       setPosition(pos) {

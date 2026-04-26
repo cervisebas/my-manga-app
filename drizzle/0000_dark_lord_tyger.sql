@@ -91,25 +91,15 @@ CREATE TABLE `book-user-chapter-book-history` (
 	`progressY` real NOT NULL,
 	`progressX` real NOT NULL,
 	`progressZ` real NOT NULL,
+	`progress` real NOT NULL,
 	`updateAt` integer
 );
 --> statement-breakpoint
 CREATE UNIQUE INDEX `unique_user_chapter_book_history` ON `book-user-chapter-book-history` (`id_chapter`,`path_option`);--> statement-breakpoint
-CREATE TABLE `book-user-chapter-history-model` (
-	`id` integer PRIMARY KEY AUTOINCREMENT NOT NULL,
-	`id_bookinfo` integer NOT NULL,
-	`id_chapter` integer NOT NULL,
-	`date` integer NOT NULL,
-	`updateAt` integer
-);
---> statement-breakpoint
-CREATE UNIQUE INDEX `unique_user_chapter_history` ON `book-user-chapter-history-model` (`id_chapter`,`id_bookinfo`);--> statement-breakpoint
 CREATE TABLE `book-user-status-by-book-info` (
 	`id_bookinfo` integer NOT NULL,
 	`status` text NOT NULL,
-	`value` text NOT NULL,
-	`marked` integer,
 	`updateAt` integer
 );
 --> statement-breakpoint
-CREATE UNIQUE INDEX `unique_book_status` ON `book-user-status-by-book-info` (`id_bookinfo`,`status`);
+CREATE UNIQUE INDEX `unique_user_book_status` ON `book-user-status-by-book-info` (`id_bookinfo`);

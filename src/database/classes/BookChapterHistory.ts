@@ -28,6 +28,7 @@ export class BookChapterHistory {
     progressX: number,
     progressY: number,
     progressZ: number,
+    progress: number,
   ) {
     await db
       .insert(BookUserChapterBookHistoryModel)
@@ -37,6 +38,7 @@ export class BookChapterHistory {
         progressY: progressY,
         progressX: progressX,
         progressZ: progressZ,
+        progress: progress,
       })
       .onConflictDoUpdate({
         target: [
@@ -61,6 +63,7 @@ export class BookChapterHistory {
         progressX: BookUserChapterBookHistoryModel.progressX,
         progressY: BookUserChapterBookHistoryModel.progressY,
         progressZ: BookUserChapterBookHistoryModel.progressZ,
+        progress: BookUserChapterBookHistoryModel.progress,
       })
       .from(BookUserChapterBookHistoryModel)
       .where(

@@ -1,12 +1,12 @@
 import { Icon, Text, useTheme } from 'react-native-paper';
 import { UNativePressable, USurface } from './UniwindElements';
 import { View } from 'react-native';
-import { BookStatusType } from '../enums/BookStatusType';
+import { UserBookStatus } from '@/api/shared/enums/UserBookStatus';
 
 const STATUS_ROWS = [
   [
     {
-      key: BookStatusType.READ,
+      key: UserBookStatus.WATCH,
       label: 'Leido',
       icon: 'check-circle-outline',
       selectedIcon: 'check-circle',
@@ -14,7 +14,7 @@ const STATUS_ROWS = [
       selected: false,
     },
     {
-      key: BookStatusType.PENDING,
+      key: UserBookStatus.PENDING,
       label: 'Pendiente',
       icon: 'clock-time-five-outline',
       selectedIcon: 'clock-time-five',
@@ -22,7 +22,7 @@ const STATUS_ROWS = [
       selected: false,
     },
     {
-      key: BookStatusType.FOLLOWING,
+      key: UserBookStatus.FOLLOW,
       label: 'Siguiendo',
       icon: 'play-circle-outline',
       selectedIcon: 'play-circle',
@@ -32,7 +32,7 @@ const STATUS_ROWS = [
   ],
   [
     {
-      key: BookStatusType.FAVORITE,
+      key: UserBookStatus.WISH,
       label: 'Favorito',
       icon: 'heart-outline',
       selectedIcon: 'heart',
@@ -40,7 +40,7 @@ const STATUS_ROWS = [
       selected: false,
     },
     {
-      key: BookStatusType.I_HAVE_IT,
+      key: UserBookStatus.HAVE,
       label: 'Lo tengo',
       icon: 'checkbox-outline',
       selectedIcon: 'checkbox-marked',
@@ -48,7 +48,7 @@ const STATUS_ROWS = [
       selected: false,
     },
     {
-      key: BookStatusType.ABANDONED,
+      key: UserBookStatus.ABANDONED,
       label: 'Abandonado',
       icon: 'thumb-down-outline',
       selectedIcon: 'thumb-down',
@@ -58,12 +58,15 @@ const STATUS_ROWS = [
   ],
 ];
 
-export function BookStatusTabs() {
-  const theme = useTheme();
+export type BookStatusCell = (typeof STATUS_ROWS)[0][0];
 
-  const onPressCell = (cell: (typeof STATUS_ROWS)[0][0]) => {
-    console.log(cell);
-  };
+interface IProps {
+  selectedKey?: UserBookStatus;
+  onPressCell?(cell: BookStatusCell): void;
+}
+
+export function BookStatusTabs(props: IProps) {
+  const theme = useTheme();
 
   return (
     <View className={'flex-col w-full'}>
@@ -81,10 +84,10 @@ export function BookStatusTabs() {
             >
               <UNativePressable
                 className={'flex-1 flex-col relative'}
-                onPress={() => onPressCell(row)}
+                onPress={() => props.onPressCell?.(row)}
               >
                 <View className={'gap-[8] flex-1 items-center flex-row p-[8]'}>
-                  {row.selected ? (
+                  {props.selectedKey === row.key ? (
                     <Icon
                       source={row.selectedIcon}
                       size={32}
@@ -102,7 +105,7 @@ export function BookStatusTabs() {
                   className={'w-full h-[3] absolute bottom-0 left-0'}
                   style={{
                     backgroundColor: row.color,
-                    opacity: Number(row.selected ?? 0),
+                    opacity: Number(props.selectedKey === row.key),
                   }}
                 />
               </UNativePressable>

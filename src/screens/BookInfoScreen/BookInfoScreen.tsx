@@ -11,7 +11,6 @@ import { getInstanceById } from '@/api/utils/getInstanceById';
 import { BookInfoParams } from './interfaces/BookInfoParams';
 import { UImage, USafeAreaFAB } from '@/common/components/UniwindElements';
 import { BookInfoPicture } from './components/BookInfoPicture';
-import { BookStatusTabs } from '@/common/components/BookStatusTabs';
 import { useBookInfo } from './hooks/useBookInfo';
 import { LoadingErrorContent } from '@/common/components/LoadingErrorContent';
 import React from 'react';
@@ -23,6 +22,7 @@ import { BookInfoChapters } from './components/BookInfoChapters';
 import { Language } from '@/api/shared/enums/Language';
 import { BookInfoTranslateProgress } from './components/BookInfoTranslateProgress';
 import { refImageViewer } from '@/constants/Refs';
+import { BookInfoStatus } from './components/BookInfoStatus';
 
 type IProps = NativeStackScreenProps<ParamListBase, 'book-info'>;
 
@@ -101,7 +101,7 @@ export function BookInfoScreen(props: IProps) {
           />
         </View>
 
-        <BookStatusTabs />
+        <BookInfoStatus id_bookInfo={info.id ?? data.id} />
 
         <LoadingErrorContent loading={loading} error={error} onRetry={loadData}>
           <SafeArea.View
