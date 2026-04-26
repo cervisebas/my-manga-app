@@ -10,7 +10,8 @@
     "lint": "eslint \"**/*.{js,jsx,ts,tsx}\" && prettier -c \"**/*.{js,jsx,ts,tsx,json}\"",
     "lint:fix": "eslint \"**/*.{js,jsx,ts,tsx}\" --fix && prettier \"**/*.{js,jsx,ts,tsx,json}\" --write",
     "preandroid": "drizzle-kit generate",
-    "preios": "drizzle-kit generate"
+    "preios": "drizzle-kit generate",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@bottom-tabs/react-navigation": "^1.1.0",
@@ -45,6 +46,8 @@
     "react-native-edge-to-edge": "^1.8.1",
     "react-native-enriched-markdown": "^0.4.1",
     "react-native-gesture-handler": "~2.30.0",
+    "react-native-image-viewing": "0.2.2",
+    "react-native-modal": "^14.0.0-rc.1",
     "react-native-pager-view": "8.0.0",
     "react-native-paper": "^5.15.1",
     "react-native-reanimated": "4.2.1",
@@ -72,6 +75,8 @@
     "eslint-plugin-react": "^7.37.5",
     "globals": "^17.4.0",
     "jiti": "^2.6.1",
+    "patch-package": "^8.0.1",
+    "postinstall-postinstall": "^2.1.0",
     "prettier": "^3.8.1",
     "prettier-plugin-tailwindcss": "^0.7.2",
     "typescript": "~5.9.2",

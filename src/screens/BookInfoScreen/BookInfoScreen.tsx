@@ -22,6 +22,7 @@ import { BookInfoLanguages } from './components/BookInfoLanguages';
 import { BookInfoChapters } from './components/BookInfoChapters';
 import { Language } from '@/api/shared/enums/Language';
 import { BookInfoTranslateProgress } from './components/BookInfoTranslateProgress';
+import { refImageViewer } from '@/constants/Refs';
 
 type IProps = NativeStackScreenProps<ParamListBase, 'book-info'>;
 
@@ -82,7 +83,7 @@ export function BookInfoScreen(props: IProps) {
               backgroundColor: theme.colors.onSecondary,
               height: coverSize,
             }}
-            source={{ uri: data.picture }}
+            source={{ uri: data.wallpaper ?? data.picture }}
             blurRadius={10}
           />
 
@@ -91,7 +92,12 @@ export function BookInfoScreen(props: IProps) {
             stars={data.stars}
             source={data.picture}
             language={data.language}
-            onPress={() => {}}
+            onPress={() => {
+              refImageViewer.current?.open([
+                data.picture,
+                data.wallpaper ?? data.picture,
+              ]);
+            }}
           />
         </View>
 
