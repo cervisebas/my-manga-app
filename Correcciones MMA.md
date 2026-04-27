@@ -20,8 +20,8 @@
 - [ ] Añadir ventana de "Géneros" [Crear método]
 - [ ] Añadir sección de autores en la vista de información de un libro
 - [ ] Añadir ventana "Autor" dónde se muestren todas las obras del mismo [Crear método]
-- [ ] Borrar marco negro de la derecha (posiblemente sea algun calculo de la limitación de handler "pan" [width - width * scale])
-- [ ] Bajar la sensibilidad de movimiento al hacer zoom
+- [x] Borrar marco negro de la derecha (posiblemente sea algun calculo de la limitación de handler "pan" [width - width * scale])
+- [x] Bajar la sensibilidad de movimiento al hacer zoom
 - [ ] Añadir filtro de idioma en MangaDex
 
 - [ ] Añadir opción de seleccionar que servicios se quiere usar y ordenar los mismos

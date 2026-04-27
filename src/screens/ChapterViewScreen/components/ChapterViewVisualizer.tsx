@@ -27,7 +27,7 @@ export interface ChapterViewVisualizerRef {
 }
 
 const UCanvas = withUniwind(Canvas);
-const MARGIN_HORIZONTAL = 8;
+export const VISUALIZER_MARGIN_HORIZONTAL = 8;
 
 export const ChapterViewVisualizer = forwardRef(
   (props: IProps, ref: React.Ref<ChapterViewVisualizerRef>) => {
@@ -48,7 +48,7 @@ export const ChapterViewVisualizer = forwardRef(
     const { imagesWithPositions, totalHeight } = useChapterImagesPositions(
       props.images,
       widthWindow,
-      MARGIN_HORIZONTAL,
+      VISUALIZER_MARGIN_HORIZONTAL,
     );
 
     const { visibleImages } = useChapterVisibleImages(
@@ -96,7 +96,7 @@ export const ChapterViewVisualizer = forwardRef(
                   key={imgPos.y}
                   top={imgPos.y}
                   image={imgPos}
-                  marginHorizonal={MARGIN_HORIZONTAL}
+                  marginHorizonal={VISUALIZER_MARGIN_HORIZONTAL}
                 />
               ))}
             </Group>

@@ -57,35 +57,51 @@ export function useChapterGestures({
       offsetY.value = translateY.value;
     })
     .onUpdate((e) => {
-      const scaledWidth = widthWindow * scale.value; // ancho real del contenido
-      const scaledTotalHeight = totalHeight * scale.value;
+      // const scaledWidth = containerLayout.width * scale.value; // ancho real del contenido
+      // const scaledTotalHeight = totalHeight * scale.value;
+      const _scale = 1 / scale.value;
 
       // Límites correctos (el contenido nunca puede quedar con espacio en blanco innecesario)
-      const maxTransX = Math.min(0, widthWindow - scaledWidth);
-      const maxTransY = Math.min(0, containerLayout.height - scaledTotalHeight);
+      const maxTransX = Math.min(
+        0,
+        containerLayout.width * _scale - containerLayout.width,
+      );
+      const maxTransY = Math.min(
+        0,
+        containerLayout.height * _scale - totalHeight,
+      );
 
-      const nextX = offsetX.value + e.translationX;
-      const nextY = offsetY.value + e.translationY;
+      console.log('X ->', maxTransX, 'Y ->', maxTransY);
+
+      const nextX = offsetX.value + e.translationX * _scale;
+      const nextY = offsetY.value + e.translationY * _scale;
 
       // Clamp inmediato durante el drag
       translateX.value = Math.max(maxTransX, Math.min(0, nextX));
       translateY.value = Math.max(maxTransY, Math.min(0, nextY));
+
+      console.log('TX ->', translateX.value, 'TY ->', translateY.value);
     })
     .onEnd((e) => {
+      const _scale = 1 / scale.value;
+
       // Mantenemos los límites en el onEnd para que la inercia (decay) también los respete
-      const MaxScrollX = Math.min(0, widthWindow - widthWindow * scale.value);
+      const MaxScrollX = Math.min(
+        0,
+        containerLayout.width * _scale - containerLayout.width,
+      );
       const MaxScrollY = Math.min(
         0,
-        containerLayout.height - totalHeight * scale.value,
+        containerLayout.height * _scale - totalHeight,
       );
 
       translateX.value = withDecay({
-        velocity: e.velocityX,
+        velocity: e.velocityX * _scale,
         clamp: [MaxScrollX, 0],
         rubberBandEffect: false,
       });
       translateY.value = withDecay({
-        velocity: e.velocityY,
+        velocity: e.velocityY * _scale,
         clamp: [MaxScrollY, 0],
         rubberBandEffect: false,
       });
