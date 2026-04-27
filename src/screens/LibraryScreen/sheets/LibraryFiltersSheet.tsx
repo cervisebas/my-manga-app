@@ -84,7 +84,8 @@ export const LibraryFiltersSheet = forwardRef(function (
       scrapperId.current,
       filters.filter(
         (val) =>
-          val.selectedValue || val.options?.some((val) => val.selectedValue),
+          val.selectedValue !== undefined ||
+          val.options?.some((val) => val.selectedValue !== undefined),
       ),
     );
     refBottomSheet.current?.hide();

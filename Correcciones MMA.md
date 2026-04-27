@@ -14,8 +14,15 @@
 - [x] Ocultar "Marcar como visto" al cambiar de capitulo en el visor
 - [ ] Añadir seccion "Continuar leyendo" en el inicio (solo si esta guardado por un estado de usuario {"Pendiente", "Leyendo", etc})
 - [ ] Añadir seccion "Continuar leyendo" en la ventana de información de un libro
-- [ ] Priorizar el valor seleccionado del usuario en vez del por defecto en los filtros de busqueda
-- [ ] Arreglar ripple de los botones en los filtros de busqueda
+- [x] Priorizar el valor seleccionado del usuario en vez del por defecto en los filtros de busqueda
+- [x] Arreglar ripple de los botones en los filtros de busqueda
+- [x] Los filtros de "Contenido" no se aplican
+- [ ] Añadir ventana de "Géneros" [Crear método]
+- [ ] Añadir sección de autores en la vista de información de un libro
+- [ ] Añadir ventana "Autor" dónde se muestren todas las obras del mismo [Crear método]
+- [ ] Borrar marco negro de la derecha (posiblemente sea algun calculo de la limitación de handler "pan" [width - width * scale])
+- [ ] Bajar la sensibilidad de movimiento al hacer zoom
+- [ ] Añadir filtro de idioma en MangaDex
 
 - [ ] Añadir opción de seleccionar que servicios se quiere usar y ordenar los mismos
 

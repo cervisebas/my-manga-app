@@ -78,7 +78,7 @@ export function LibraryScreen(_props: IProps) {
         let _total = 0;
 
         for (const option of curr.options!) {
-          if (option.selectedValue) {
+          if (option.selectedValue !== undefined) {
             _total++;
           }
         }
