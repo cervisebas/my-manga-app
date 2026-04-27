@@ -22,7 +22,7 @@ export function useChapterGestures({
   scale,
   translateX,
   translateY,
-  widthWindow,
+  // widthWindow,
   containerLayout,
   totalHeight,
 }: Props) {
@@ -144,11 +144,18 @@ export function useChapterGestures({
         nextY = tapY - worldY * targetScale;
       }
 
-      const scaledWidth = widthWindow * targetScale;
-      const scaledHeight = totalHeight * targetScale;
+      // const scaledWidth = widthWindow * targetScale;
+      // const scaledHeight = totalHeight * targetScale;
+      const _scale = 1 / scale.value;
 
-      const maxTransX = Math.min(0, widthWindow - scaledWidth);
-      const maxTransY = Math.min(0, containerLayout.height - scaledHeight);
+      const maxTransX = Math.min(
+        0,
+        containerLayout.width * _scale - containerLayout.width,
+      );
+      const maxTransY = Math.min(
+        0,
+        containerLayout.height * _scale - totalHeight,
+      );
 
       scale.value = withTiming(targetScale, { duration: 220 });
 
