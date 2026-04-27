@@ -6,6 +6,7 @@ import { BookChapterListScreen } from '@/screens/BookChapterListScreen/BookChapt
 import { ChapterViewScreen } from '@/screens/ChapterViewScreen/ChapterViewScreen';
 import { useEffect } from 'react';
 import BootSplash from 'react-native-bootsplash';
+import { HistoryScreen } from '@/screens/HistoryScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -35,6 +36,7 @@ export function NativeStackNavigation() {
         component={BookChapterListScreen}
       />
       <Stack.Screen name={'chapter-view'} component={ChapterViewScreen} />
+      <Stack.Screen name={'history-chapters'} component={HistoryScreen} />
     </Stack.Navigator>
   );
 }

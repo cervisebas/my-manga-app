@@ -12,6 +12,8 @@ import { goToChapterView } from '@/utils/goToChapterView';
 import { IScrappingService } from '@/api/interfaces/IScrappingService';
 import { ChapterViewedInterface } from '@/database/interfaces/ChapterViewedInterface';
 import { BookChapterHistory } from '@/database/classes/BookChapterHistory';
+import { goToBookInfo } from '@/utils/goToBookInfo';
+import { getInstanceById } from '@/api/utils/getInstanceById';
 
 export class ChapterOptions {
   private bookInfo: BookInfoInterface;
@@ -25,6 +27,7 @@ export class ChapterOptions {
 
   private activeChapterView: boolean;
   private hideViewedOption = false;
+  private showBookInfo = false;
 
   constructor(
     bookInfo: BookInfoInterface,
@@ -33,6 +36,7 @@ export class ChapterOptions {
     navigation?: NavigationProp<ReactNavigation.RootParamList>,
     activeChapterView?: boolean,
     hideViewedOption?: boolean,
+    showBookInfo?: boolean,
   ) {
     this.bookInfo = bookInfo;
     this.chapter = chapter;
@@ -45,6 +49,7 @@ export class ChapterOptions {
 
     this.activeChapterView = activeChapterView ?? false;
     this.hideViewedOption = hideViewedOption ?? false;
+    this.showBookInfo = showBookInfo ?? false;
 
     this.makeOptions();
     this.makeInformation();
@@ -130,6 +135,19 @@ export class ChapterOptions {
         label: 'Disponible en español',
         leftIcon: 'web',
         description: spanish || spanishLatam ? `Sí (${langShow})` : 'No',
+      });
+    }
+
+    if (this.showBookInfo) {
+      this.information.push({
+        label: 'Nombre del libro',
+        leftIcon: 'book-outline',
+        description: this.bookInfo.title,
+        rightIcon: 'arrow-right',
+        onPress: () => {
+          const instance = getInstanceById(this.bookInfo.provider);
+          goToBookInfo(instance, this.bookInfo);
+        },
       });
     }
 

@@ -26,7 +26,7 @@ export function useChapterPosition(
 
     if (position) {
       console.info(
-        `Guardando posición: [X => ${position.positionX} | Y => ${position.positionY} | Z => ${position.positionZ}]`,
+        `Guardando posición: [X => ${position.positionX} | Y => ${position.positionY} | Z => ${position.positionZ} | P => ${position.progress}]`,
       );
 
       BookChapterHistory.updateChapterPosition(

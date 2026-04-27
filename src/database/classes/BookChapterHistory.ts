@@ -1,8 +1,12 @@
-import { and, eq, sql } from 'drizzle-orm';
+import { and, desc, eq, sql } from 'drizzle-orm';
 import { db } from '../constants/database';
 import { DatabaseHandleErrors } from '../decorators/DatabaseHandleErrors';
 import { BookChapterHistoryModel } from '../schemas/BookChapterHistoryModel';
 import { BookUserChapterBookHistoryModel } from '../schemas/BookUserChapterBookHistoryModel';
+import { BookInfoModel } from '../schemas/BookInfoModel';
+import { BookChapterModel } from '../schemas/BookChapterModel';
+import { DatabaseTableName } from '../enums/DatabaseTableName';
+import { BookHistoryItem } from '../interfaces/BookHistoryItem';
 
 export class BookChapterHistory {
   @DatabaseHandleErrors()
@@ -49,6 +53,7 @@ export class BookChapterHistory {
           progressY: sql`excluded.progressY`,
           progressX: sql`excluded.progressX`,
           progressZ: sql`excluded.progressZ`,
+          progress: sql`excluded.progress`,
         },
       });
   }
@@ -74,5 +79,59 @@ export class BookChapterHistory {
       );
 
     return progress;
+  }
+
+  @DatabaseHandleErrors()
+  public static async getHistory() {
+    const data: BookHistoryItem[] = [];
+    const historySaveds: number[] = [];
+
+    const infoSaved = await db
+      .select()
+      .from(BookUserChapterBookHistoryModel)
+      .innerJoin(
+        BookChapterModel,
+        eq(BookUserChapterBookHistoryModel.id_chapter, BookChapterModel.id),
+      )
+      .innerJoin(
+        BookInfoModel,
+        eq(BookChapterModel.id_bookinfo, BookInfoModel.id),
+      )
+      .orderBy(desc(BookUserChapterBookHistoryModel.updateAt));
+
+    for (const item of infoSaved) {
+      const info = item[DatabaseTableName.BOOKS_INFO];
+      const chapter = item[DatabaseTableName.BOOK_CHAPTERS];
+      const history = item[DatabaseTableName.BOOK_USER_CHAPTER_BOOK_HISTORY];
+
+      if (historySaveds.includes(history.id_chapter)) {
+        continue;
+      }
+
+      historySaveds.push(history.id_chapter);
+      data.push({
+        bookInfo: {
+          id: info.id,
+          provider: info.provider,
+          path: info.path,
+          url: info.url,
+          title: info.title,
+          altTitles: info.altTitles ?? [],
+          picture: info.picture,
+          type: info.type,
+        },
+        chapter: {
+          id: chapter.id,
+          title: chapter.title,
+          chapter_number: chapter.chapter_number,
+          options: [],
+        },
+        option_path: history.path_option,
+        progress: history.progress,
+        date: history.updateAt,
+      });
+    }
+
+    return data;
   }
 }

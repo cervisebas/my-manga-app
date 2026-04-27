@@ -9,7 +9,7 @@ import {
 } from '@/common/components/BookStatusTabs';
 import { UserBookStatus } from '@/api/shared/enums/UserBookStatus';
 import { BookInfoInterface } from '@/api/shared/interfaces/BookInfoInterface';
-import { refDialogs } from '@/constants/Refs';
+import { refDialogs, refNavegation } from '@/constants/Refs';
 import { DatabaseError } from '@/database/errors/DatabaseError';
 import { useTableChanges } from '@/database/hooks/useTableChange';
 import { DatabaseTableName } from '@/database/enums/DatabaseTableName';
@@ -96,6 +96,10 @@ export function SettingScreen() {
     return item.path;
   };
 
+  const goToHistoryScreen = () => {
+    refNavegation.current?.navigate('history-chapters');
+  };
+
   // Effects
   useEffect(() => {
     loadData();
@@ -110,6 +114,7 @@ export function SettingScreen() {
     >
       <AppbarHeader>
         <Appbar.Content title={'Mi Perfil'} />
+        <Appbar.Action icon={'history'} onPress={goToHistoryScreen} />
       </AppbarHeader>
 
       <BookStatusTabs
