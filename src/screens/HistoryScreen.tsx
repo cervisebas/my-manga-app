@@ -16,7 +16,7 @@ import { ListRenderItemInfo } from '@shopify/flash-list';
 import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
-import { Appbar, Divider, useTheme } from 'react-native-paper';
+import { Appbar, Divider, Icon, Text, useTheme } from 'react-native-paper';
 
 type IProps = NativeStackScreenProps<ParamListBase, 'history-chapters'>;
 
@@ -138,6 +138,18 @@ export function HistoryScreen(props: IProps) {
           top: 8,
         }}
         ItemSeparatorComponent={() => <Divider />}
+        contentContainerStyle={{
+          flexGrow: data.length ? undefined : 1,
+        }}
+        ListEmptyComponent={
+          <View
+            className={'flex-1 flex-col items-center justify-center gap-[12]'}
+          >
+            <Icon source={'playlist-remove'} size={64} />
+
+            <Text>No hay elementos en el historial</Text>
+          </View>
+        }
       />
     </View>
   );
