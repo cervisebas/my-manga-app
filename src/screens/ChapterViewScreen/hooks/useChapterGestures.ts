@@ -71,16 +71,12 @@ export function useChapterGestures({
         containerLayout.height * _scale - totalHeight,
       );
 
-      console.log('X ->', maxTransX, 'Y ->', maxTransY);
-
       const nextX = offsetX.value + e.translationX * _scale;
       const nextY = offsetY.value + e.translationY * _scale;
 
       // Clamp inmediato durante el drag
       translateX.value = Math.max(maxTransX, Math.min(0, nextX));
       translateY.value = Math.max(maxTransY, Math.min(0, nextY));
-
-      console.log('TX ->', translateX.value, 'TY ->', translateY.value);
     })
     .onEnd((e) => {
       const _scale = 1 / scale.value;

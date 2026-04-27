@@ -27,7 +27,7 @@ export interface ChapterViewVisualizerRef {
 }
 
 const UCanvas = withUniwind(Canvas);
-export const VISUALIZER_MARGIN_HORIZONTAL = 8;
+const VISUALIZER_MARGIN_HORIZONTAL = 8;
 
 export const ChapterViewVisualizer = forwardRef(
   (props: IProps, ref: React.Ref<ChapterViewVisualizerRef>) => {
