@@ -13,7 +13,6 @@ interface Props {
   scale: SharedValue<number>;
   translateX: SharedValue<number>;
   translateY: SharedValue<number>;
-  widthWindow: number;
   containerLayout: LayoutRectangle;
   totalHeight: number;
 }
@@ -22,7 +21,6 @@ export function useChapterGestures({
   scale,
   translateX,
   translateY,
-  // widthWindow,
   containerLayout,
   totalHeight,
 }: Props) {
@@ -144,9 +142,7 @@ export function useChapterGestures({
         nextY = tapY - worldY * targetScale;
       }
 
-      // const scaledWidth = widthWindow * targetScale;
-      // const scaledHeight = totalHeight * targetScale;
-      const _scale = 1 / scale.value;
+      const _scale = 1 / targetScale;
 
       const maxTransX = Math.min(
         0,

@@ -62,7 +62,6 @@ export const ChapterViewVisualizer = forwardRef(
       scale,
       translateX,
       translateY,
-      widthWindow,
       containerLayout,
       totalHeight,
     });
