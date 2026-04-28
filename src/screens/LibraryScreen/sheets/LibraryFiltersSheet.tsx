@@ -1,6 +1,10 @@
 import { SearchFilterType } from '@/api/shared/enums/SearchFilterType';
-import { SearchFilter } from '@/api/shared/interfaces/SearchFilter';
+import {
+  SearchFilter,
+  SearchFilterSection,
+} from '@/api/shared/interfaces/SearchFilter';
 import { BottomSheet, BottomSheetRef } from '@/common/components/BottomSheet';
+import { DropdownListItem } from '@/common/components/DropdownListItem';
 import { ItemWithIcon } from '@/common/components/ItemWithIcon';
 import { UButton } from '@/common/components/UniwindElements';
 import { useSafeArea } from '@/common/hooks/useSafeArea';
@@ -15,11 +19,17 @@ import { View } from 'react-native';
 import { Checkbox, List, useTheme } from 'react-native-paper';
 
 export interface LibraryFiltersSheetRef {
-  open(scrapperId: string, filters: SearchFilter[]): void;
+  open(
+    scrapperId: string,
+    filters: (SearchFilter | SearchFilterSection)[],
+  ): void;
 }
 
 interface IProps {
-  onFilter(scrapperId: string, filters: SearchFilter[]): void;
+  onFilter(
+    scrapperId: string,
+    filters: (SearchFilter | SearchFilterSection)[],
+  ): void;
 }
 
 export const LibraryFiltersSheet = forwardRef(function (
@@ -29,7 +39,9 @@ export const LibraryFiltersSheet = forwardRef(function (
   const theme = useTheme();
   const { bottom, left, right } = useSafeArea(20);
 
-  const [filters, setFilters] = useState<SearchFilter[]>([]);
+  const [filters, setFilters] = useState<
+    (SearchFilter | SearchFilterSection)[]
+  >([]);
 
   const scrapperId = useRef('');
   const refBottomSheet = useRef<BottomSheetRef>(null);
@@ -53,7 +65,29 @@ export const LibraryFiltersSheet = forwardRef(function (
     val: string | number | boolean,
     index: number,
     optionIndex?: number,
+    sectionIndex?: number,
   ) => {
+    if (sectionIndex !== undefined && 'sections' in filters[index]) {
+      setFilters((filters) =>
+        filters.map((filter, filterIndex) =>
+          filterIndex === index
+            ? {
+                ...filter,
+                sections:
+                  'sections' in filter
+                    ? filter.sections?.map((section, _sectionIndex) =>
+                        _sectionIndex === sectionIndex
+                          ? { ...section, selectedValue: val }
+                          : section,
+                      )
+                    : [],
+              }
+            : filter,
+        ),
+      );
+      return;
+    }
+
     if (optionIndex !== undefined && filters[index].options) {
       setFilters((filters) =>
         filters.map((filter, filterIndex) =>
@@ -85,7 +119,9 @@ export const LibraryFiltersSheet = forwardRef(function (
       filters.filter(
         (val) =>
           val.selectedValue !== undefined ||
-          val.options?.some((val) => val.selectedValue !== undefined),
+          val.options?.some((val) => val.selectedValue !== undefined) ||
+          ('sections' in val &&
+            val.sections.some((val) => val.selectedValue !== undefined)),
       ),
     );
     refBottomSheet.current?.hide();
@@ -179,8 +215,22 @@ export const LibraryFiltersSheet = forwardRef(function (
                     }}
                   />
                 ))
-              ) : filter.type === SearchFilterType.DROPDOWN ? (
-                <></>
+              ) : 'sections' in filter ? (
+                filter.sections.map((section, sectionIndex) =>
+                  section.type === SearchFilterType.DROPDOWN ? (
+                    <DropdownListItem
+                      key={`filter-seccion-${filter.label}-${section.label}`}
+                      title={section.label}
+                      value={section.selectedValue}
+                      options={section.options as never}
+                      onChange={(val) =>
+                        changeValue(val, filterIndex, undefined, sectionIndex)
+                      }
+                    />
+                  ) : (
+                    <></>
+                  ),
+                )
               ) : (
                 <></>
               )}

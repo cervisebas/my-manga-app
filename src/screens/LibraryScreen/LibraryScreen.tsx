@@ -16,7 +16,10 @@ import {
   LibraryFiltersSheetRef,
 } from './sheets/LibraryFiltersSheet';
 import { getInstanceById } from '@/api/utils/getInstanceById';
-import { SearchFilter } from '@/api/shared/interfaces/SearchFilter';
+import {
+  SearchFilter,
+  SearchFilterSection,
+} from '@/api/shared/interfaces/SearchFilter';
 
 type IProps = NativeBottomTabScreenProps<ParamListBase, 'Biblioteca'>;
 
@@ -28,7 +31,9 @@ export function LibraryScreen(_props: IProps) {
   const theme = useTheme();
 
   // States
-  const [filters, setFilters] = useState<Record<string, SearchFilter[]>>(
+  const [filters, setFilters] = useState<
+    Record<string, (SearchFilter | SearchFilterSection)[]>
+  >(
     Scrappers.reduce(
       (prev, scrapper) => ({ ...prev, [scrapper.getIdName()]: [] }),
       {},
@@ -65,7 +70,10 @@ export function LibraryScreen(_props: IProps) {
     };
   };
 
-  const onFilter = (id: string, filter: SearchFilter[]) => {
+  const onFilter = (
+    id: string,
+    filter: (SearchFilter | SearchFilterSection)[],
+  ) => {
     console.info('FILTER ->', id, filter);
     setFilters((filters) => ({ ...filters, [id]: filter }));
 
@@ -79,6 +87,18 @@ export function LibraryScreen(_props: IProps) {
 
         for (const option of curr.options!) {
           if (option.selectedValue !== undefined) {
+            _total++;
+          }
+        }
+
+        return prev + _total;
+      }
+
+      if ('sections' in curr) {
+        let _total = 0;
+
+        for (const section of curr.sections) {
+          if (section.selectedValue !== undefined) {
             _total++;
           }
         }
@@ -113,6 +133,10 @@ export function LibraryScreen(_props: IProps) {
         if (_filter) {
           _filter.selectedValue = filter.selectedValue;
           _filter.options = filter.options;
+
+          if ('sections' in _filter && 'sections' in filter) {
+            _filter.sections = filter.sections;
+          }
         }
       }
     }

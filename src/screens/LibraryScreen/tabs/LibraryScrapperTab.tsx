@@ -1,7 +1,10 @@
 import { IScrappingService } from '@/api/interfaces/IScrappingService';
 import { ApiError } from '@/api/shared/errors/ApiError';
 import { BookInfoInterface } from '@/api/shared/interfaces/BookInfoInterface';
-import { SearchFilter } from '@/api/shared/interfaces/SearchFilter';
+import {
+  SearchFilter,
+  SearchFilterSection,
+} from '@/api/shared/interfaces/SearchFilter';
 import { BookItem } from '@/common/components/BookItem';
 import { LoadingErrorContent } from '@/common/components/LoadingErrorContent';
 import SafeArea from '@/common/components/SafeArea';
@@ -14,7 +17,7 @@ import { View } from 'react-native';
 import { Icon, Text } from 'react-native-paper';
 
 interface IProps {
-  filters: SearchFilter[];
+  filters: (SearchFilter | SearchFilterSection)[];
   searchValue: string;
   instance: IScrappingService;
   updateLoading(state: boolean): void;

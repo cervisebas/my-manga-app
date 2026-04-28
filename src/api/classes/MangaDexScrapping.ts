@@ -19,6 +19,7 @@ import type { ChapterInterface } from '@api/shared/interfaces/ChapterInterface';
 import type {
   SearchFilter,
   SearchFilterOption,
+  SearchFilterSection,
 } from '@api/shared/interfaces/SearchFilter';
 import type { SearchPaginated } from '@api/shared/interfaces/SearchPaginated';
 import type { SearchResult } from '@api/shared/interfaces/SearchResult';
@@ -32,61 +33,75 @@ import { ApiHandleErrors } from '../shared/decorators/ApiHandleErrors';
 import { OrderChapters } from '../shared/decorators/OrderChapters';
 import expoInsecureFetch from '@modules/expo-insecure-fetch';
 import { UserAgents } from '../shared/constants/UserAgents';
+import { filtersToArray } from '../shared/utils/filtersToArray';
 
-/* const ORDER_OPTIONS: SearchFilterOption[] = [
+const ORDER_OPTIONS: SearchFilterOption[] = [
   {
     label: 'Mejor coincidencia',
-    value: 'relevance.desc',
+    queryKey: 'order[relevance]',
+    value: '{{relevance}}desc',
   },
   {
     label: 'Ultimos subidos',
-    value: 'latestUploadedChapter.desc',
+    queryKey: 'order[latestUploadedChapter]',
+    value: '{{latestUploadedChapter}}desc',
   },
   {
     label: 'Subida más antigua',
-    value: 'latestUploadedChapter.asc',
+    queryKey: 'order[latestUploadedChapter]',
+    value: '{{latestUploadedChapter}}asc',
   },
   {
     label: 'Titulo ascendente',
-    value: 'title.asc',
+    queryKey: 'order[title]',
+    value: '{{title}}asc',
   },
   {
     label: 'Titulo descendente',
-    value: 'title.desc',
+    queryKey: 'order[title]',
+    value: '{{title}}desc',
   },
   {
     label: 'Mayor calificación',
-    value: 'rating.desc',
+    queryKey: 'order[rating]',
+    value: '{{rating}}desc',
   },
   {
     label: 'Menor calificación',
-    value: 'rating.asc',
+    queryKey: 'order[rating]',
+    value: '{{rating}}asc',
   },
   {
     label: 'Mayores seguidos',
-    value: 'followedCount.desc',
+    queryKey: 'order[followedCount]',
+    value: '{{followedCount}}desc',
   },
   {
     label: 'Menores seguidos',
-    value: 'followedCount.asc',
+    queryKey: 'order[followedCount]',
+    value: '{{followedCount}}asc',
   },
   {
     label: 'Recién añadidos',
-    value: 'createdAt.desc',
+    queryKey: 'order[createdAt]',
+    value: '{{createdAt}}desc',
   },
   {
     label: 'Añadidos más antiguos',
-    value: 'createdAt.asc',
+    queryKey: 'order[createdAt]',
+    value: '{{createdAt}}asc',
   },
   {
     label: 'Año ascendente',
-    value: 'year.asc',
+    queryKey: 'order[year]',
+    value: '{{year}}asc',
   },
   {
     label: 'Año descentente',
-    value: 'year.desc',
+    queryKey: 'order[year]',
+    value: '{{year}}desc',
   },
-]; */
+];
 
 const GENDER_OPTIONS: SearchFilterOption[] = [
   {
@@ -473,14 +488,18 @@ export class MangaDexScrapping implements IScrappingService {
     return 'MangaDex';
   }
 
-  public getSearchFilters(): SearchFilter[] {
+  public getSearchFilters(): (SearchFilter | SearchFilterSection)[] {
     return [
-      /* {
-        label: 'Ordenar por',
-        type: SearchFilterType.DROPDOWN,
-        queryKey: 'order',
-        options: ORDER_OPTIONS,
-      }, */
+      {
+        label: 'Filtros de busqueda',
+        sections: [
+          {
+            label: 'Ordenar por',
+            type: SearchFilterType.DROPDOWN,
+            options: ORDER_OPTIONS,
+          },
+        ],
+      },
       {
         label: 'Filtro de generos',
         type: SearchFilterType.CHECKBOXS,
@@ -601,7 +620,7 @@ export class MangaDexScrapping implements IScrappingService {
   @ApiHandleErrors()
   public async search(
     value: string,
-    filters: SearchFilter[],
+    filters: (SearchFilter | SearchFilterSection)[],
     paginated?: SearchPaginated,
   ): Promise<SearchResult> {
     const offset = paginated?.offset ?? 0;
@@ -613,17 +632,9 @@ export class MangaDexScrapping implements IScrappingService {
 
     url.searchParams.append('title', value);
 
-    for (const filter of filters) {
-      if (!filter.options) {
-        url.searchParams.append(filter.queryKey, String(filter.selectedValue));
-        continue;
-      }
-
-      for (const item of filter.options) {
-        if (item.selectedValue) {
-          url.searchParams.append(filter.queryKey, String(item.value));
-        }
-      }
+    const _filters = filtersToArray(filters);
+    for (const [key, value] of _filters) {
+      url.searchParams.append(key, value);
     }
 
     const { data } = await axios.get<MangaDexSearchResponse>(url.href, {

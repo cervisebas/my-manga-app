@@ -25,13 +25,13 @@
 - [ ] Añadir filtro de idioma en MangaDex
 - [x] El porcentaje de traducción se calcula por el nivel de opciones no de capitulos traducidos
 - [x] En el manga "Takane no Hana wa Fumaretai!" salta un error interno
-- [ ] Añadir filtro de orden en MangaDex
-- [ ] Ahora el doble tap no va a dónde se desea ir
+- [x] Añadir filtro de orden en MangaDex
+- [x] Ahora el doble tap no va a dónde se desea ir
 
 - [ ] Añadir opción de seleccionar que servicios se quiere usar y ordenar los mismos
 
 - [ ] Implementar el filtro "TEXT" en el bottom sheet de filtros de la biblioteca
-- [ ] Implementar el filtro "DROPDOWN" en el bottom sheet de filtros de la biblioteca
+- [x] Implementar el filtro "DROPDOWN" en el bottom sheet de filtros de la biblioteca
 - [ ] Implementar el filtro "MULTI_DROPDOWN" en el bottom sheet de filtros de la biblioteca
 - [ ] Implementar el filtro "RADIO" en el bottom sheet de filtros de la biblioteca
 - [ ] Implementar el filtro "SELECT_LIST" en el bottom sheet de filtros de la biblioteca

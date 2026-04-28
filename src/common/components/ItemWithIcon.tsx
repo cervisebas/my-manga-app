@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import { List, ListItemProps } from 'react-native-paper';
 
-interface IProps {
+export interface ItemWithIconProps {
   title: string;
   description?: string | React.ReactNode;
   leftIcon?: string | ImageSourcePropType;
@@ -25,7 +25,7 @@ interface IProps {
   right?: ListItemProps['right'];
   onPress?: () => void;
 }
-export function ItemWithIcon(props: IProps) {
+export function ItemWithIcon(props: ItemWithIconProps) {
   return (
     <List.Item
       title={props.title}

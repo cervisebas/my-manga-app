@@ -44,6 +44,7 @@
     "react-native-bootsplash": "^7.3.1",
     "react-native-bottom-tabs": "^1.1.0",
     "react-native-edge-to-edge": "^1.8.1",
+    "react-native-element-dropdown": "^2.12.4",
     "react-native-enriched-markdown": "^0.4.1",
     "react-native-gesture-handler": "~2.30.0",
     "react-native-image-viewing": "0.2.2",
