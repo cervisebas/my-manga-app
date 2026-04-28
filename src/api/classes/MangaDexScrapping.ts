@@ -983,7 +983,7 @@ export class MangaDexScrapping implements IScrappingService {
         this.getAllChapters(id, url),
       ]);
 
-      const RatingBook = Object.values(RatingObject)[0];
+      const RatingBook = Object.values(RatingObject ?? {})?.[0];
 
       const CoverArt = BookInfo.relationships.find(
         (v) => v.type === RelationShipType.CoverArt,
@@ -999,7 +999,7 @@ export class MangaDexScrapping implements IScrappingService {
         ? ['es', BookInfo.attributes.description['es']]
         : BookInfo.attributes.description?.['en']
           ? ['en', BookInfo.attributes.description['en']]
-          : Object.entries(BookInfo.attributes.description ?? {})[0];
+          : (Object.entries(BookInfo.attributes.description ?? {})?.[0] ?? '');
 
       return {
         provider: this.getIdName(),
@@ -1020,7 +1020,9 @@ export class MangaDexScrapping implements IScrappingService {
           id +
           '/' +
           (CoverArt?.attributes?.fileName ?? ''),
-        stars: Number(RatingBook?.rating.bayesian.toFixed(2)),
+        stars: RatingBook?.rating?.bayesian
+          ? Number(RatingBook?.rating?.bayesian?.toFixed(2))
+          : undefined,
         type: BookType.MANGA,
 
         language: this.getLanguageEnum(BookInfo.attributes.originalLanguage),

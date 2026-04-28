@@ -24,7 +24,7 @@
 - [x] Bajar la sensibilidad de movimiento al hacer zoom
 - [ ] Añadir filtro de idioma en MangaDex
 - [x] El porcentaje de traducción se calcula por el nivel de opciones no de capitulos traducidos
-- [ ] En el manga "Takane no Hana wa Fumaretai!" salta un error interno
+- [x] En el manga "Takane no Hana wa Fumaretai!" salta un error interno
 - [ ] Añadir filtro de orden en MangaDex
 - [ ] Ahora el doble tap no va a dónde se desea ir
 

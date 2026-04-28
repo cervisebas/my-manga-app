@@ -18,6 +18,7 @@ export function useBookInfo(
 
   const loadData = async () => {
     setLoading(true);
+    setError(null);
 
     let cached: boolean = false;
 
