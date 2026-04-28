@@ -18,7 +18,12 @@ export function BookInfoTranslateProgress(props: IProps) {
     const progress = new Map<Language, number>();
 
     for (const chapter of props.chapters) {
-      for (const chapterLanguage of chapter.languages ?? []) {
+      const languages = chapter.languages?.reduce(
+        (prev, curr) => (prev.includes(curr) ? prev : [...prev, curr]),
+        [] as Language[],
+      );
+
+      for (const chapterLanguage of languages ?? []) {
         if (props.languages.includes(chapterLanguage)) {
           progress.set(
             chapterLanguage,
