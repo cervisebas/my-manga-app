@@ -31,7 +31,7 @@
 - [x] Encoger la imagen de portada en el historial
 - [ ] Hacer que la sección "Lenguajes" sea opcional a la vista
 - [x] Al minimizar la app con el visor abierto, guardar última posición
-- [ ] Establecer un máximo de "1" en el progreso de visión de un manga
+- [x] Establecer un máximo de "1" en el progreso de visión de un manga
 
 - [ ] Añadir opción de seleccionar que servicios se quiere usar y ordenar los mismos
 

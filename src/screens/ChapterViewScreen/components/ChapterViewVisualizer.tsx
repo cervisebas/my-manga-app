@@ -68,14 +68,16 @@ export const ChapterViewVisualizer = forwardRef(
 
     useImperativeHandle(ref, () => ({
       getPosition() {
+        const progress = -(
+          (translateY.value - containerLayout.height) /
+          totalHeight
+        );
+
         return {
           positionX: translateX.value,
           positionY: translateY.value,
           positionZ: scale.value,
-          progress: -(
-            (translateY.value - containerLayout.height) /
-            totalHeight
-          ),
+          progress: Math.min(progress, 1),
         };
       },
       setPosition(pos) {
