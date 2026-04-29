@@ -12,6 +12,10 @@ export function useInterval(
     interval.current = setInterval(callback, ms);
   }
 
+  function started() {
+    return interval.current !== undefined;
+  }
+
   useEffect(() => {
     if (autoStart) {
       start();
@@ -24,5 +28,5 @@ export function useInterval(
     };
   }, []);
 
-  return { start };
+  return { start, started };
 }

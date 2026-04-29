@@ -61,7 +61,6 @@ export class ChapterOptions {
 
   private makeOptions() {
     const highlightOption = this.highlightOption;
-    console.log('highlightOption:', highlightOption);
 
     for (const option of this.chapter.options) {
       const highlight =

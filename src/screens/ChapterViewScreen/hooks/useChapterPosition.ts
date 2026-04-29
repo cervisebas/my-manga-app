@@ -90,7 +90,15 @@ export function useChapterPosition(
 
   useAppState(
     (state) => {
-      pauseAutoSave.current = state === AppStateStatusType.BACKGROUND;
+      const _pauseAutoSave = state === AppStateStatusType.BACKGROUND;
+
+      console.info('Auto save Inited ->', autoSave.started());
+      console.info('Pause auto save ->', _pauseAutoSave);
+      if (_pauseAutoSave && autoSave.started()) {
+        saveCurrentPosition();
+      }
+
+      pauseAutoSave.current = _pauseAutoSave;
     },
     [AppStateStatusType.ACTIVE, AppStateStatusType.BACKGROUND],
   );
