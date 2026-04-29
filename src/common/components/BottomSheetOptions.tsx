@@ -7,11 +7,12 @@ import React, {
   useState,
 } from 'react';
 import { BottomSheet, BottomSheetRef } from './BottomSheet';
-import { List, ListItemProps } from 'react-native-paper';
+import { List, ListItemProps, useTheme } from 'react-native-paper';
 import { ItemWithIcon } from './ItemWithIcon';
 import { UDivider } from './UniwindElements';
 import { ImageSourcePropType } from 'react-native';
 import { NavigationProp } from '@react-navigation/native';
+import Color from 'color';
 
 export interface BottomSheetOptionsInterface {
   label: string;
@@ -22,6 +23,7 @@ export interface BottomSheetOptionsInterface {
   rightIcon?: string | ImageSourcePropType;
   rightIconSize?: number;
   rightIconColor?: string;
+  highlight?: boolean;
   disabled?: boolean;
   selected?: boolean;
   clossable?: boolean;
@@ -45,6 +47,8 @@ export const BottomSheetOptions = forwardRef(function (
   _: object,
   ref: React.Ref<BottomSheetOptionsRef>,
 ) {
+  const theme = useTheme();
+
   // States
   const [title, setTitle] = useState('');
   const [section, setSection] = useState(false);
@@ -55,6 +59,11 @@ export const BottomSheetOptions = forwardRef(function (
 
   // Refs
   const refBottomSheet = useRef<BottomSheetRef>(null);
+
+  const highlightColor = Color(theme.colors.onPrimaryContainer)
+    .fade(0.85)
+    .rgb()
+    .string();
 
   const sections = useMemo(() => {
     if (section && !Array.isArray(options)) {
@@ -83,6 +92,9 @@ export const BottomSheetOptions = forwardRef(function (
             rightIconSize={value.rightIconSize}
             rightIconColor={value.rightIconColor}
             description={value.description}
+            style={{
+              backgroundColor: value.highlight ? highlightColor : undefined,
+            }}
             right={value.right}
             onPress={
               value.onPress

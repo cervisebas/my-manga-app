@@ -55,8 +55,11 @@ export function HistoryScreen(props: IProps) {
       const chapter = data.chapters?.find(
         (chapter) => chapter.id === item.chapter.id,
       );
+      const option = chapter?.options.find(
+        (option) => option.url === item.option_path,
+      );
 
-      if (!chapter) {
+      if (!chapter || !option) {
         return;
       }
 
@@ -68,6 +71,7 @@ export function HistoryScreen(props: IProps) {
         undefined,
         undefined,
         true,
+        option,
       );
 
       chapterHandler.show();

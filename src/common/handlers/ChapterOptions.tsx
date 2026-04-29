@@ -14,6 +14,7 @@ import { ChapterViewedInterface } from '@/database/interfaces/ChapterViewedInter
 import { BookChapterHistory } from '@/database/classes/BookChapterHistory';
 import { goToBookInfo } from '@/utils/goToBookInfo';
 import { getInstanceById } from '@/api/utils/getInstanceById';
+import { ChapterOptionInterface } from '@/api/shared/interfaces/ChapterOptionInterface';
 
 export class ChapterOptions {
   private bookInfo: BookInfoInterface;
@@ -28,6 +29,7 @@ export class ChapterOptions {
   private activeChapterView: boolean;
   private hideViewedOption = false;
   private showBookInfo = false;
+  private highlightOption?: ChapterOptionInterface;
 
   constructor(
     bookInfo: BookInfoInterface,
@@ -37,6 +39,7 @@ export class ChapterOptions {
     activeChapterView?: boolean,
     hideViewedOption?: boolean,
     showBookInfo?: boolean,
+    highlightOption?: ChapterOptionInterface,
   ) {
     this.bookInfo = bookInfo;
     this.chapter = chapter;
@@ -50,17 +53,30 @@ export class ChapterOptions {
     this.activeChapterView = activeChapterView ?? false;
     this.hideViewedOption = hideViewedOption ?? false;
     this.showBookInfo = showBookInfo ?? false;
+    this.highlightOption = highlightOption;
 
     this.makeOptions();
     this.makeInformation();
   }
 
   private makeOptions() {
+    const highlightOption = this.highlightOption;
+    console.log('highlightOption:', highlightOption);
+
     for (const option of this.chapter.options) {
+      const highlight =
+        option.url === highlightOption?.url ||
+        option.title === highlightOption?.title;
+
       this.options.push({
         label: option.title || 'Sin nombre',
         description: dayjs(option.date).format('DD-MM-YYYY'),
-        leftIcon: 'play',
+        leftIcon: highlight
+          ? this.showBookInfo
+            ? 'timer-play-outline'
+            : 'motion-play-outline'
+          : 'play',
+        highlight: highlight,
         right: option.language
           ? (props) => (
               <UImage

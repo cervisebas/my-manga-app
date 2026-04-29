@@ -85,6 +85,8 @@ export class ChapterSheetOptions {
             this.navigation,
             true,
             true,
+            undefined,
+            this.option,
           );
 
           chapterOptions.show();
@@ -116,6 +118,8 @@ export class ChapterSheetOptions {
             this.navigation,
             true,
             true,
+            undefined,
+            this.option,
           );
 
           chapterOptions.show();
@@ -142,6 +146,8 @@ export class ChapterSheetOptions {
             this.navigation,
             true,
             true,
+            undefined,
+            this.option,
           );
 
           chapterOptions.show();
