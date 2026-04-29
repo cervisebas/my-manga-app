@@ -21,7 +21,7 @@ import { getInstanceById } from '@/api/utils/getInstanceById';
 
 // type IProps = NativeBottomTabScreenProps<ParamListBase, 'Perfil'>;
 
-export function SettingScreen() {
+export function MiProfileScreen() {
   const theme = useTheme();
 
   // States

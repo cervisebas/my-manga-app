@@ -1,7 +1,7 @@
 import React from 'react';
 import { HomeScreen } from '@/screens/HomeScreen/HomeScreen';
 import { LibraryScreen } from '@/screens/LibraryScreen/LibraryScreen';
-import { SettingScreen } from '@/screens/SettingScreen';
+import { MiProfileScreen } from '@/screens/MiProfileScreen';
 import { createNativeBottomTabNavigator } from '@bottom-tabs/react-navigation';
 import { useTheme } from 'react-native-paper';
 import { tabBarIcon } from '@/utils/tabBarIcon';
@@ -36,7 +36,7 @@ export function BottomNavigation() {
     >
       <Tab.Screen name={'Populares'} component={HomeScreen} />
       <Tab.Screen name={'Biblioteca'} component={LibraryScreen} />
-      <Tab.Screen name={'Perfil'} component={SettingScreen} />
+      <Tab.Screen name={'Perfil'} component={MiProfileScreen} />
     </Tab.Navigator>
   );
 }
