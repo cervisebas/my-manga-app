@@ -88,6 +88,7 @@ export function HistoryScreen(props: IProps) {
   };
 
   const _renderItem = ({ item }: ListRenderItemInfo<BookHistoryItem>) => {
+    const instance = getInstanceById(item.bookInfo.provider);
     return (
       <BookChapterHistoryItem
         date={
@@ -96,6 +97,7 @@ export function HistoryScreen(props: IProps) {
             : undefined
         }
         bookName={item.bookInfo.title}
+        instance={instance}
         bookPicture={item.bookInfo.picture}
         chapterName={
           `Capítulo ${item.chapter.chapter_number}` +

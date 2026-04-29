@@ -28,6 +28,11 @@
 - [x] Añadir filtro de orden en MangaDex
 - [x] Ahora el doble tap no va a dónde se desea ir
 
+- [x] Encoger la imagen de portada en el historial
+- [ ] Hacer que la sección "Lenguajes" sea opcional a la vista
+- [ ] Al minimizar la app con el visor abierto, guardar última posición
+- [ ] Establecer un máximo de "1" en el progreso de visión de un manga
+
 - [ ] Añadir opción de seleccionar que servicios se quiere usar y ordenar los mismos
 
 - [ ] Implementar el filtro "TEXT" en el bottom sheet de filtros de la biblioteca
