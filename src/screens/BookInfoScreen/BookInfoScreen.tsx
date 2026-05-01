@@ -23,6 +23,7 @@ import { Language } from '@/api/shared/enums/Language';
 import { BookInfoTranslateProgress } from './components/BookInfoTranslateProgress';
 import { refImageViewer } from '@/constants/Refs';
 import { BookInfoStatus } from './components/BookInfoStatus';
+import { goToGenderList } from '@/utils/goToGenderList';
 
 type IProps = NativeStackScreenProps<ParamListBase, 'book-info'>;
 
@@ -169,7 +170,9 @@ export function BookInfoScreen(props: IProps) {
                   <Chip
                     key={`gender-${gender.value}`}
                     mode={'outlined'}
-                    // onPress={() => onPressGender(gender)}
+                    onPress={() => {
+                      goToGenderList(gender, scrapper);
+                    }}
                   >
                     {gender.name}
                   </Chip>

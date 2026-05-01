@@ -21,6 +21,9 @@
 - [x] En el manga "Takane no Hana wa Fumaretai!" salta un error interno
 - [x] Añadir filtro de orden en MangaDex
 - [x] Ahora el doble tap no va a dónde se desea ir
+- [ ] En la lista de capitulos no marca el highlight de opción usada en los capítulos vistos
+- [ ] Averiguar si se puede marcar el highlight en los capítulos no vistos
+- [ ] En los capítulos no vistos marcar promedio de las opciones más usadas
 
 - [x] Encoger la imagen de portada en el historial
 - [ ] Hacer que la sección "Lenguajes" sea opcional a la vista
@@ -36,7 +39,7 @@
 
 - [ ] Opción de ocultar los demás idiomas que no sea español
 
-- [ ] Añadir ventana de "Géneros" [Crear método]
+- [x] Añadir ventana de "Géneros" [Crear método]
 - [ ] Añadir sección de autores en la vista de información de un libro
 - [ ] Añadir ventana "Autor" dónde se muestren todas las obras del mismo [Crear método]
 

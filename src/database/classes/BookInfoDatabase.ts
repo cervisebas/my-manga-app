@@ -228,7 +228,7 @@ export class BookInfoDatabase {
     const genders = gendersRecords.map((g) => ({
       name: g.name,
       url: g.url ?? undefined,
-      value: g.value ?? undefined,
+      value: g.value ?? '',
     }));
 
     const staffRecords = await db

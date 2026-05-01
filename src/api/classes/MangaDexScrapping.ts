@@ -651,6 +651,30 @@ export class MangaDexScrapping implements IScrappingService {
     };
   }
 
+  @ApiHandleErrors()
+  public async searchByGender(
+    gender: string,
+    paginated?: SearchPaginated,
+  ): Promise<SearchResult> {
+    return this.search(
+      '',
+      [{ queryKey: 'includedTags[]', selectedValue: gender } as never],
+      paginated,
+    );
+  }
+
+  @ApiHandleErrors()
+  public async searchByAutor(
+    autor: string,
+    paginated?: SearchPaginated,
+  ): Promise<SearchResult> {
+    return this.search(
+      '',
+      [{ queryKey: 'artists[]', selectedValue: autor } as never],
+      paginated,
+    );
+  }
+
   private getStatus(status: string) {
     switch (status) {
       case 'ongoing':

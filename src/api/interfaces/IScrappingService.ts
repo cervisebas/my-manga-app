@@ -24,6 +24,14 @@ export interface IScrappingService {
     filters: (SearchFilter | SearchFilterSection)[],
     paginated?: SearchPaginated,
   ): Promise<SearchResult>;
+  searchByGender(
+    gender: string,
+    paginated?: SearchPaginated,
+  ): Promise<SearchResult>;
+  searchByAutor(
+    autor: string,
+    paginated?: SearchPaginated,
+  ): Promise<SearchResult>;
   bookInfo(url: string): Promise<BookInfoInterface>;
   getDataChapter(url: string): Promise<string[]>;
   loadChapterImage(url: string): Promise<string>;
