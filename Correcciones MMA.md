@@ -21,7 +21,7 @@
 - [x] En el manga "Takane no Hana wa Fumaretai!" salta un error interno
 - [x] Añadir filtro de orden en MangaDex
 - [x] Ahora el doble tap no va a dónde se desea ir
-- [ ] En la lista de capitulos no marca el highlight de opción usada en los capítulos vistos
+- [x] En la lista de capitulos no marca el highlight de opción usada en los capítulos vistos
 - [ ] Averiguar si se puede marcar el highlight en los capítulos no vistos
 - [ ] En los capítulos no vistos marcar promedio de las opciones más usadas
 

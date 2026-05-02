@@ -21,6 +21,9 @@ import { useViewedChapters } from '@/database/hooks/useViewedChapters';
 import { ChapterViewedInterface } from '@/database/interfaces/ChapterViewedInterface';
 import { ListRenderItemInfo } from '@shopify/flash-list';
 import { OverrideItemLayout } from '@/common/types/OverrideItemLayout';
+import { ChapterOptionInterface } from '@/api/shared/interfaces/ChapterOptionInterface';
+import { refDialogLoading } from '@/constants/Refs';
+import { BookChapterHistory } from '@/database/classes/BookChapterHistory';
 
 type IProps = NativeStackScreenProps<ParamListBase, 'book-chapter-list'>;
 
@@ -58,13 +61,32 @@ export function BookChapterListScreen(props: IProps) {
   const theme = useTheme();
 
   // Methods
-  const onClickChapter = (chapter: ChapterInterface) => {
-    return () => {
+  const onClickChapter = (chapter: ChapterViewedInterface) => {
+    return async () => {
+      let lastOption: ChapterOptionInterface | undefined = undefined;
+
+      if (chapter.viewed) {
+        try {
+          refDialogLoading.current?.show('Obteniendo información...');
+          lastOption = await BookChapterHistory.getLastOptionChapter(
+            chapter.id!,
+          );
+        } catch (error) {
+          console.error(error);
+        } finally {
+          refDialogLoading.current?.hide();
+        }
+      }
+
       const chapterOptions = new ChapterOptions(
         params.bookInfo,
         chapter,
         scrapper,
         props.navigation as never,
+        undefined,
+        undefined,
+        undefined,
+        lastOption,
       );
 
       chapterOptions.show();

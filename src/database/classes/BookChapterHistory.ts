@@ -7,6 +7,9 @@ import { BookInfoModel } from '../schemas/BookInfoModel';
 import { BookChapterModel } from '../schemas/BookChapterModel';
 import { DatabaseTableName } from '../enums/DatabaseTableName';
 import { BookHistoryItem } from '../interfaces/BookHistoryItem';
+import { BookChapterOptionModel } from '../schemas/BookChapterOptionModel';
+import { ChapterOptionInterface } from '@/api/shared/interfaces/ChapterOptionInterface';
+import dayjs from 'dayjs';
 
 export class BookChapterHistory {
   @DatabaseHandleErrors()
@@ -133,5 +136,42 @@ export class BookChapterHistory {
     }
 
     return data;
+  }
+
+  @DatabaseHandleErrors()
+  public static async getLastOptionChapter(id_chapter: number) {
+    const saved = await db
+      .select({
+        path_option: BookUserChapterBookHistoryModel.path_option,
+      })
+      .from(BookUserChapterBookHistoryModel)
+      .where(eq(BookUserChapterBookHistoryModel.id_chapter, id_chapter))
+      .orderBy(desc(BookUserChapterBookHistoryModel.updateAt))
+      .limit(1);
+
+    if (!saved.length) {
+      throw null;
+    }
+
+    const [option] = await db
+      .select()
+      .from(BookChapterOptionModel)
+      .where(
+        and(
+          eq(BookChapterOptionModel.id_chapter, id_chapter),
+          eq(BookChapterOptionModel.url, saved[0].path_option),
+        ),
+      );
+
+    if (!option) {
+      throw null;
+    }
+
+    return {
+      title: option.title,
+      date: dayjs(option.date),
+      url: option.url,
+      language: option.language,
+    } as ChapterOptionInterface;
   }
 }
