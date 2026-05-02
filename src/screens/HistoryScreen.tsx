@@ -95,6 +95,7 @@ export function HistoryScreen(props: IProps) {
     const instance = getInstanceById(item.bookInfo.provider);
     return (
       <BookChapterHistoryItem
+        key={`history-item-${item.bookInfo.path}-${item.chapter.chapter_number}`}
         date={
           item.date
             ? dayjs(item.date).format('DD/MM/YYYY [-] HH:mm A')
@@ -116,7 +117,7 @@ export function HistoryScreen(props: IProps) {
   };
 
   const _keyExtractor = (item: BookHistoryItem) => {
-    return item.bookInfo.path + item.chapter.chapter_number;
+    return `history-item-${item.bookInfo.path}-${item.chapter.chapter_number}`;
   };
 
   useEffect(() => {
