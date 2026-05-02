@@ -28,7 +28,7 @@ export class Settings {
   public static getList() {
     return SettingList.map((item) => ({
       ...item,
-      value: this.getOption(item.key, item.type),
+      value: this.getOption(item.key, item.type) ?? item.defaultValue,
     }));
   }
 }
