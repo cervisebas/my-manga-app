@@ -17,6 +17,7 @@ import { getInstanceById } from '@/api/utils/getInstanceById';
 import { ChapterOptionInterface } from '@/api/shared/interfaces/ChapterOptionInterface';
 import { Settings } from '@/settings/classes/Settings';
 import { SettingType } from '@/settings/enums/SettingType';
+import { ToastAndroid } from 'react-native';
 
 export class ChapterOptions {
   private bookInfo: BookInfoInterface;
@@ -77,6 +78,10 @@ export class ChapterOptions {
 
   private checkOptionList() {
     if (!this.options.length && this.showOnlySpanishOptionEnabled()) {
+      ToastAndroid.show(
+        'No se encontraron opciones en español',
+        ToastAndroid.SHORT,
+      );
       this.ignoreShowOnlySpanishOptions = true;
       this.makeOptions();
     }

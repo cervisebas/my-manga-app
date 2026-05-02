@@ -33,6 +33,10 @@
 - [x] No aparece el toast de carga en la carga de capitulos
 - [ ] Ver de precargar las ultimas opciónes vistas en la listas de capitulos para evitar pantallazos
 
+- [ ] Bajar el tiempo de transición de pantalla entre capitulos
+- [x] Mostrar un toast cuando no se hayan encontrado opciones en español
+- [ ] En el historial al pasar de capitulo quedan huecos en blanco
+
 # Cosas a añadir
 - [ ] Añadir opción de seleccionar que servicios se quiere usar y ordenar los mismos
 
