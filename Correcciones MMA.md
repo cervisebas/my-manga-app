@@ -30,6 +30,7 @@
 - [x] Al minimizar la app con el visor abierto, guardar última posición
 - [x] Establecer un máximo de "1" en el progreso de visión de un manga
 
+- [x] No aparece el toast de carga en la carga de capitulos
 - [ ] Ver de precargar las ultimas opciónes vistas en la listas de capitulos para evitar pantallazos
 
 # Cosas a añadir
