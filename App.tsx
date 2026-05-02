@@ -33,17 +33,18 @@ export default function App() {
       <DatabaseProvider>
         <GestureHandlerRootView>
           <ThemeProvider>
-            <SettingProvider>
-              <BottomSheetModalProvider>
+            <BottomSheetModalProvider>
+              <SettingProvider>
                 <NativeStackNavigation />
 
-                <FloatToast />
                 <Dialogs ref={refDialogs} />
                 <ImageViewer ref={refImageViewer} />
                 <DialogLoading ref={refDialogLoading} />
                 <BottomSheetOptions ref={refBottomSheetOptions} />
-              </BottomSheetModalProvider>
-            </SettingProvider>
+              </SettingProvider>
+            </BottomSheetModalProvider>
+
+            <FloatToast />
           </ThemeProvider>
         </GestureHandlerRootView>
       </DatabaseProvider>
