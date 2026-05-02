@@ -1,4 +1,4 @@
-import { tabBarIcon } from '@/utils/tabBarIcon';
+import { tabBarIcon } from '@/common/utils/tabBarIcon';
 
 import FireIcon from '@/assets/icons/fire.svg';
 import FireOutlineIcon from '@/assets/icons/fire-outline.svg';

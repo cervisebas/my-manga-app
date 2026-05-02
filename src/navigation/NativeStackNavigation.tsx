@@ -8,6 +8,7 @@ import { useEffect } from 'react';
 import BootSplash from 'react-native-bootsplash';
 import { HistoryScreen } from '@/screens/HistoryScreen';
 import { GenderListScreen } from '@/screens/GenderListScreen';
+import { SettingScreen } from '@/screens/SettingScreen/SettingScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -39,6 +40,7 @@ export function NativeStackNavigation() {
       <Stack.Screen name={'chapter-view'} component={ChapterViewScreen} />
       <Stack.Screen name={'history-chapters'} component={HistoryScreen} />
       <Stack.Screen name={'gender-list'} component={GenderListScreen} />
+      <Stack.Screen name={'settings'} component={SettingScreen} />
     </Stack.Navigator>
   );
 }

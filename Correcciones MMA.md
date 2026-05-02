@@ -37,7 +37,7 @@
 - [ ] Añadir seccion "Continuar leyendo" en el inicio (solo si esta guardado por un estado de usuario {"Pendiente", "Leyendo", etc})
 - [ ] Añadir seccion "Continuar leyendo" en la ventana de información de un libro
 
-- [ ] Opción de ocultar los demás idiomas que no sea español
+- [x] Opción de ocultar los demás idiomas que no sea español
 
 - [x] Añadir ventana de "Géneros" [Crear método]
 - [ ] Añadir sección de autores en la vista de información de un libro

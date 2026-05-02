@@ -4,7 +4,7 @@ import { LibraryScreen } from '@/screens/LibraryScreen/LibraryScreen';
 import { MiProfileScreen } from '@/screens/MiProfileScreen';
 import { createNativeBottomTabNavigator } from '@bottom-tabs/react-navigation';
 import { useTheme } from 'react-native-paper';
-import { tabBarIcon } from '@/utils/tabBarIcon';
+import { tabBarIcon } from '@/common/utils/tabBarIcon';
 import { TAB_ICONS } from '@/constants/TabIcons';
 import { useKeyboard } from '@/common/hooks/useKeyboard';
 import Color from 'color';

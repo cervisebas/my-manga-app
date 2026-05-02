@@ -100,6 +100,10 @@ export function MiProfileScreen() {
     refNavegation.current?.navigate('history-chapters');
   };
 
+  const goToSettingScreen = () => {
+    refNavegation.current?.navigate('settings');
+  };
+
   // Effects
   useEffect(() => {
     loadData();
@@ -114,6 +118,7 @@ export function MiProfileScreen() {
     >
       <AppbarHeader>
         <Appbar.Content title={'Mi Perfil'} />
+        <Appbar.Action icon={'cog-outline'} onPress={goToSettingScreen} />
         <Appbar.Action icon={'history'} onPress={goToHistoryScreen} />
       </AppbarHeader>
 

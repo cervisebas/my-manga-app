@@ -19,6 +19,7 @@ import { DatabaseProvider } from '@database/provider/DatabaseProvider';
 import { DialogLoading } from '@/common/components/DialogLoading';
 import { SystemBars } from 'react-native-edge-to-edge';
 import { ImageViewer } from '@/common/components/ImageViewer';
+import { SettingProvider } from '@/settings/providers/SettingProvider';
 
 LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
@@ -32,15 +33,17 @@ export default function App() {
       <DatabaseProvider>
         <GestureHandlerRootView>
           <ThemeProvider>
-            <BottomSheetModalProvider>
-              <NativeStackNavigation />
+            <SettingProvider>
+              <BottomSheetModalProvider>
+                <NativeStackNavigation />
 
-              <FloatToast />
-              <Dialogs ref={refDialogs} />
-              <ImageViewer ref={refImageViewer} />
-              <DialogLoading ref={refDialogLoading} />
-              <BottomSheetOptions ref={refBottomSheetOptions} />
-            </BottomSheetModalProvider>
+                <FloatToast />
+                <Dialogs ref={refDialogs} />
+                <ImageViewer ref={refImageViewer} />
+                <DialogLoading ref={refDialogLoading} />
+                <BottomSheetOptions ref={refBottomSheetOptions} />
+              </BottomSheetModalProvider>
+            </SettingProvider>
           </ThemeProvider>
         </GestureHandlerRootView>
       </DatabaseProvider>

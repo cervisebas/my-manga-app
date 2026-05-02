@@ -15,6 +15,8 @@ import { BookChapterHistory } from '@/database/classes/BookChapterHistory';
 import { goToBookInfo } from '@/utils/goToBookInfo';
 import { getInstanceById } from '@/api/utils/getInstanceById';
 import { ChapterOptionInterface } from '@/api/shared/interfaces/ChapterOptionInterface';
+import { Settings } from '@/settings/classes/Settings';
+import { SettingType } from '@/settings/enums/SettingType';
 
 export class ChapterOptions {
   private bookInfo: BookInfoInterface;
@@ -30,6 +32,8 @@ export class ChapterOptions {
   private hideViewedOption = false;
   private showBookInfo = false;
   private highlightOption?: ChapterOptionInterface;
+
+  private ignoreShowOnlySpanishOptions = false;
 
   constructor(
     bookInfo: BookInfoInterface,
@@ -56,7 +60,26 @@ export class ChapterOptions {
     this.highlightOption = highlightOption;
 
     this.makeOptions();
+    this.checkOptionList();
     this.makeInformation();
+  }
+
+  private showOnlySpanishOptionEnabled() {
+    return Settings.getOption(
+      SettingType.ONLY_SHOW_SPANISH_LANGUAGE,
+      'boolean',
+    ) as boolean;
+  }
+
+  private isOptionInSpanish(option: ChapterOptionInterface) {
+    return option.language == Language.ES || option.language == Language.MX;
+  }
+
+  private checkOptionList() {
+    if (!this.options.length && this.showOnlySpanishOptionEnabled()) {
+      this.ignoreShowOnlySpanishOptions = true;
+      this.makeOptions();
+    }
   }
 
   private makeOptions() {
@@ -66,6 +89,15 @@ export class ChapterOptions {
       const highlight =
         option.url === highlightOption?.url ||
         option.title === highlightOption?.title;
+
+      if (
+        this.showOnlySpanishOptionEnabled() &&
+        option.language &&
+        !this.isOptionInSpanish(option) &&
+        !this.ignoreShowOnlySpanishOptions
+      ) {
+        continue;
+      }
 
       this.options.push({
         label: option.title || 'Sin nombre',
