@@ -1090,7 +1090,7 @@ export class MangaDexScrapping implements IScrappingService {
           url: `https://mangadex.org/author/${staff.id}/`,
           name: staff.attributes?.name ?? '',
           work_position: staff.type,
-          search_name: staff.attributes?.name ?? '',
+          search_name: staff.id,
         })),
 
         chapters: chapters,

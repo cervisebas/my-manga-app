@@ -46,8 +46,8 @@
 - [x] Opción de ocultar los demás idiomas que no sea español
 
 - [x] Añadir ventana de "Géneros" [Crear método]
-- [ ] Añadir sección de autores en la vista de información de un libro
-- [ ] Añadir ventana "Autor" dónde se muestren todas las obras del mismo [Crear método]
+- [x] Añadir sección de autores en la vista de información de un libro
+- [x] Añadir ventana "Autor" dónde se muestren todas las obras del mismo [Crear método]
 
 - [ ] Implementar el filtro "TEXT" en el bottom sheet de filtros de la biblioteca
 - [x] Implementar el filtro "DROPDOWN" en el bottom sheet de filtros de la biblioteca

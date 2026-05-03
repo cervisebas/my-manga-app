@@ -1,5 +1,6 @@
 import { ApiError } from '@/api/shared/errors/ApiError';
 import { BookInfoInterface } from '@/api/shared/interfaces/BookInfoInterface';
+import { BookStaffInterface } from '@/api/shared/interfaces/BookStaffInterface';
 import { getInstanceById } from '@/api/utils/getInstanceById';
 import { AppbarHeader } from '@/common/components/AppbarHeader';
 import { BookItem } from '@/common/components/BookItem';
@@ -15,18 +16,17 @@ import { useState, useRef, useEffect } from 'react';
 import { View } from 'react-native';
 import { Appbar, Icon, Text, useTheme } from 'react-native-paper';
 
-type IProps = NativeStackScreenProps<ParamListBase, 'gender-list'>;
+type IProps = NativeStackScreenProps<ParamListBase, 'author-books'>;
 
-export interface GenderListScreenParams {
-  title: string;
-  gender: string;
+export interface AuthorBooksScreenParams {
+  auhtor: BookStaffInterface;
   instance: string;
 }
 
 const OFFSET_FRACTION_LOAD_MORE = 0.85;
 
-export function GenderListScreen(props: IProps) {
-  const params = props.route.params as GenderListScreenParams;
+export function AuthorBooksScreen(props: IProps) {
+  const params = props.route.params as AuthorBooksScreenParams;
   const scrapper = getInstanceById(params.instance);
 
   const theme = useTheme();
@@ -61,7 +61,7 @@ export function GenderListScreen(props: IProps) {
     waitingForData.current = true;
 
     try {
-      const _data = await scrapper.searchByGender(params.gender, {
+      const _data = await scrapper.searchByAutor(params.auhtor.search_name, {
         page: page.current,
         offset: offset.current,
       });
@@ -129,7 +129,7 @@ export function GenderListScreen(props: IProps) {
     >
       <AppbarHeader>
         <Appbar.BackAction onPress={props.navigation.goBack} />
-        <Appbar.Content title={params.title} />
+        <Appbar.Content title={params.auhtor.name} />
       </AppbarHeader>
 
       <LoadingErrorContent loading={loading} error={error} onRetry={searchNow}>

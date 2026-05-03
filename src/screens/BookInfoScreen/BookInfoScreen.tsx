@@ -23,7 +23,8 @@ import { Language } from '@/api/shared/enums/Language';
 import { BookInfoTranslateProgress } from './components/BookInfoTranslateProgress';
 import { refImageViewer } from '@/constants/Refs';
 import { BookInfoStatus } from './components/BookInfoStatus';
-import { goToGenderList } from '@/utils/goToGenderList';
+import { goToGenderBooks } from '@/utils/goToGenderBooks';
+import { BookInfoAutors } from './components/BookInfoAutors';
 
 type IProps = NativeStackScreenProps<ParamListBase, 'book-info'>;
 
@@ -171,7 +172,7 @@ export function BookInfoScreen(props: IProps) {
                     key={`gender-${gender.value}`}
                     mode={'outlined'}
                     onPress={() => {
-                      goToGenderList(gender, scrapper);
+                      goToGenderBooks(gender, scrapper);
                     }}
                   >
                     {gender.name}
@@ -181,6 +182,14 @@ export function BookInfoScreen(props: IProps) {
             </View>
 
             <Divider />
+
+            {data.staff && (
+              <React.Fragment>
+                <BookInfoAutors authors={data.staff} scrapper={scrapper} />
+
+                <Divider />
+              </React.Fragment>
+            )}
 
             {/* Lenguaje */}
             {data.languages && (
