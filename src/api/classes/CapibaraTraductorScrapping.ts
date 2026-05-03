@@ -45,7 +45,6 @@ const ORDER_OPTIONS: SearchFilterOption[] = [
 ];
 
 const GENDER_OPTIONS: SearchFilterOption[] = [
-  { label: 'Géneros', value: 'All' },
   { label: '4-koma', value: '4-koma' },
   { label: 'Acción', value: 'Acción' },
   { label: 'Artes Marciales', value: 'Artes Marciales' },
@@ -104,6 +103,18 @@ const STATUS_OPTIONS: SearchFilterOption[] = [
   { label: 'En pausa', value: 'Hiatus' },
 ];
 
+const NSFW_OPTIONS: SearchFilterOption[] = [
+  {
+    label: 'Activado',
+    value: 'true',
+  },
+  {
+    label: 'Desactivado',
+    value: 'false',
+    defaultValue: true,
+  },
+];
+
 // Helper recursively unpacks Astro's array-based flatted JSON
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function parseAstroProps(obj: unknown): any {
@@ -155,21 +166,27 @@ export class CapibaraTraductorScrapping implements IScrappingService {
     return [
       {
         label: 'Ordenar por',
-        type: SearchFilterType.DROPDOWN,
+        type: SearchFilterType.RADIO,
         queryKey: 'order',
         options: ORDER_OPTIONS,
       },
       {
         label: 'Géneros',
-        type: SearchFilterType.DROPDOWN,
+        type: SearchFilterType.RADIO,
         queryKey: 'genre',
         options: GENDER_OPTIONS,
       },
       {
         label: 'Estado',
-        type: SearchFilterType.DROPDOWN,
+        type: SearchFilterType.RADIO,
         queryKey: 'status',
         options: STATUS_OPTIONS,
+      },
+      {
+        label: 'NSFW',
+        type: SearchFilterType.RADIO,
+        queryKey: 'nsfw',
+        options: NSFW_OPTIONS,
       },
     ];
   }
@@ -236,17 +253,15 @@ export class CapibaraTraductorScrapping implements IScrappingService {
     const url = new URL('https://capibaratraductor.com/api/manga-custom');
     url.searchParams.append('page', String(page));
     url.searchParams.append('limit', '24');
-    url.searchParams.append('nsfw', 'true');
+    // url.searchParams.append('nsfw', 'true');
     if (value) {
       url.searchParams.append('search', value);
     }
-    url.searchParams.append('order', 'latest'); // default
+    // url.searchParams.append('order', 'latest'); // default
 
     const _filters = filtersToArray(filters);
     for (const [key, val] of _filters) {
-      if (val && val !== 'All') {
-        url.searchParams.set(key, val);
-      }
+      url.searchParams.set(key, val);
     }
 
     const { data } = await axios.get<CapibaraTraductorSearchResponse>(url.href);

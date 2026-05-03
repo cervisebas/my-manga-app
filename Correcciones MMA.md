@@ -52,5 +52,5 @@
 - [ ] Implementar el filtro "TEXT" en el bottom sheet de filtros de la biblioteca
 - [x] Implementar el filtro "DROPDOWN" en el bottom sheet de filtros de la biblioteca
 - [ ] Implementar el filtro "MULTI_DROPDOWN" en el bottom sheet de filtros de la biblioteca
-- [ ] Implementar el filtro "RADIO" en el bottom sheet de filtros de la biblioteca
+- [x] Implementar el filtro "RADIO" en el bottom sheet de filtros de la biblioteca
 - [ ] Implementar el filtro "SELECT_LIST" en el bottom sheet de filtros de la biblioteca

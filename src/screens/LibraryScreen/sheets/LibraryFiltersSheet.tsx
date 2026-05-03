@@ -16,7 +16,7 @@ import React, {
   useState,
 } from 'react';
 import { View } from 'react-native';
-import { Checkbox, List, useTheme } from 'react-native-paper';
+import { Checkbox, List, RadioButton, useTheme } from 'react-native-paper';
 
 export interface LibraryFiltersSheetRef {
   open(
@@ -30,6 +30,14 @@ interface IProps {
     scrapperId: string,
     filters: (SearchFilter | SearchFilterSection)[],
   ): void;
+}
+
+interface IChangeValueProps {
+  value: string | number | boolean;
+  index: number;
+  optionIndex?: number;
+  sectionIndex?: number;
+  radioEffect?: boolean;
 }
 
 export const LibraryFiltersSheet = forwardRef(function (
@@ -61,12 +69,13 @@ export const LibraryFiltersSheet = forwardRef(function (
     marginVertical: 4,
   };
 
-  const changeValue = (
-    val: string | number | boolean,
-    index: number,
-    optionIndex?: number,
-    sectionIndex?: number,
-  ) => {
+  const changeValue = ({
+    value,
+    index,
+    optionIndex,
+    sectionIndex,
+    radioEffect,
+  }: IChangeValueProps) => {
     if (sectionIndex !== undefined && 'sections' in filters[index]) {
       setFilters((filters) =>
         filters.map((filter, filterIndex) =>
@@ -77,7 +86,7 @@ export const LibraryFiltersSheet = forwardRef(function (
                   'sections' in filter
                     ? filter.sections?.map((section, _sectionIndex) =>
                         _sectionIndex === sectionIndex
-                          ? { ...section, selectedValue: val }
+                          ? { ...section, selectedValue: value }
                           : section,
                       )
                     : [],
@@ -96,8 +105,10 @@ export const LibraryFiltersSheet = forwardRef(function (
                 ...filter,
                 options: filter.options?.map((option, _optionIndex) =>
                   _optionIndex === optionIndex
-                    ? { ...option, selectedValue: val }
-                    : option,
+                    ? { ...option, selectedValue: value }
+                    : radioEffect
+                      ? { ...option, selectedValue: !value }
+                      : option,
                 ),
               }
             : filter,
@@ -108,7 +119,7 @@ export const LibraryFiltersSheet = forwardRef(function (
 
     setFilters((filters) =>
       filters.map((filter, filterIndex) =>
-        filterIndex === index ? { ...filter, selectedValue: val } : filter,
+        filterIndex === index ? { ...filter, selectedValue: value } : filter,
       ),
     );
   };
@@ -207,11 +218,46 @@ export const LibraryFiltersSheet = forwardRef(function (
                       </View>
                     )}
                     onPress={() => {
-                      changeValue(
-                        !(val.selectedValue ?? val.defaultValue ?? false),
-                        filterIndex,
-                        optionIndex,
-                      );
+                      changeValue({
+                        value: !(
+                          val.selectedValue ??
+                          val.defaultValue ??
+                          false
+                        ),
+                        index: filterIndex,
+                        optionIndex: optionIndex,
+                      });
+                    }}
+                  />
+                ))
+              ) : filter.type === SearchFilterType.RADIO ? (
+                filter.options?.map((val, optionIndex) => (
+                  <ItemWithIcon
+                    key={`filter-item-${filter.label}-${val.label}`}
+                    title={val.label}
+                    right={(rProps) => (
+                      <View style={rProps.style} pointerEvents={'none'}>
+                        <RadioButton
+                          value={val.value}
+                          status={
+                            (val.selectedValue ?? val.defaultValue ?? false)
+                              ? 'checked'
+                              : 'unchecked'
+                          }
+                        />
+                      </View>
+                    )}
+                    onPress={() => {
+                      changeValue({
+                        value: !(
+                          val.selectedValue ??
+                          val.defaultValue ??
+                          false
+                        ),
+                        index: filterIndex,
+                        optionIndex: optionIndex,
+                        radioEffect: true,
+                      });
                     }}
                   />
                 ))
@@ -224,7 +270,11 @@ export const LibraryFiltersSheet = forwardRef(function (
                       value={section.selectedValue}
                       options={section.options as never}
                       onChange={(val) =>
-                        changeValue(val, filterIndex, undefined, sectionIndex)
+                        changeValue({
+                          value: val,
+                          index: filterIndex,
+                          sectionIndex: sectionIndex,
+                        })
                       }
                     />
                   ) : (

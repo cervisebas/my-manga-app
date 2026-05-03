@@ -20,6 +20,7 @@ import {
   SearchFilter,
   SearchFilterSection,
 } from '@/api/shared/interfaces/SearchFilter';
+import { SearchFilterType } from '@/api/shared/enums/SearchFilterType';
 
 type IProps = NativeBottomTabScreenProps<ParamListBase, 'Biblioteca'>;
 
@@ -86,7 +87,11 @@ export function LibraryScreen(_props: IProps) {
         let _total = 0;
 
         for (const option of curr.options!) {
-          if (option.selectedValue !== undefined) {
+          if (
+            (curr.type === SearchFilterType.RADIO && option.selectedValue) ||
+            (curr.type !== SearchFilterType.RADIO &&
+              option.selectedValue !== undefined)
+          ) {
             _total++;
           }
         }
