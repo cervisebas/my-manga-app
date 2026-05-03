@@ -173,7 +173,7 @@ export function LibraryScreen(_props: IProps) {
           <Tab.Navigator
             overScrollMode={'auto'}
             screenOptions={{
-              lazy: true,
+              lazy: false,
               tabBarScrollEnabled: true,
               tabBarLabel: TabBarLabel,
               tabBarStyle: {
