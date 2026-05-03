@@ -1,7 +1,7 @@
 # Servicios
 
 - [x] MangaDex <b>[API RES en JSON]</b> [[Link]](https://mangadex.org/)
-- [ ] Shadow Manga <b>[API RES en JSON]</b> [[Link]](https://shademanga.com/)
+- [x] Shadow Manga <b>[API RES en JSON]</b> [[Link]](https://shademanga.com/)
 - [ ] Visor MANHWA WEB <b>[API RES en JSON]</b> [[Link]](https://visormanhwaweb.com/)
 - [ ] Otakuria.com <b>[HTML Minificado]</b> [[Link]](https://otakuria.com/)
 - [ ] Manga Oni <b>[HTML]</b> [[Link]](https://manga-oni.com/)

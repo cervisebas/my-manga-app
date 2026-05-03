@@ -52,9 +52,11 @@ export function BookInfoScreen(props: IProps) {
     info,
   );
 
-  const altTitles = Array.isArray(data.altTitles)
+  const altTitles = Array.isArray(data?.altTitles)
     ? data.altTitles
-    : Object.values(data.altTitles);
+    : typeof data.altTitles === 'object'
+      ? Object.values(data.altTitles)
+      : [];
 
   return (
     <View

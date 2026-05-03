@@ -66,7 +66,7 @@ export function BookInfoChapters(props: IProps) {
         undefined,
         undefined,
         undefined,
-        chapter.lastOption,
+        chapter?.lastOption,
         getLastOption()?.title || getAvgOption(),
       );
 

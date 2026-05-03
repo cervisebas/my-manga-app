@@ -18,6 +18,13 @@ export function useViewedChapters(chapterList: ChapterInterface[]) {
       setChapters(_chapters);
     } catch (error) {
       console.error(error);
+      setChapters(
+        chapterList.map<ChapterViewedInterface>((chapter) => ({
+          ...chapter,
+          viewed: false,
+          viewedAt: null,
+        })),
+      );
     }
   };
 

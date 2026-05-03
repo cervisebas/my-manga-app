@@ -12,58 +12,73 @@ export function useViewedChapterOptions(chapterList: ChapterViewedInterface[]) {
   const avgOption = useRef<string>(undefined);
 
   const loadViewedChapterOptions = async () => {
-    if (!chapterList.length) {
-      return;
-    }
-
-    console.time('loadViewedChapterOptions:');
-    // Evaluar cuales son los capitulos vistos
-    const viewedChapters = new Map<number, number>();
-    for (let i = 0; i < chapterList.length; i++) {
-      const chapterItem = chapterList[i];
-
-      if (chapterItem.viewed) {
-        viewedChapters.set(i, chapterItem.id!);
-      }
-    }
-
-    // Buscar en base de datos las ultimas opciones de los capitulos vistos
-    const lastOptions = await BookChapterHistory.getLastOptionChapters(
-      Array.from(viewedChapters.values()),
-    );
-
-    // Remapear el arreglo y añadir los datos traidos de la base de datos
-    const _chapterList = [...chapterList] as ChapterViewedOptionInterface[];
-
-    for (const [index, chapterId] of Array.from(viewedChapters.entries())) {
-      const lastOption = lastOptions.get(chapterId);
-
-      if (!lastOption) {
-        continue;
+    try {
+      if (!chapterList.length) {
+        return;
       }
 
-      _chapterList[index].lastOption = lastOption;
-    }
+      console.time('loadViewedChapterOptions:');
+      // Evaluar cuales son los capitulos vistos
+      const viewedChapters = new Map<number, number>();
+      for (let i = 0; i < chapterList.length; i++) {
+        const chapterItem = chapterList[i];
 
-    // Guardar resultado
-    setChapters(_chapterList);
-    calculeOptions(_chapterList, viewedChapters);
-    console.timeEnd('loadViewedChapterOptions:');
+        if (chapterItem.viewed) {
+          viewedChapters.set(i, chapterItem.id!);
+        }
+      }
+
+      // Buscar en base de datos las ultimas opciones de los capitulos vistos
+      const lastOptions = await BookChapterHistory.getLastOptionChapters(
+        Array.from(viewedChapters.values()),
+      );
+
+      // Remapear el arreglo y añadir los datos traidos de la base de datos
+      const _chapterList = [...chapterList] as ChapterViewedOptionInterface[];
+
+      for (const [index, chapterId] of Array.from(viewedChapters.entries())) {
+        const lastOption = lastOptions.get(chapterId);
+
+        if (!lastOption) {
+          continue;
+        }
+
+        _chapterList[index].lastOption = lastOption;
+      }
+
+      // Guardar resultado
+      setChapters(_chapterList);
+      calculeOptions(_chapterList, viewedChapters);
+      console.timeEnd('loadViewedChapterOptions:');
+    } catch (error) {
+      console.error(error);
+      setChapters(chapterList);
+    }
   };
 
   const calculeOptions = (
     _chapters: ChapterViewedOptionInterface[],
     viewedChapters: Map<number, number>,
   ) => {
-    lastOption.current =
-      _chapters[Array.from(viewedChapters.keys())[0]].lastOption;
+    console.log(
+      'calculeOptions',
+      _chapters,
+      Array.from(viewedChapters.entries()),
+    );
+
+    const lastIndex: number | undefined = Array.from(
+      viewedChapters.keys(),
+    )?.[0];
+    lastOption.current = lastIndex
+      ? _chapters[lastIndex]?.lastOption
+      : undefined;
 
     const usedOptions = new Map<string, number>();
 
     for (const index of Array.from(viewedChapters.keys())) {
-      const lastOption = _chapters[index].lastOption;
+      const lastOption = _chapters[index]?.lastOption;
 
-      if (lastOption && lastOption.title) {
+      if (lastOption && lastOption?.title) {
         const currentValue = usedOptions.get(lastOption.title);
 
         if (currentValue) {
@@ -75,11 +90,16 @@ export function useViewedChapterOptions(chapterList: ChapterViewedInterface[]) {
       }
     }
 
+    console.log(Array.from(usedOptions.entries()));
     const orderedUsedOptions = Array.from(usedOptions.entries()).sort(
       (a, b) => b[1] - a[1],
     );
 
-    if (orderedUsedOptions[0][1] !== 1) {
+    if (
+      orderedUsedOptions.length &&
+      orderedUsedOptions[0] &&
+      orderedUsedOptions[0][1] !== 1
+    ) {
       avgOption.current = orderedUsedOptions[0][0];
     }
   };
