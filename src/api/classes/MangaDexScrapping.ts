@@ -475,6 +475,7 @@ export class MangaDexScrapping implements IScrappingService {
   private readonly LIMIT_SEARCH = 40;
 
   public readonly searchType = SearchType.PAGINATED;
+  public readonly showAuthorAction = true;
 
   public getLogo(): ImageSourcePropType {
     return LogoImage;

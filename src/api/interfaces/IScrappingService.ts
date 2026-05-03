@@ -11,6 +11,7 @@ import { ChapterOptionInterface } from '../shared/interfaces/ChapterOptionInterf
 
 export interface IScrappingService {
   readonly searchType: SearchType;
+  readonly showAuthorAction: boolean;
 
   // App Settings
   getLogo(): ImageSourcePropType;

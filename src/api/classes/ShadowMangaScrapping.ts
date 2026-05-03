@@ -194,6 +194,7 @@ const GENDER_OPTIONS: SearchFilterOption[] = [
 
 export class ShadowMangaScrapping implements IScrappingService {
   public readonly searchType = SearchType.PAGINATED;
+  public readonly showAuthorAction = true;
 
   public getLogo(): ImageSourcePropType {
     return LogoImage;

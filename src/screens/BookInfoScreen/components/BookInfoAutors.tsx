@@ -56,9 +56,13 @@ export function BookInfoAutors(props: IProps) {
                       )
                     : undefined
                 }
-                onPress={() => {
-                  goToAuthorBooks(author, props.scrapper);
-                }}
+                onPress={
+                  props.scrapper.showAuthorAction
+                    ? () => {
+                        goToAuthorBooks(author, props.scrapper);
+                      }
+                    : undefined
+                }
               />
 
               {array?.[index + 1] && <Divider className={'mx-[12]'} />}
