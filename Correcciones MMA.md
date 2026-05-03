@@ -22,8 +22,8 @@
 - [x] Añadir filtro de orden en MangaDex
 - [x] Ahora el doble tap no va a dónde se desea ir
 - [x] En la lista de capitulos no marca el highlight de opción usada en los capítulos vistos
-- [ ] Averiguar si se puede marcar el highlight en los capítulos no vistos
-- [ ] En los capítulos no vistos marcar promedio de las opciones más usadas
+- [x] Averiguar si se puede marcar el highlight en los capítulos no vistos
+- [x] En los capítulos no vistos marcar promedio de las opciones más usadas
 
 - [x] Encoger la imagen de portada en el historial
 - [x] Hacer que la sección "Lenguajes" sea opcional a la vista
@@ -31,7 +31,7 @@
 - [x] Establecer un máximo de "1" en el progreso de visión de un manga
 
 - [x] No aparece el toast de carga en la carga de capitulos
-- [ ] Ver de precargar las ultimas opciónes vistas en la listas de capitulos para evitar pantallazos
+- [x] Ver de precargar las ultimas opciónes vistas en la listas de capitulos para evitar pantallazos
 
 - [ ] Bajar el tiempo de transición de pantalla entre capitulos
 - [x] Mostrar un toast cuando no se hayan encontrado opciones en español

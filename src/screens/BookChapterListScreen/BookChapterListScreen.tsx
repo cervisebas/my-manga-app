@@ -21,9 +21,8 @@ import { useViewedChapters } from '@/database/hooks/useViewedChapters';
 import { ChapterViewedInterface } from '@/database/interfaces/ChapterViewedInterface';
 import { ListRenderItemInfo } from '@shopify/flash-list';
 import { OverrideItemLayout } from '@/common/types/OverrideItemLayout';
-import { ChapterOptionInterface } from '@/api/shared/interfaces/ChapterOptionInterface';
-import { refDialogLoading } from '@/constants/Refs';
-import { BookChapterHistory } from '@/database/classes/BookChapterHistory';
+import { useViewedChapterOptions } from '@/database/hooks/useViewedChapterOptions';
+import { ChapterViewedOptionInterface } from '@/database/interfaces/ChapterViewedOptionInterface';
 
 type IProps = NativeStackScreenProps<ParamListBase, 'book-chapter-list'>;
 
@@ -42,8 +41,13 @@ export function BookChapterListScreen(props: IProps) {
 
   // Variables
   const now = useMemo(() => dayjs(), []);
-  const __chapters = params.bookInfo.chapters ?? [];
-  const { chapters: _chapters } = useViewedChapters(__chapters);
+  const ___chapters = params.bookInfo.chapters ?? [];
+  const { chapters: __chapters } = useViewedChapters(___chapters);
+  const {
+    chapters: _chapters,
+    getLastOption,
+    getAvgOption,
+  } = useViewedChapterOptions(__chapters);
 
   // Search
   const { resultData: resultChapters, setSearch } = useSearchArray(_chapters, [
@@ -61,23 +65,8 @@ export function BookChapterListScreen(props: IProps) {
   const theme = useTheme();
 
   // Methods
-  const onClickChapter = (chapter: ChapterViewedInterface) => {
-    return async () => {
-      let lastOption: ChapterOptionInterface | undefined = undefined;
-
-      if (chapter.viewed) {
-        try {
-          refDialogLoading.current?.show('Obteniendo información...');
-          lastOption = await BookChapterHistory.getLastOptionChapter(
-            chapter.id!,
-          );
-        } catch (error) {
-          console.error(error);
-        } finally {
-          refDialogLoading.current?.hide();
-        }
-      }
-
+  const onClickChapter = (chapter: ChapterViewedOptionInterface) => {
+    return () => {
       const chapterOptions = new ChapterOptions(
         params.bookInfo,
         chapter,
@@ -86,7 +75,8 @@ export function BookChapterListScreen(props: IProps) {
         undefined,
         undefined,
         undefined,
-        lastOption,
+        chapter.lastOption,
+        getLastOption()?.title || getAvgOption(),
       );
 
       chapterOptions.show();

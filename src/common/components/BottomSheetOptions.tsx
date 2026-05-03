@@ -24,6 +24,7 @@ export interface BottomSheetOptionsInterface {
   rightIconSize?: number;
   rightIconColor?: string;
   highlight?: boolean;
+  fadeHighlight?: boolean;
   disabled?: boolean;
   selected?: boolean;
   clossable?: boolean;
@@ -65,6 +66,11 @@ export const BottomSheetOptions = forwardRef(function (
     .rgb()
     .string();
 
+  const fadedHighlightColor = Color(theme.colors.onPrimaryContainer)
+    .fade(0.95)
+    .rgb()
+    .string();
+
   const sections = useMemo(() => {
     if (section && !Array.isArray(options)) {
       return Object.entries(options).map(([key, options]) => ({
@@ -93,7 +99,11 @@ export const BottomSheetOptions = forwardRef(function (
             rightIconColor={value.rightIconColor}
             description={value.description}
             style={{
-              backgroundColor: value.highlight ? highlightColor : undefined,
+              backgroundColor: value.highlight
+                ? value.fadeHighlight
+                  ? fadedHighlightColor
+                  : highlightColor
+                : undefined,
             }}
             right={value.right}
             onPress={

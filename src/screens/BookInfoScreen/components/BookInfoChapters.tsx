@@ -1,7 +1,6 @@
 import { IScrappingService } from '@/api/interfaces/IScrappingService';
 import { BookInfoInterface } from '@/api/shared/interfaces/BookInfoInterface';
 import { ChapterInterface } from '@/api/shared/interfaces/ChapterInterface';
-import { ChapterOptionInterface } from '@/api/shared/interfaces/ChapterOptionInterface';
 import { ChapterItem } from '@/common/components/ChapterItem';
 import { UButton } from '@/common/components/UniwindElements';
 import { ChapterOptions } from '@/common/handlers/ChapterOptions';
@@ -9,10 +8,10 @@ import {
   CHAPTER_HEIGHT_ITEMS,
   CHAPTER_HEIGHT_WITHOUT_DESCRIPTION_ITEMS,
 } from '@/constants/ChapterItemOptions';
-import { refDialogLoading, refNavegation } from '@/constants/Refs';
-import { BookChapterHistory } from '@/database/classes/BookChapterHistory';
+import { refNavegation } from '@/constants/Refs';
+import { useViewedChapterOptions } from '@/database/hooks/useViewedChapterOptions';
 import { useViewedChapters } from '@/database/hooks/useViewedChapters';
-import { ChapterViewedInterface } from '@/database/interfaces/ChapterViewedInterface';
+import { ChapterViewedOptionInterface } from '@/database/interfaces/ChapterViewedOptionInterface';
 import { useNavigation } from '@react-navigation/native';
 import dayjs from 'dayjs';
 import React, { useMemo } from 'react';
@@ -32,18 +31,22 @@ export function BookInfoChapters(props: IProps) {
 
   // Variables
   const now = dayjs();
-  const _chapters = useMemo(
+  const __chapters = useMemo(
     () => props.chapters?.slice(-MAX_ITEMS_SHOW).reverse() ?? [],
     [props.chapters],
   );
   const chapterDiffDate = useMemo(
     () =>
-      _chapters.map((chapter) => now.diff(chapter.options.at(0)?.date, 'days')),
-    [_chapters],
+      __chapters.map((chapter) =>
+        now.diff(chapter.options.at(0)?.date, 'days'),
+      ),
+    [__chapters],
   );
 
   // Hooks
-  const { chapters } = useViewedChapters(_chapters);
+  const { chapters: _chapters } = useViewedChapters(__chapters);
+  const { chapters, getLastOption, getAvgOption } =
+    useViewedChapterOptions(_chapters);
 
   // Methods
   const goToChapterList = () => {
@@ -53,23 +56,8 @@ export function BookInfoChapters(props: IProps) {
     });
   };
 
-  const onClickChapter = (chapter: ChapterViewedInterface) => {
-    return async () => {
-      let lastOption: ChapterOptionInterface | undefined = undefined;
-
-      if (chapter.viewed) {
-        try {
-          refDialogLoading.current?.show('Obteniendo información...');
-          lastOption = await BookChapterHistory.getLastOptionChapter(
-            chapter.id!,
-          );
-        } catch (error) {
-          console.error(error);
-        } finally {
-          refDialogLoading.current?.hide();
-        }
-      }
-
+  const onClickChapter = (chapter: ChapterViewedOptionInterface) => {
+    return () => {
       const chapterOptions = new ChapterOptions(
         props.bookInfo,
         chapter,
@@ -78,7 +66,8 @@ export function BookInfoChapters(props: IProps) {
         undefined,
         undefined,
         undefined,
-        lastOption,
+        chapter.lastOption,
+        getLastOption()?.title || getAvgOption(),
       );
 
       chapterOptions.show();

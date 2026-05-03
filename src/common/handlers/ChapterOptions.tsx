@@ -33,6 +33,9 @@ export class ChapterOptions {
   private hideViewedOption = false;
   private showBookInfo = false;
   private highlightOption?: ChapterOptionInterface;
+  private recommendedOption?: string;
+
+  private hightlitedOption = false;
 
   private ignoreShowOnlySpanishOptions = false;
 
@@ -45,6 +48,7 @@ export class ChapterOptions {
     hideViewedOption?: boolean,
     showBookInfo?: boolean,
     highlightOption?: ChapterOptionInterface,
+    recommendedOption?: string,
   ) {
     this.bookInfo = bookInfo;
     this.chapter = chapter;
@@ -59,6 +63,7 @@ export class ChapterOptions {
     this.hideViewedOption = hideViewedOption ?? false;
     this.showBookInfo = showBookInfo ?? false;
     this.highlightOption = highlightOption;
+    this.recommendedOption = recommendedOption;
 
     this.makeOptions();
     this.checkOptionList();
@@ -85,16 +90,17 @@ export class ChapterOptions {
       this.ignoreShowOnlySpanishOptions = true;
       this.makeOptions();
     }
+
+    if (this.hightlitedOption) {
+      this.options = [];
+      this.makeOptions();
+    }
   }
 
   private makeOptions() {
     const highlightOption = this.highlightOption;
 
     for (const option of this.chapter.options) {
-      const highlight =
-        option.url === highlightOption?.url ||
-        option.title === highlightOption?.title;
-
       if (
         this.showOnlySpanishOptionEnabled() &&
         option.language &&
@@ -104,6 +110,21 @@ export class ChapterOptions {
         continue;
       }
 
+      const highlight =
+        option.url === highlightOption?.url ||
+        option.title === highlightOption?.title;
+
+      if (highlight) {
+        this.hightlitedOption = true;
+      }
+
+      const recommendedOptionHighlight =
+        !highlight &&
+        !this.hightlitedOption &&
+        this.recommendedOption !== undefined &&
+        option.title !== undefined &&
+        option.title === this.recommendedOption;
+
       this.options.push({
         label: option.title || 'Sin nombre',
         description: dayjs(option.date).format('DD-MM-YYYY'),
@@ -111,8 +132,11 @@ export class ChapterOptions {
           ? this.showBookInfo
             ? 'timer-play-outline'
             : 'motion-play-outline'
-          : 'play',
-        highlight: highlight,
+          : recommendedOptionHighlight
+            ? 'clipboard-text-clock-outline'
+            : 'play',
+        highlight: highlight || recommendedOptionHighlight,
+        fadeHighlight: recommendedOptionHighlight,
         right: option.language
           ? (props) => (
               <UImage

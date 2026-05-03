@@ -1,4 +1,4 @@
-import { and, desc, eq, sql } from 'drizzle-orm';
+import { and, desc, eq, inArray, max, or, sql } from 'drizzle-orm';
 import { db } from '../constants/database';
 import { DatabaseHandleErrors } from '../decorators/DatabaseHandleErrors';
 import { BookChapterHistoryModel } from '../schemas/BookChapterHistoryModel';
@@ -173,5 +173,46 @@ export class BookChapterHistory {
       url: option.url,
       language: option.language,
     } as ChapterOptionInterface;
+  }
+
+  @DatabaseHandleErrors()
+  public static async getLastOptionChapters(id_chapters: number[]) {
+    const saveds = await db
+      .select({
+        id_chapter: BookUserChapterBookHistoryModel.id_chapter,
+        date: max(BookUserChapterBookHistoryModel.updateAt),
+        path_option: BookUserChapterBookHistoryModel.path_option,
+      })
+      .from(BookUserChapterBookHistoryModel)
+      .where(inArray(BookUserChapterBookHistoryModel.id_chapter, id_chapters))
+      .orderBy(desc(BookUserChapterBookHistoryModel.updateAt))
+      .groupBy(BookUserChapterBookHistoryModel.id_chapter);
+
+    const options = await db
+      .select()
+      .from(BookChapterOptionModel)
+      .where(
+        or(
+          ...saveds.map((saved) =>
+            and(
+              eq(BookChapterOptionModel.id_chapter, saved.id_chapter),
+              eq(BookChapterOptionModel.url, saved.path_option),
+            ),
+          ),
+        ),
+      );
+
+    const mapOptions = new Map<number, ChapterOptionInterface>();
+
+    for (const option of options) {
+      mapOptions.set(option.id_chapter, {
+        title: option.title ?? undefined,
+        date: dayjs(option.date),
+        url: option.url,
+        language: option.language ?? undefined,
+      });
+    }
+
+    return mapOptions;
   }
 }

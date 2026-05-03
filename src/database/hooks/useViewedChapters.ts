@@ -10,6 +10,10 @@ export function useViewedChapters(chapterList: ChapterInterface[]) {
 
   const loadViewedChapters = async () => {
     try {
+      if (!chapterList.length) {
+        return;
+      }
+
       const _chapters = await BookChapterList.getViewedChapters(chapterList);
       setChapters(_chapters);
     } catch (error) {
