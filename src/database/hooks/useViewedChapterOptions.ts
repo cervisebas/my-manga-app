@@ -60,12 +60,6 @@ export function useViewedChapterOptions(chapterList: ChapterViewedInterface[]) {
     _chapters: ChapterViewedOptionInterface[],
     viewedChapters: Map<number, number>,
   ) => {
-    console.log(
-      'calculeOptions',
-      _chapters,
-      Array.from(viewedChapters.entries()),
-    );
-
     const lastIndex: number | undefined = Array.from(
       viewedChapters.keys(),
     )?.[0];
@@ -90,7 +84,6 @@ export function useViewedChapterOptions(chapterList: ChapterViewedInterface[]) {
       }
     }
 
-    console.log(Array.from(usedOptions.entries()));
     const orderedUsedOptions = Array.from(usedOptions.entries()).sort(
       (a, b) => b[1] - a[1],
     );

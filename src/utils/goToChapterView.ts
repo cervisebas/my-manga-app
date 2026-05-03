@@ -17,7 +17,7 @@ export async function goToChapterView(
   refDialogLoading.current?.show('Obteniendo información...');
 
   try {
-    const images = await instance.getDataChapter(option.url);
+    const images = await instance.getDataChapter(option.url, option);
 
     if (activeChapterView) {
       refNavegation.current?.goBack();

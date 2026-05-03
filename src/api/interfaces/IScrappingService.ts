@@ -7,6 +7,7 @@ import type {
 import type { SearchResult } from '@api/shared/interfaces/SearchResult';
 import { ImageSourcePropType } from 'react-native';
 import { SearchPaginated } from '../shared/interfaces/SearchPaginated';
+import { ChapterOptionInterface } from '../shared/interfaces/ChapterOptionInterface';
 
 export interface IScrappingService {
   readonly searchType: SearchType;
@@ -33,7 +34,10 @@ export interface IScrappingService {
     paginated?: SearchPaginated,
   ): Promise<SearchResult>;
   bookInfo(url: string): Promise<BookInfoInterface>;
-  getDataChapter(url: string): Promise<string[]>;
+  getDataChapter(
+    url: string,
+    chapterOption?: ChapterOptionInterface,
+  ): Promise<string[]>;
   loadChapterImage(url: string): Promise<string>;
   loadChapterImages(
     urls: string[],

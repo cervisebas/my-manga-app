@@ -28,6 +28,14 @@ export class ChapterImageFile {
     this.encode = encode;
   }
 
+  private makeSubdirArray(subdirs: string[]) {
+    return subdirs.reduce(
+      (prev, curr) =>
+        curr.includes('/') ? [...prev, ...curr.split('/')] : [...prev, curr],
+      [] as string[],
+    );
+  }
+
   public checkFolder() {
     // Principal dir
     const dir = new Directory(this.dir);
@@ -37,7 +45,7 @@ export class ChapterImageFile {
     }
 
     // Subdirs
-    const subdirs = this.subdirs ?? [];
+    const subdirs = this.subdirs ? this.makeSubdirArray(this.subdirs) : [];
     for (let i = 0; i < subdirs.length; i++) {
       const _subdirs = subdirs.slice(0, i + 1);
       const dir = new Directory(this.dir, ..._subdirs);
