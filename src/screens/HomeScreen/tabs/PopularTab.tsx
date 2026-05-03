@@ -57,7 +57,7 @@ export function PopularTab(props: IProps) {
   }, []);
 
   return (
-    <LoadingErrorContent loading={loading} error={error}>
+    <LoadingErrorContent loading={loading} error={error} onRetry={loadData}>
       <SafeArea.FlashList
         data={data}
         numColumns={2}

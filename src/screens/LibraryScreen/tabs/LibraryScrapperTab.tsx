@@ -41,6 +41,7 @@ export function LibraryScrapperTab(props: IProps) {
 
   const count = useRef<number>(0);
   const waitingForData = useRef(true);
+  const finishedData = useRef(false);
 
   const effectFiltersInited = useRef(false);
 
@@ -68,6 +69,8 @@ export function LibraryScrapperTab(props: IProps) {
       page.current = _data.page;
       total.current = (total.current ?? 0) + (_data.total ?? 0);
       count.current += _data.books.length;
+
+      finishedData.current = _data.books.length === 0;
     } catch (_error) {
       setError(_error as never);
       console.error(_error);
@@ -114,7 +117,7 @@ export function LibraryScrapperTab(props: IProps) {
   }, [props.filters]);
 
   useEffect(() => {
-    if (!waitingForData.current) {
+    if (!waitingForData.current && !finishedData.current) {
       const loadMore = scrollPosition >= scrollSize * OFFSET_FRACTION_LOAD_MORE;
 
       if (loadMore) {
@@ -136,6 +139,7 @@ export function LibraryScrapperTab(props: IProps) {
     page.current = 1;
     offset.current = undefined;
     total.current = undefined;
+    finishedData.current = false;
 
     searchNow();
   }, [props.searchValue]);

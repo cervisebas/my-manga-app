@@ -258,9 +258,17 @@ export class ShadowMangaScrapping implements IScrappingService {
   public async search(
     value: string,
     filters: (SearchFilter | SearchFilterSection)[],
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    _paginated?: SearchPaginated,
+    paginated?: SearchPaginated,
   ): Promise<SearchResult> {
+    if (paginated?.offset) {
+      return {
+        page: paginated.page || 1,
+        total: 0,
+        offset: paginated.offset,
+        books: [],
+      };
+    }
+
     const url = new URL(
       'https://shademanga.com/api/series-locales/search-candidates',
     );
@@ -271,9 +279,7 @@ export class ShadowMangaScrapping implements IScrappingService {
 
     const _filters = filtersToArray(filters);
     for (const [key, val] of _filters) {
-      if (key === 'tags') {
-        url.searchParams.append('tags', val);
-      }
+      url.searchParams.append(key, val);
     }
 
     const { data } = await axios.get<ShadowMangaSearchResponse[]>(url.href);
@@ -376,8 +382,8 @@ export class ShadowMangaScrapping implements IScrappingService {
         ],
         language: Language.MX,
         languages: [Language.MX],
-        availableSpanishLanguage: true,
-        availableSpanishLATAMLanguage: false,
+        availableSpanishLanguage: false,
+        availableSpanishLATAMLanguage: true,
       };
     });
   }
@@ -401,14 +407,16 @@ export class ShadowMangaScrapping implements IScrappingService {
       description: data.descripcion,
       wallpaper: data.portadaUrl,
       stars: data.puntuacion ?? undefined,
-      staff: [
-        {
-          url: '',
-          name: data.autor ?? '',
-          work_position: 'author',
-          search_name: data.autor ?? '',
-        },
-      ],
+      staff: data.autor
+        ? [
+            {
+              url: '',
+              name: data.autor ?? '',
+              work_position: 'author',
+              search_name: data.autor ?? '',
+            },
+          ]
+        : undefined,
       genders: data.generos
         ? data.generos.split(',').map((genero) => ({
             name: genero.trim(),
