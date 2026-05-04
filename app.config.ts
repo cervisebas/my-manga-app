@@ -21,6 +21,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
           enableProguardInReleaseBuilds: true,
           enableShrinkResourcesInReleaseBuilds: true,
           abiFilters: ['arm64-v8a', 'armeabi-v7a'],
+          usesCleartextTraffic: true,
         },
       },
     ],

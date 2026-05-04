@@ -374,7 +374,11 @@ export class CapibaraTraductorScrapping implements IScrappingService {
 
   @ApiHandleErrors()
   public async bookInfo(url: string): Promise<BookInfoInterface> {
-    const { data: html } = await axios.get(url);
+    const { data: html } = await axios.get(url, {
+      headers: {
+        'upgrade-insecure-requests': 1,
+      },
+    });
     const root = parse(html);
     const island = root.querySelector('astro-island');
 
