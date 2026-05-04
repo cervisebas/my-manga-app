@@ -7,7 +7,7 @@
  [[Link]](https://manga-oni.com/)
 - [x] CapibaraTraductor <b>[API RES en JSON]</b> [[Link]](https://capibaratraductor.com/)
 
-# Servicios que usan Cloudflare 
-- [ ] <b>*DESCARTADO*</b> Manga Oni <b>[HTML]</b>
-- [ ] <b>*DESCARTADO*</b> Kumanga <b>[HTML]</b> [[Link]](https://www.kumanga.com/)
-- [ ] <b>*DESCARTADO*</b> LeerMangaEsp <b>[API RES en JSON]</b> [[Link]](https://leermangaesp.net/)
+## Servicios que usan Cloudflare 
+- [ ] Manga Oni <b>[HTML]</b>
+- [ ] Kumanga <b>[HTML]</b> [[Link]](https://www.kumanga.com/)
+- [ ] LeerMangaEsp <b>[API RES en JSON]</b> [[Link]](https://leermangaesp.net/)
