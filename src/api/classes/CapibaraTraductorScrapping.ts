@@ -193,7 +193,7 @@ export class CapibaraTraductorScrapping implements IScrappingService {
 
   @ApiHandleErrors()
   public async getPopular(): Promise<BookInfoInterface[]> {
-    const [featured, popular] = await Promise.all([
+    const [featured, popular] = await Promise.allSettled([
       axios.get<CapibaraTraductorLandingResponse>(
         'https://capibaratraductor.com/api/landing/featured-manga?limit=5&nsfw=false',
       ),
@@ -203,8 +203,12 @@ export class CapibaraTraductorScrapping implements IScrappingService {
     ]);
 
     const items = [
-      ...(featured.data?.data || []),
-      ...(popular.data?.data || []),
+      ...(featured.status === 'fulfilled'
+        ? (featured.value?.data?.data ?? [])
+        : []),
+      ...(popular.status === 'fulfilled'
+        ? (popular.value?.data?.data ?? [])
+        : []),
     ];
 
     const uniqueItems = Array.from(
