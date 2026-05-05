@@ -37,6 +37,15 @@
 - [x] Mostrar un toast cuando no se hayan encontrado opciones en español
 - [x] En el historial al pasar de capitulo quedan huecos en blanco
 
+- [ ] Hacer que el bottom sheet quede por encima del toast
+- [ ] En la descripción aparece la opción de traducción a pesar de ya estar en español
+- [ ] Si no hay acciones en el viewer, aparece el titulo de la sección aunque no haya acciones
+- [ ] Si hay un solo lenguaje y es español, ocultar el progreso de traducción y la lista de lenguajes
+
+- [ ] En el view al hacer scroll hacia abajo y solar, al volver cancelar la animación
+
+- [ ] Error desconocido en Shadow Manga al filtrar por "Girls Love" y "GL (Girls Love)"
+
 # Cosas a añadir
 - [ ] Añadir opción de seleccionar que servicios se quiere usar y ordenar los mismos
 
@@ -54,3 +63,16 @@
 - [ ] Implementar el filtro "MULTI_DROPDOWN" en el bottom sheet de filtros de la biblioteca
 - [x] Implementar el filtro "RADIO" en el bottom sheet de filtros de la biblioteca
 - [ ] Implementar el filtro "SELECT_LIST" en el bottom sheet de filtros de la biblioteca
+
+- [ ] Añadir un flag más para ocultar cosas del historial
+- [ ] Decoradores para repetir un método en caso de error y otro para trackear el referer
+
+- [ ] Atributo que indique que no debe recomendar opciones en los capítulos
+- - [ ] Al abrir un manga precargar el siguiente con este criterio:
+    - Verificar si es el único idioma
+    - Verificar si es un servicio que no debe tener opciones recomendadas
+    - Verificar con última opción elegida
+    - Verificar con la opción más elegida
+    - Verificar si hay una opción que se ha elegido antes
+    - Aleatoria con la fecha más reciente
+
