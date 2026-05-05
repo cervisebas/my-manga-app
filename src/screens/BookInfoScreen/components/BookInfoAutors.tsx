@@ -36,7 +36,7 @@ export function BookInfoAutors(props: IProps) {
         <View className={'w-full flex-col'}>
           {props.authors.map((author, index, array) => (
             <React.Fragment
-              key={`staff-item-${author.url}-${author.work_position}`}
+              key={`staff-item-${author.url}-${author.work_position}-${index}`}
             >
               <ItemWithIcon
                 title={author.name}

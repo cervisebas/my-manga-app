@@ -40,7 +40,7 @@
 - [x] Hacer que el bottom sheet quede por encima del toast
 - [x] En la descripción aparece la opción de traducción a pesar de ya estar en español
 - [ ] Si no hay acciones en el viewer, aparece el titulo de la sección aunque no haya acciones
-- [ ] Si hay un solo lenguaje y es español, ocultar el progreso de traducción y la lista de lenguajes
+- [x] Si hay un solo lenguaje y es español, ocultar el progreso de traducción y la lista de lenguajes
 
 - [ ] En el view al hacer scroll hacia abajo y solar, al volver cancelar la animación
 

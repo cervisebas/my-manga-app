@@ -39,9 +39,6 @@ export function BookInfoScreen(props: IProps) {
   const { top } = useSafeArea();
   const theme = useTheme();
 
-  // Variables de interfaz
-  const coverSize = top + modeAppbarHeight['small'] + COVER_HEIGHT;
-
   // Variables de informacion
   const info = params.data;
   const scrapper = getInstanceById(params.instance);
@@ -51,6 +48,14 @@ export function BookInfoScreen(props: IProps) {
     scrapper,
     info,
   );
+
+  // Variables de interfaz
+  const coverSize = top + modeAppbarHeight['small'] + COVER_HEIGHT;
+
+  const hideLanguageSection =
+    !data.languages ||
+    (data.languages.length === 1 &&
+      (data.languages[0] === Language.ES || data.languages[0] === Language.MX));
 
   const altTitles = Array.isArray(data?.altTitles)
     ? data.altTitles
@@ -193,24 +198,28 @@ export function BookInfoScreen(props: IProps) {
               </React.Fragment>
             )}
 
-            {/* Lenguaje */}
-            {data.languages && (
+            {!hideLanguageSection && (
               <React.Fragment>
-                <BookInfoTranslateProgress
-                  chapters={data.chapters ?? []}
-                  languages={PREFFER_LANGUAGE}
-                />
+                {/* Progress Translation */}
+                {data.languages && (
+                  <React.Fragment>
+                    <BookInfoTranslateProgress
+                      chapters={data.chapters ?? []}
+                      languages={PREFFER_LANGUAGE}
+                    />
 
-                <Divider />
-              </React.Fragment>
-            )}
+                    <Divider />
+                  </React.Fragment>
+                )}
 
-            {/* Lenguaje */}
-            {data.languages && (
-              <React.Fragment>
-                <BookInfoLanguages languages={data.languages} />
+                {/* Lenguaje */}
+                {data.languages && (
+                  <React.Fragment>
+                    <BookInfoLanguages languages={data.languages} />
 
-                <Divider />
+                    <Divider />
+                  </React.Fragment>
+                )}
               </React.Fragment>
             )}
 
