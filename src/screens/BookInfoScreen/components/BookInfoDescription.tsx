@@ -145,7 +145,8 @@ export function BookInfoDescription(props: IProps) {
           </Button>
         )}
 
-        {props.descriptionLang !== Language.ES &&
+        {props.descriptionLang &&
+          props.descriptionLang !== Language.ES &&
           props.descriptionLang !== Language.MX &&
           (translateValue ? (
             <Button
