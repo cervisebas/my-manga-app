@@ -159,6 +159,7 @@ export const BottomSheet = forwardRef(function (
           backgroundColor: theme.colors.elevation.level4,
         },
       ]}
+      containerStyle={styles.elevation}
       backdropComponent={renderBackdrop}
       handleComponent={renderHandle}
       footerComponent={props.footerComponent}
@@ -203,5 +204,8 @@ const styles = StyleSheet.create({
   background: {
     borderTopLeftRadius: 28,
     borderTopRightRadius: 28,
+  },
+  elevation: {
+    zIndex: 52,
   },
 });

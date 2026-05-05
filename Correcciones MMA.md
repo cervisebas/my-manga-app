@@ -37,7 +37,7 @@
 - [x] Mostrar un toast cuando no se hayan encontrado opciones en español
 - [x] En el historial al pasar de capitulo quedan huecos en blanco
 
-- [ ] Hacer que el bottom sheet quede por encima del toast
+- [x] Hacer que el bottom sheet quede por encima del toast
 - [ ] En la descripción aparece la opción de traducción a pesar de ya estar en español
 - [ ] Si no hay acciones en el viewer, aparece el titulo de la sección aunque no haya acciones
 - [ ] Si hay un solo lenguaje y es español, ocultar el progreso de traducción y la lista de lenguajes
