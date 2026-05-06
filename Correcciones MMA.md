@@ -67,12 +67,11 @@
 - [ ] Añadir un flag más para ocultar cosas del historial
 - [ ] Decoradores para repetir un método en caso de error y otro para trackear el referer
 
-- [ ] Atributo que indique que no debe recomendar opciones en los capítulos
-- - [ ] Al abrir un manga precargar el siguiente con este criterio:
-    - Verificar si es el único idioma
-    - Verificar si es un servicio que no debe tener opciones recomendadas
-    - Verificar con última opción elegida
-    - Verificar con la opción más elegida
-    - Verificar si hay una opción que se ha elegido antes
-    - Aleatoria con la fecha más reciente
-
+- [x] Atributo que indique que no debe recomendar opciones en los capítulos
+- - [x] Al abrir un manga precargar el siguiente con este criterio:
+    - [x] Verificar si es el único idioma
+    - [x] Verificar si es un servicio que no debe tener opciones recomendadas
+    - [x] Verificar con última opción elegida
+    - [x] Verificar con la opción más elegida
+    - [x] Verificar si hay una opción que se ha elegido antes
+    - [x] Consultar al usuario

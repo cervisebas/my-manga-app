@@ -6,7 +6,10 @@ import { Languages } from '@/api/shared/translate/Languages';
 import { BottomSheetOptionsInterface } from '@/common/components/BottomSheetOptions';
 import { ChapterOptions } from '@/common/handlers/ChapterOptions';
 import { refBottomSheetOptions } from '@/constants/Refs';
+import { Settings } from '@/settings/classes/Settings';
+import { SettingType } from '@/settings/enums/SettingType';
 import { NavigationProp } from '@react-navigation/native';
+import { autoSelectOption } from '../utils/autoSelectOption';
 
 export class ChapterSheetOptions {
   private bookInfo: BookInfoInterface;
@@ -18,6 +21,8 @@ export class ChapterSheetOptions {
 
   private information: BottomSheetOptionsInterface[] = [];
   private actions: BottomSheetOptionsInterface[] = [];
+
+  private automaticSelectChapterOption = false;
 
   constructor(
     instance: IScrappingService,
@@ -32,6 +37,16 @@ export class ChapterSheetOptions {
     this.bookInfo = bookInfo;
     this.chapter = chapter;
     this.option = option;
+
+    this.automaticSelectChapterOption =
+      (Settings.getOption(
+        SettingType.AUTOMATIC_SELECT_CHAPTER_OPTION,
+        'boolean',
+      ) as boolean) ?? false;
+
+    if (instance.onlyChapterOption) {
+      this.automaticSelectChapterOption = true;
+    }
 
     this.generateInfo();
     this.generateActions();
@@ -68,28 +83,48 @@ export class ChapterSheetOptions {
     }
   }
 
+  private async chapterAction(
+    chapter: ChapterInterface,
+    ignoreAutoSelection?: boolean,
+  ) {
+    if (this.automaticSelectChapterOption && !ignoreAutoSelection) {
+      autoSelectOption(
+        this.instance,
+        this.bookInfo,
+        chapter,
+        this.option,
+        true,
+        this.navigation,
+      );
+
+      return;
+    }
+
+    const chapterOptions = new ChapterOptions(
+      this.bookInfo,
+      chapter,
+      this.instance,
+      this.navigation,
+      true,
+      true,
+      undefined,
+      this.option,
+    );
+
+    chapterOptions.show();
+  }
+
   private generateActions() {
     this.actions = [];
 
-    if (this.chapter.options.length !== 1) {
+    if (this.chapter.options.length !== 1 || this.instance.onlyChapterOption) {
       this.actions.push({
         label: 'Cambiar opción',
         leftIcon: 'list-box-outline',
         description: this.chapter.options.length + ' opciónes disponibles',
         clossable: false,
         onPress: () => {
-          const chapterOptions = new ChapterOptions(
-            this.bookInfo,
-            this.chapter,
-            this.instance,
-            this.navigation,
-            true,
-            true,
-            undefined,
-            this.option,
-          );
-
-          chapterOptions.show();
+          this.chapterAction(this.chapter, true);
         },
       });
     }
@@ -111,18 +146,7 @@ export class ChapterSheetOptions {
           (chapter.title ? ' - ' + chapter.title : ''),
         clossable: false,
         onPress: () => {
-          const chapterOptions = new ChapterOptions(
-            this.bookInfo,
-            chapter,
-            this.instance,
-            this.navigation,
-            true,
-            true,
-            undefined,
-            this.option,
-          );
-
-          chapterOptions.show();
+          this.chapterAction(chapter);
         },
       });
     }
@@ -139,18 +163,7 @@ export class ChapterSheetOptions {
           (chapter.title ? ' - ' + chapter.title : ''),
         clossable: false,
         onPress: () => {
-          const chapterOptions = new ChapterOptions(
-            this.bookInfo,
-            chapter,
-            this.instance,
-            this.navigation,
-            true,
-            true,
-            undefined,
-            this.option,
-          );
-
-          chapterOptions.show();
+          this.chapterAction(chapter);
         },
       });
     }
@@ -162,5 +175,9 @@ export class ChapterSheetOptions {
       'Viendo ahora': this.information,
       'Acciones ': this.actions,
     });
+  }
+
+  public hide() {
+    refBottomSheetOptions.current?.close();
   }
 }

@@ -51,6 +51,7 @@ export function ChapterViewScreen(props: IProps) {
 
   const {
     restorePosition,
+    autoRestorePosition,
     restoreLastPosition,
     noRestoreLastPosition,
     saveCurrentPosition,
@@ -110,6 +111,12 @@ export function ChapterViewScreen(props: IProps) {
     };
   }, []);
 
+  useEffect(() => {
+    if (restorePosition && !loading && autoRestorePosition) {
+      restoreLastPosition();
+    }
+  }, [restorePosition, loading, autoRestorePosition]);
+
   // Back Handler
   usePreventBackNavigation(props.navigation as never, true, (removePrevent) => {
     saveCurrentPosition();
@@ -132,7 +139,14 @@ export function ChapterViewScreen(props: IProps) {
       </AppbarHeader>
 
       <MiniBanner
-        visible={restorePosition}
+        visible={restorePosition && autoRestorePosition}
+        loading={true}
+        message={'Esperando para restaurar ultima posición'}
+        actions={[]}
+      />
+
+      <MiniBanner
+        visible={restorePosition && !autoRestorePosition}
         message={'¿Reestablecer ultima posición?'}
         actions={[
           {

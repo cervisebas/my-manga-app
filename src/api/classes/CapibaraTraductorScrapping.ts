@@ -149,6 +149,7 @@ function parseAstroProps(obj: unknown): any {
 export class CapibaraTraductorScrapping implements IScrappingService {
   public readonly searchType = SearchType.PAGINATED;
   public readonly showAuthorAction = false;
+  public readonly onlyChapterOption = true;
 
   public getLogo(): ImageSourcePropType {
     return LogoImage;

@@ -32,6 +32,7 @@ export function SettingListItem(props: IProps) {
         leftIcon={props.icon}
         title={props.title}
         description={props.description}
+        descriptionNumberOfLines={10}
         right={(rProps) => (
           <Switch
             style={rProps.style}

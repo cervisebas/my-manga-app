@@ -39,6 +39,7 @@ type Options =
 export interface BottomSheetOptionsRef {
   open(title: string, options: Options): void;
   close(): void;
+  isOpened(): boolean;
   setNavigation(
     nav: NavigationProp<ReactNavigation.RootParamList> | undefined,
   ): void;
@@ -138,6 +139,9 @@ export const BottomSheetOptions = forwardRef(function (
     },
     close: () => {
       refBottomSheet.current?.hide();
+    },
+    isOpened() {
+      return refBottomSheet.current?.visible ?? false;
     },
     setNavigation(nav) {
       setNavigation(nav);

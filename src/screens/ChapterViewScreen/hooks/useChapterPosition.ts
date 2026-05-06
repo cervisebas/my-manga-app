@@ -6,6 +6,8 @@ import { ChapterInterface } from '@/api/shared/interfaces/ChapterInterface';
 import { useInterval } from '@/common/hooks/useInterval';
 import { useAppState } from '@/common/hooks/useAppState';
 import { AppStateStatusType } from '@/common/enums/AppStateStatus';
+import { Settings } from '@/settings/classes/Settings';
+import { SettingType } from '@/settings/enums/SettingType';
 
 export function useChapterPosition(
   chapter: ChapterInterface,
@@ -16,6 +18,12 @@ export function useChapterPosition(
   const [restorePosition, setRestorePosition] = useState(false);
   const lastPosition = useRef<ChapterPosition | undefined>(undefined);
   const pauseAutoSave = useRef(false);
+  const autoRestorePosition = useRef(
+    (Settings.getOption(
+      SettingType.AUTOMATIC_RESTORE_SAVED_POSITION,
+      'boolean',
+    ) as boolean) ?? false,
+  );
 
   const saveCurrentPosition = () => {
     if (pauseAutoSave.current) {
@@ -105,6 +113,7 @@ export function useChapterPosition(
 
   return {
     restorePosition,
+    autoRestorePosition: autoRestorePosition.current,
     saveCurrentPosition,
     restoreLastPosition,
     noRestoreLastPosition,

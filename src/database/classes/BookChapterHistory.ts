@@ -215,4 +215,30 @@ export class BookChapterHistory {
 
     return mapOptions;
   }
+
+  @DatabaseHandleErrors()
+  public static async getTopOptionBook(id_bookInfo: number) {
+    const chapters = await db
+      .select({ id_chapter: BookChapterModel.id })
+      .from(BookChapterModel)
+      .where(eq(BookChapterModel.id_bookinfo, id_bookInfo))
+      .orderBy(desc(BookChapterModel.chapter_number));
+
+    const lastOptions = await this.getLastOptionChapters(
+      chapters.map((chapter) => chapter.id_chapter),
+    );
+
+    const options = new Map<string, number>();
+
+    for (const lastOption of lastOptions.values()) {
+      if (lastOption.title && options.has(lastOption.title)) {
+        options.set(lastOption.title, options.get(lastOption.title)! + 1);
+      }
+    }
+
+    return Array.from(options.entries())
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 3)
+      .map((option) => option[0]);
+  }
 }
