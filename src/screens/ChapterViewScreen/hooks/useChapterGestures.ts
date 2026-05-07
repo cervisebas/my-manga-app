@@ -2,6 +2,7 @@ import { useSafeArea } from '@/common/hooks/useSafeArea';
 import { LayoutRectangle } from 'react-native';
 import { Gesture } from 'react-native-gesture-handler';
 import {
+  cancelAnimation,
   SharedValue,
   useSharedValue,
   withDecay,
@@ -53,6 +54,8 @@ export function useChapterGestures({
     .onStart(() => {
       offsetX.value = translateX.value;
       offsetY.value = translateY.value;
+      cancelAnimation(translateX);
+      cancelAnimation(translateY);
     })
     .onUpdate((e) => {
       // const scaledWidth = containerLayout.width * scale.value; // ancho real del contenido

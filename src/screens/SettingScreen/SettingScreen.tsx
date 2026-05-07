@@ -31,6 +31,7 @@ export function SettingScreen(props: IProps) {
         expandDisableTop
         expandArea={{
           top: 8,
+          horizontal: 0,
         }}
       >
         {settingSections.map((section) => (
@@ -45,7 +46,9 @@ export function SettingScreen(props: IProps) {
                   type={item.type}
                   value={item.value}
                   title={item.title}
+                  titleNumberOfLines={2}
                   description={item.description}
+                  descriptionNumberOfLines={10}
                   onChange={(val) => {
                     setOption(item.key, val);
                   }}

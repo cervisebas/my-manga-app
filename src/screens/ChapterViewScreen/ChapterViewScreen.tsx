@@ -4,7 +4,7 @@ import { ChapterOptionInterface } from '@/api/shared/interfaces/ChapterOptionInt
 import { AppbarHeader } from '@/common/components/AppbarHeader';
 import { NativeBottomTabScreenProps } from '@bottom-tabs/react-navigation';
 import { ParamListBase } from '@react-navigation/native';
-import { View } from 'react-native';
+import { ToastAndroid, View } from 'react-native';
 import { Appbar, useTheme } from 'react-native-paper';
 import { useLoadChapterImages } from './hooks/useLoadChapterImages';
 import { getInstanceById } from '@/api/utils/getInstanceById';
@@ -35,6 +35,11 @@ export function ChapterViewScreen(props: IProps) {
 
   // Refs
   const unmount = useRef(false);
+
+  const UIBackAction = useRef(false);
+  const lockBackAction = useRef(true);
+  const unlockBackActionTimeout = useRef<NodeJS.Timeout | undefined>(undefined);
+
   const progressRef = useRef<string | number | undefined>(undefined);
   const optionsRef = useRef<ChapterSheetOptions | undefined>(undefined);
 
@@ -82,6 +87,11 @@ export function ChapterViewScreen(props: IProps) {
     optionsRef.current.show();
   };
 
+  const goBackFromUI = () => {
+    UIBackAction.current = true;
+    props.navigation.goBack();
+  };
+
   // Effects
   useChapterHistory(params.chapter);
 
@@ -119,6 +129,20 @@ export function ChapterViewScreen(props: IProps) {
 
   // Back Handler
   usePreventBackNavigation(props.navigation as never, true, (removePrevent) => {
+    if (lockBackAction.current && !UIBackAction.current) {
+      lockBackAction.current = false;
+
+      ToastAndroid.show(
+        'Vuelve a hacer para atrás para cerrar',
+        ToastAndroid.SHORT,
+      );
+
+      unlockBackActionTimeout.current = setTimeout(() => {
+        lockBackAction.current = true;
+      }, 1500);
+      return;
+    }
+
     saveCurrentPosition();
 
     setTimeout(() => {
@@ -133,7 +157,7 @@ export function ChapterViewScreen(props: IProps) {
       style={{ backgroundColor: theme.colors.surface }}
     >
       <AppbarHeader>
-        <Appbar.BackAction onPress={props.navigation.goBack} />
+        <Appbar.BackAction onPress={goBackFromUI} />
         <Appbar.Content title={title} />
         <Appbar.Action icon={'cog-outline'} onPress={showOptions} />
       </AppbarHeader>

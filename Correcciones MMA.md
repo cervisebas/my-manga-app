@@ -39,10 +39,13 @@
 
 - [x] Hacer que el bottom sheet quede por encima del toast
 - [x] En la descripción aparece la opción de traducción a pesar de ya estar en español
-- [ ] Si no hay acciones en el viewer, aparece el titulo de la sección aunque no haya acciones
+- [x] Si no hay acciones en el viewer, aparece el titulo de la sección aunque no haya acciones
 - [x] Si hay un solo lenguaje y es español, ocultar el progreso de traducción y la lista de lenguajes
 
-- [ ] En el view al hacer scroll hacia abajo y solar, al volver cancelar la animación
+- [x] En el view al hacer scroll hacia abajo y solar, al volver a realizar la cancelar la animación
+- [x] En el apartado de configuraciones quitar los márgenes laterales y permitir más de una linea en los títulos
+- [x] Cambiar el color del diálogo de carga al mismo que tiene el diálogo normal
+- [x] Al hacer para atrás solicitar una segunda acción para cerrar el visor
 
 - [ ] Error desconocido en Shadow Manga al filtrar por "Girls Love" y "GL (Girls Love)"
 

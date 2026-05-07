@@ -250,9 +250,17 @@ export class ChapterOptions {
 
   public show() {
     refBottomSheetOptions.current?.setNavigation(this.navigation);
-    refBottomSheetOptions?.current?.open('Opciónes del capítulo', {
+
+    const options: Record<string, BottomSheetOptionsInterface[]> = {
       'Información ': this.information,
-      'Opciónes de lectura': this.options,
-    });
+    };
+
+    if (this.options) {
+      Object.assign(options, {
+        'Opciónes de lectura': this.options,
+      });
+    }
+
+    refBottomSheetOptions?.current?.open('Opciónes del capítulo', options);
   }
 }

@@ -20,6 +20,7 @@ export interface ItemWithIconProps {
   disabled?: boolean;
   style?: StyleProp<ViewStyle>;
   descriptionStyle?: StyleProp<TextStyle>;
+  titleNumberOfLines?: number;
   descriptionNumberOfLines?: number;
   left?: ListItemProps['left'];
   right?: ListItemProps['right'];
@@ -29,6 +30,7 @@ export function ItemWithIcon(props: ItemWithIconProps) {
   return (
     <List.Item
       title={props.title}
+      titleNumberOfLines={props.titleNumberOfLines}
       description={props.description}
       descriptionStyle={props.descriptionStyle}
       descriptionNumberOfLines={props.descriptionNumberOfLines}

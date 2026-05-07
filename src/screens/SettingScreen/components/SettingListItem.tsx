@@ -8,7 +8,9 @@ interface IProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   value: any;
   title: string;
+  titleNumberOfLines?: number;
   description: string | undefined;
+  descriptionNumberOfLines?: number;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onChange?(val: any): void;
 }
@@ -31,8 +33,9 @@ export function SettingListItem(props: IProps) {
       <ItemWithIcon
         leftIcon={props.icon}
         title={props.title}
+        titleNumberOfLines={props.titleNumberOfLines}
         description={props.description}
-        descriptionNumberOfLines={10}
+        descriptionNumberOfLines={props.descriptionNumberOfLines}
         right={(rProps) => (
           <Switch
             style={rProps.style}
