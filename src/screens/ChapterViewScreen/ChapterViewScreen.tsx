@@ -19,6 +19,7 @@ import { useChapterHistory } from './hooks/useChapterHistory';
 import { useChapterPosition } from './hooks/useChapterPosition';
 import { MiniBanner } from '@/common/components/MiniBanner';
 import { usePreventBackNavigation } from '@/common/hooks/usePreventBackNavigation';
+import { usePreventBackHandler } from '@/common/hooks/usePreventBackHandler';
 
 type IProps = NativeBottomTabScreenProps<ParamListBase, 'chapter-view'>;
 
@@ -129,6 +130,15 @@ export function ChapterViewScreen(props: IProps) {
 
   // Back Handler
   usePreventBackNavigation(props.navigation as never, true, (removePrevent) => {
+    saveCurrentPosition();
+
+    setTimeout(() => {
+      removePrevent?.();
+      props.navigation.goBack();
+    }, 10);
+  });
+
+  usePreventBackHandler(() => {
     if (lockBackAction.current && !UIBackAction.current) {
       lockBackAction.current = false;
 
@@ -143,13 +153,8 @@ export function ChapterViewScreen(props: IProps) {
       return;
     }
 
-    saveCurrentPosition();
-
-    setTimeout(() => {
-      removePrevent?.();
-      props.navigation.goBack();
-    }, 10);
-  });
+    props.navigation.goBack();
+  }, true);
 
   return (
     <View
