@@ -46,6 +46,7 @@
     "react-native": "0.83.6",
     "react-native-bootsplash": "^7.3.1",
     "react-native-bottom-tabs": "^1.1.0",
+    "react-native-compressor": "^1.18.2",
     "react-native-edge-to-edge": "^1.8.1",
     "react-native-element-dropdown": "^2.12.4",
     "react-native-enriched-markdown": "^0.5.0",

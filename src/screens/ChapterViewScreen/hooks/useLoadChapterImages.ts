@@ -5,6 +5,7 @@ import { ChapterImageFile } from '@/common/classes/ChapterImageFile';
 import { ChapterImageInfo } from '@/common/classes/ChapterImageInfo';
 
 import NoLoadImage from '@/assets/no-load-image.webp';
+import { File } from 'expo-file-system';
 
 export function useLoadChapterImages(
   instance: IScrappingService,
@@ -25,16 +26,16 @@ export function useLoadChapterImages(
   const subdirs = [instance.getIdName(), bookPath];
 
   // Methods
-  const onLoadImage = async (index: number, source: string) => {
+  const onLoadImage = async (index: number, source: File) => {
     const fileName = sourceImages[index].slice(
       sourceImages[index].lastIndexOf('/') + 1,
     );
 
-    const _file = new ChapterImageFile(fileName, source, 'base64', subdirs);
+    const _file = new ChapterImageFile(fileName, source, subdirs);
     _file.checkFolder();
-    _file.save();
+    await _file.save();
 
-    const _info = new ChapterImageInfo(_file.getPath());
+    const _info = new ChapterImageInfo(_file.getFile());
     await _info.load();
 
     const _sizes = _info.getSizes();
@@ -45,9 +46,12 @@ export function useLoadChapterImages(
       height: _sizes.height,
     };
 
-    setImages((images) =>
-      images.map((value, indexImage) => (indexImage === index ? image : value)),
-    );
+    setImages((images) => {
+      const _images = [...images];
+      _images[index] = image;
+
+      return _images;
+    });
   };
 
   const onErrorImage = async (index: number) => {
@@ -74,7 +78,7 @@ export function useLoadChapterImages(
     const exist = ChapterImageFile.exist(fileName, subdirs);
 
     if (exist) {
-      onLoadImage(index, ChapterImageFile.read(fileName, subdirs));
+      onLoadImage(index, ChapterImageFile.getFileObj(fileName, subdirs));
     }
 
     return exist;

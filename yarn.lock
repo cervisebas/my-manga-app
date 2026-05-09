@@ -6563,6 +6563,11 @@ react-native-bottom-tabs@^1.1.0:
     sf-symbols-typescript "^2.0.0"
     use-latest-callback "^0.2.1"
 
+react-native-compressor@^1.18.2:
+  version "1.18.2"
+  resolved "https://registry.yarnpkg.com/react-native-compressor/-/react-native-compressor-1.18.2.tgz#42a763738888cb9243578c371621569c09f27edf"
+  integrity sha512-1k4+QIzbbGc8m5JERblH6G220zuhTxaSZ4UShSYHWk229JZnUd9VAP6aBliMMVZudCQt4IIk+7TORZZ3rHACDw==
+
 react-native-edge-to-edge@^1.8.1:
   version "1.8.1"
   resolved "https://registry.yarnpkg.com/react-native-edge-to-edge/-/react-native-edge-to-edge-1.8.1.tgz#a1044ddbf4007a029980239e16c6a066e60756d2"

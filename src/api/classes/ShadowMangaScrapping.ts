@@ -12,7 +12,6 @@ import type {
 } from '@api/shared/interfaces/SearchFilter';
 import type { SearchPaginated } from '@api/shared/interfaces/SearchPaginated';
 import type { SearchResult } from '@api/shared/interfaces/SearchResult';
-import { retry } from '@api/shared/utils/retry';
 import { ImageSourcePropType } from 'react-native';
 import LogoImage from '@api/assets/shadowmanga-logo.webp';
 import axios from 'axios';
@@ -20,8 +19,6 @@ import dayjs from 'dayjs';
 import { Language } from '../shared/enums/Language';
 import { ApiHandleErrors } from '../shared/decorators/ApiHandleErrors';
 import { OrderChapters } from '../shared/decorators/OrderChapters';
-import expoInsecureFetch from '@modules/expo-insecure-fetch';
-import { UserAgents } from '../shared/constants/UserAgents';
 import { filtersToArray } from '../shared/utils/filtersToArray';
 import {
   ShadowMangaPopularResponse,
@@ -30,6 +27,9 @@ import {
   ShadowMangaBookInfoResponse,
   ShadowMangaChapterDataResponse,
 } from '../interfaces/ShadowMangaScrapping.interfaces';
+import { defaultLoadChapterImages } from '../utils/defaultLoadChapterImages';
+import { defaultLoadChapterImage } from '../utils/defaultLoadChapterImage';
+import { File } from 'expo-file-system';
 
 const GENDER_OPTIONS: SearchFilterOption[] = [
   { label: 'Acción', value: 'Acción' },
@@ -437,11 +437,8 @@ export class ShadowMangaScrapping implements IScrappingService {
   }
 
   @ApiHandleErrors()
-  public async loadChapterImage(url: string): Promise<string> {
-    const data = await expoInsecureFetch.fetch(url, 'GET', {
-      'User-Agent': UserAgents.DEFAULT,
-    });
-    return data.body;
+  public async loadChapterImage(url: string): Promise<File> {
+    return defaultLoadChapterImage(url);
   }
 
   @ApiHandleErrors()
@@ -449,38 +446,9 @@ export class ShadowMangaScrapping implements IScrappingService {
     urls: string[],
     _continue?: () => boolean,
     exist?: (index: number) => boolean,
-    progress?: (index: number, source: string) => Promise<void>,
+    progress?: (index: number, source: File) => Promise<void>,
     onError?: (index: number) => Promise<void>,
-  ): Promise<string[]> {
-    try {
-      const images: string[] = [];
-
-      for (let index = 0; index < urls.length; index++) {
-        const _iCanContinue = _continue?.() ?? true;
-
-        if (!_iCanContinue) {
-          break;
-        }
-
-        if (exist?.(index) ?? false) {
-          continue;
-        }
-
-        try {
-          const url = urls[index] ?? '';
-          const image = await retry(this.loadChapterImage(url), 5, 250);
-          await progress?.(index, image);
-          images.push(image);
-        } catch (error) {
-          console.error(error);
-          await onError?.(index);
-        }
-      }
-
-      return images;
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
+  ): Promise<void> {
+    return defaultLoadChapterImages(urls, _continue, exist, progress, onError);
   }
 }

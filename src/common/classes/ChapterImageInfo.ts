@@ -1,15 +1,31 @@
-import { Image, ImageRef, ImageSource } from 'expo-image';
+import { File } from 'expo-file-system';
+import { Image, ImageRef } from 'expo-image';
 
 export class ChapterImageInfo {
   private info?: ImageRef;
-  private path: string | number | ImageSource;
+  private source: File | number;
 
-  constructor(path: typeof this.path) {
-    this.path = path;
+  constructor(path: typeof this.source) {
+    this.source = path;
+  }
+
+  private getSource() {
+    if (this.source instanceof File) {
+      console.log('File info:', {
+        uri: this.source.uri,
+        exist: this.source.exists,
+      });
+
+      return this.source.uri;
+    } else {
+      return this.source;
+    }
   }
 
   public async load() {
-    const info = await Image.loadAsync(this.path);
+    console.info('Source:', this.getSource());
+
+    const info = await Image.loadAsync(this.getSource());
     this.info = info;
   }
 
