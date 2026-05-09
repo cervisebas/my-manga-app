@@ -466,6 +466,13 @@ export class CapibaraTraductorScrapping implements IScrappingService {
     progress?: (index: number, source: File) => Promise<void>,
     onError?: (index: number) => Promise<void>,
   ): Promise<void> {
-    return defaultLoadChapterImages(urls, _continue, exist, progress, onError);
+    return defaultLoadChapterImages(
+      urls,
+      {},
+      _continue,
+      exist,
+      progress,
+      onError,
+    );
   }
 }

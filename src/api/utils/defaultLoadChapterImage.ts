@@ -4,7 +4,10 @@ import { UserAgents } from '../shared/constants/UserAgents';
 
 const destination = new Directory(Paths.cache, 'images');
 
-export async function defaultLoadChapterImage(url: string) {
+export async function defaultLoadChapterImage(
+  url: string,
+  headers?: Record<string, string>,
+) {
   if (!destination.exists) {
     destination.create();
   }
@@ -17,6 +20,7 @@ export async function defaultLoadChapterImage(url: string) {
     'GET',
     {
       'User-Agent': UserAgents.DEFAULT,
+      ...(headers ?? {}),
     },
     '',
     path.replace('file://', ''),

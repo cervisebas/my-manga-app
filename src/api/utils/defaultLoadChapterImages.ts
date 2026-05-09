@@ -4,6 +4,7 @@ import { defaultLoadChapterImage } from './defaultLoadChapterImage';
 
 export async function defaultLoadChapterImages(
   urls: string[],
+  headers?: Record<string, string>,
   _continue?: () => boolean,
   exist?: (index: number) => boolean,
   progress?: (index: number, file: File) => Promise<void>,
@@ -23,7 +24,11 @@ export async function defaultLoadChapterImages(
 
       try {
         const url = urls[index] ?? '';
-        const image = await retry(defaultLoadChapterImage(url), 5, 250);
+        const image = await retry(
+          defaultLoadChapterImage(url, headers),
+          5,
+          250,
+        );
         await progress?.(index, image);
       } catch (error) {
         console.error(error);

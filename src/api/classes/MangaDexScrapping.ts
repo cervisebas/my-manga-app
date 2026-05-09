@@ -1118,7 +1118,9 @@ export class MangaDexScrapping implements IScrappingService {
 
   @ApiHandleErrors()
   public async loadChapterImage(url: string): Promise<File> {
-    return defaultLoadChapterImage(url);
+    return defaultLoadChapterImage(url, {
+      Referer: 'https://mangadex.org/',
+    });
   }
 
   @ApiHandleErrors()
@@ -1129,6 +1131,15 @@ export class MangaDexScrapping implements IScrappingService {
     progress?: (index: number, source: File) => Promise<void>,
     onError?: (index: number) => Promise<void>,
   ): Promise<void> {
-    return defaultLoadChapterImages(urls, _continue, exist, progress, onError);
+    return defaultLoadChapterImages(
+      urls,
+      {
+        Referer: 'https://mangadex.org/',
+      },
+      _continue,
+      exist,
+      progress,
+      onError,
+    );
   }
 }

@@ -11,9 +11,10 @@ export class ChapterImageInfo {
 
   private getSource() {
     if (this.source instanceof File) {
-      console.log('File info:', {
+      console.info('File info:', {
         uri: this.source.uri,
         exist: this.source.exists,
+        size: this.source.info().size,
       });
 
       return this.source.uri;

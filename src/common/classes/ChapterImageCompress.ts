@@ -8,7 +8,6 @@ export class ChapterImageCompress {
   }
 
   public async save() {
-    console.log('Image path:', this.imagePath);
     const newUri = await Image.compress(this.imagePath, {
       output: 'jpg',
       compressionMethod: 'manual',

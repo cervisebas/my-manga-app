@@ -47,12 +47,7 @@ export class ChapterImageFile {
       );
 
       console.info(
-        'Comprimido: ' +
-          this.file.name +
-          ' | Antes -> ' +
-          this.source.info().size +
-          ' Despues -> ',
-        newFile.info().size,
+        `Comprimido:\n\tAntes (${this.source.name}) -> ${this.source.info().size}\n\tDespues (${newFile.name}) -> ${newFile.info().size}`,
       );
 
       newFile.move(this.file);
@@ -87,7 +82,10 @@ export class ChapterImageFile {
     }
 
     await this.compressAndSaveImage();
-    this.source.delete();
+
+    if (this.source.exists) {
+      this.source.delete();
+    }
 
     console.info('Save file in:', this.filePath);
   }
