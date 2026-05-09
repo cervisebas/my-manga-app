@@ -8,6 +8,7 @@ import type { SearchResult } from '@api/shared/interfaces/SearchResult';
 import { ImageSourcePropType } from 'react-native';
 import { SearchPaginated } from '../shared/interfaces/SearchPaginated';
 import { ChapterOptionInterface } from '../shared/interfaces/ChapterOptionInterface';
+import { File } from 'expo-file-system';
 
 export interface IScrappingService {
   readonly searchType: SearchType;
@@ -40,12 +41,14 @@ export interface IScrappingService {
     url: string,
     chapterOption?: ChapterOptionInterface,
   ): Promise<string[]>;
-  loadChapterImage(url: string): Promise<string>;
+
+  // Load Images
+  loadChapterImage(url: string): Promise<File>;
   loadChapterImages(
     urls: string[],
     _continue?: () => boolean,
     exist?: (index: number) => boolean,
-    progress?: (index: number, source: string) => Promise<void>,
+    progress?: (index: number, source: File) => Promise<void>,
     onError?: (index: number) => Promise<void>,
-  ): Promise<string[]>;
+  ): Promise<void>;
 }

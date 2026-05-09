@@ -7,7 +7,7 @@ import {
 import { scheduleOnRN } from 'react-native-worklets';
 import { ImagePosition } from '../interfaces/ImagePosition';
 
-const BUFFER = 900;
+const BUFFER = 400;
 
 export function useChapterVisibleImages(
   imagesWithPositions: ImagePosition[],

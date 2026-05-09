@@ -1,31 +1,28 @@
 import { Directory, File, Paths } from 'expo-file-system';
+import { ChapterImageCompress } from './ChapterImageCompress';
 
 const IMAGE_FOLDER = 'images-chapter';
 
 export class ChapterImageFile {
   private file: File;
-  private source: string | Uint8Array;
-  private encode?: Exclude<
-    Parameters<typeof this.file.write>['1'],
-    undefined
-  >['encoding'];
+  private source: File;
 
   private dir: string;
-  private path: string;
+  private filePath: string;
   private subdirs?: string[];
 
   constructor(
     fileName: string,
     source: typeof this.source,
-    encode?: typeof this.encode,
     subdirs?: string[],
   ) {
     this.subdirs = subdirs;
+
     this.dir = Paths.join(Paths.document, IMAGE_FOLDER);
-    this.path = Paths.join(this.dir, ...(subdirs ?? []), fileName);
-    this.file = new File(this.path);
+    this.filePath = Paths.join(this.dir, ...(subdirs ?? []), fileName);
+    this.file = new File(this.filePath);
+
     this.source = source;
-    this.encode = encode;
   }
 
   private makeSubdirArray(subdirs: string[]) {
@@ -34,6 +31,29 @@ export class ChapterImageFile {
         curr.includes('/') ? [...prev, ...curr.split('/')] : [...prev, curr],
       [] as string[],
     );
+  }
+
+  private async compressAndSaveImage() {
+    try {
+      const compress = new ChapterImageCompress(this.source.uri);
+      const result = await compress.save();
+
+      const newFile = new File(result);
+      newFile.rename(
+        this.file.name
+          .replace('.webp', '.jpg')
+          .replace('.png', '.jpg')
+          .replace('.jpeg', '.jpg'),
+      );
+
+      console.info(
+        `Comprimido:\n\tAntes (${this.source.name}) -> ${this.source.info().size}\n\tDespues (${newFile.name}) -> ${newFile.info().size}`,
+      );
+
+      newFile.move(this.file);
+    } catch (error) {
+      console.error('Compress error:', error);
+    }
   }
 
   public checkFolder() {
@@ -56,20 +76,26 @@ export class ChapterImageFile {
     }
   }
 
-  public save() {
+  public async save() {
     if (this.file.exists) {
       return;
     }
 
-    this.file.write(this.source, {
-      append: true,
-      encoding: this.encode,
-    });
-    console.info('Save file in:', this.path);
+    await this.compressAndSaveImage();
+
+    if (this.source.exists) {
+      this.source.delete();
+    }
+
+    console.info('Save file in:', this.filePath);
   }
 
   public getPath() {
-    return this.path;
+    return this.filePath;
+  }
+
+  public getFile() {
+    return this.file;
   }
 
   public static exist(fileName: string, subdirs: string[] = []) {
@@ -77,6 +103,13 @@ export class ChapterImageFile {
 
     const file = new File(path);
     return file.exists;
+  }
+
+  public static getFileObj(fileName: string, subdirs: string[] = []) {
+    const path = Paths.join(Paths.document, IMAGE_FOLDER, ...subdirs, fileName);
+
+    const file = new File(path);
+    return file;
   }
 
   public static read(fileName: string, subdirs: string[] = []) {

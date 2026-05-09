@@ -14,6 +14,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   plugins: [
     'expo-sqlite',
     'react-native-bottom-tabs',
+    'react-native-compressor',
     [
       'expo-build-properties',
       {
