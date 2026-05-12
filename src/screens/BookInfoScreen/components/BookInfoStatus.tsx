@@ -22,7 +22,6 @@ export function BookInfoStatus(props: IProps) {
     if (!props.id_bookInfo || saving.current) {
       return;
     }
-    console.log(status);
 
     try {
       if (selected === status) {

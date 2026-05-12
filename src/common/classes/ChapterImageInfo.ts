@@ -1,9 +1,10 @@
 import { File } from 'expo-file-system';
 import { Image, ImageRef } from 'expo-image';
+import { ImageURISource } from 'react-native';
 
 export class ChapterImageInfo {
   private info?: ImageRef;
-  private source: File | number;
+  private source: File | ImageURISource | number;
 
   constructor(path: typeof this.source) {
     this.source = path;
