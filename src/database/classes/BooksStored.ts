@@ -38,6 +38,13 @@ export class BooksStored {
   }
 
   @DatabaseHandleErrors()
+  public static async removeBook(id_bookinfo: number) {
+    await db
+      .delete(BookUserStatusByBookInfoModel)
+      .where(eq(BookUserStatusByBookInfoModel.id_bookinfo, id_bookinfo));
+  }
+
+  @DatabaseHandleErrors()
   public static async getSavedBooks() {
     const data: Record<UserBookStatus, BookInfoInterface[]> = {
       [UserBookStatus.WATCH]: [],

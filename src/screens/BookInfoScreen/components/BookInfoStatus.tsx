@@ -22,10 +22,16 @@ export function BookInfoStatus(props: IProps) {
     if (!props.id_bookInfo || saving.current) {
       return;
     }
+    console.log(status);
 
     try {
-      await BooksStored.saveBook(props.id_bookInfo, status);
-      console.info('BOOK SAVED ->', props.id_bookInfo, status);
+      if (selected === status) {
+        await BooksStored.removeBook(props.id_bookInfo);
+        console.info('BOOK REMOVED ->', props.id_bookInfo);
+      } else {
+        await BooksStored.saveBook(props.id_bookInfo, status);
+        console.info('BOOK SAVED ->', props.id_bookInfo, status);
+      }
     } catch (error) {
       toast.error(
         error instanceof DatabaseError
