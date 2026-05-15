@@ -19,4 +19,18 @@ export class ChapterImageStorageInfo {
 
     return formatBytes(size ?? 0);
   }
+
+  public static clearAll() {
+    const dir = new Directory(IMAGE_FOLDER_PATH);
+
+    for (const item of dir.list()) {
+      const itemName = item.name;
+      try {
+        item.delete();
+        console.info('Se elimino:', itemName);
+      } catch (error) {
+        console.error('Error al eliminar:', itemName, error);
+      }
+    }
+  }
 }

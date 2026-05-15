@@ -20,7 +20,7 @@ export function SettingProvider(props: SettingProviderProps) {
   }
 
   function setOption(key: SettingItem['key'], val: SettingItem['value']) {
-    if (key) {
+    if (key !== undefined) {
       SettingManager.setOption(key, val);
     }
     loadOptions();

@@ -31,16 +31,17 @@ export function SettingScreen(props: IProps) {
         expandDisableTop
         expandArea={{
           top: 8,
+          bottom: 32,
           horizontal: 0,
         }}
       >
         {settingSections.map((section) => (
           <List.Section
-            key={`setting-section-${section.settings}`}
+            key={`setting-section-${section.section}`}
             title={section.section}
           >
             {section.settings.map((item, index, array) => (
-              <React.Fragment key={`setting-item-${item.key}-${item.title}`}>
+              <React.Fragment key={`setting-item-${section.section}-${index}`}>
                 <SettingListItem instance={item} />
 
                 {array[index + 1] && <UDivider className={'mx-4'} />}

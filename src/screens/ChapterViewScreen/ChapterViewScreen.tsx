@@ -20,6 +20,7 @@ import { useChapterPosition } from './hooks/useChapterPosition';
 import { MiniBanner } from '@/common/components/MiniBanner';
 import { usePreventBackNavigation } from '@/common/hooks/usePreventBackNavigation';
 import { usePreventBackHandler } from '@/common/hooks/usePreventBackHandler';
+import { toSafeFolderName } from '@/common/utils/toSafeFolderName';
 
 type IProps = NativeBottomTabScreenProps<ParamListBase, 'chapter-view'>;
 
@@ -49,10 +50,11 @@ export function ChapterViewScreen(props: IProps) {
   // Hooks
   const theme = useTheme();
   const scrapper = getInstanceById(params.instance);
+  const safeFolderName = toSafeFolderName(params.option.url);
   const { images, progress, loading } = useLoadChapterImages(
     scrapper,
     params.images,
-    params.bookInfo.path,
+    [params.bookInfo.path, safeFolderName],
   );
 
   const {

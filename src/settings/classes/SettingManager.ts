@@ -28,7 +28,7 @@ export class SettingManager {
 
   public static getList(): SettingItem[] {
     for (const SettingItem of SettingList) {
-      if (SettingItem.key) {
+      if (SettingItem.key !== undefined) {
         const saved = this.getOption(SettingItem.key, SettingItem.type);
 
         SettingItem.setValue(saved ?? SettingItem.defaultValue, true);

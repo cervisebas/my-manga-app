@@ -3,6 +3,8 @@ import { SettingItem } from '../classes/SettingItem';
 import { SettingSection } from '../enums/SettingSection';
 import { SettingType } from '../enums/SettingType';
 import { BookInfoDatabase } from '@/database/classes/BookInfoDatabase';
+import { ToastAndroid } from 'react-native';
+import { refDialogs } from '@/constants/Refs';
 
 const ONLY_SHOW_SPANISH_LANGUAGE = new SettingItem({
   key: SettingType.ONLY_SHOW_SPANISH_LANGUAGE,
@@ -38,7 +40,7 @@ const AUTOMATIC_RESTORE_SAVED_POSITION = new SettingItem({
 });
 
 const STORAGE_METER = new SettingItem({
-  icon: 'sd',
+  icon: 'harddisk',
   title: 'Espacio de descargas',
   section: SettingSection.STORAGE,
   clickable: false,
@@ -47,11 +49,38 @@ const STORAGE_METER = new SettingItem({
 STORAGE_METER.externalGetData = async function _() {
   try {
     const size = ChapterImageStorageInfo.getSizeFormat();
-    this.setDescription(size + ' ocupado');
+    this.setDescription(
+      `Espacio ocupado por los mangas descargados en el almacenamiento del dispositivo.\n\nEspacio ocupado: ${size}`,
+    );
   } catch (error) {
     console.error(error);
     this.setDescription('-');
   }
+};
+
+const STORAGE_CLEAR = new SettingItem({
+  icon: 'harddisk-remove',
+  title: 'Limpiar espacio de descargas',
+  section: SettingSection.STORAGE,
+  clickable: true,
+  loadeable: false,
+});
+STORAGE_CLEAR.externalClickAction = async function _() {
+  refDialogs.current?.open({
+    message:
+      '¿Estás seguro de limpiar el espacio de descargar?\n\nSe borrará todo el contenido de el de forma irreversible.',
+    cancelButton: {
+      label: 'Cancelar',
+    },
+    confirmButton: {
+      label: 'Borrar todo',
+      onPress() {
+        ChapterImageStorageInfo.clearAll();
+        ToastAndroid.show('Espacio de descargas eliminado', ToastAndroid.SHORT);
+        STORAGE_METER.loadData();
+      },
+    },
+  });
 };
 
 const STORAGE_BOOKS_COUNT = new SettingItem({
@@ -64,7 +93,9 @@ const STORAGE_BOOKS_COUNT = new SettingItem({
 STORAGE_BOOKS_COUNT.externalGetData = async function _() {
   try {
     const count = await BookInfoDatabase.countSaved();
-    this.setDescription(count + ' ' + (count === 1 ? 'libro' : 'libros'));
+    this.setDescription(
+      count + ' ' + (count === 1 ? 'libro' : 'libros') + ' almacenados',
+    );
   } catch (error) {
     console.error(error);
     this.setDescription('-');
@@ -76,5 +107,6 @@ export const SettingList: SettingItem[] = [
   AUTOMATIC_SELECT_CHAPTER_OPTION,
   AUTOMATIC_RESTORE_SAVED_POSITION,
   STORAGE_METER,
+  STORAGE_CLEAR,
   STORAGE_BOOKS_COUNT,
 ];

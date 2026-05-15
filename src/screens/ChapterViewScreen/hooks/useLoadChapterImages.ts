@@ -10,7 +10,7 @@ import { File } from 'expo-file-system';
 export function useLoadChapterImages(
   instance: IScrappingService,
   sourceImages: string[],
-  bookPath: string,
+  bookPaths: string[],
 ) {
   // States
   const [images, setImages] = useState<(ChapterImage | null)[]>(
@@ -23,7 +23,7 @@ export function useLoadChapterImages(
 
   // Variables
   const progress = images.reduce((prev, curr) => (curr ? prev + 1 : prev), 0);
-  const subdirs = [instance.getIdName(), bookPath];
+  const subdirs = [instance.getIdName(), ...bookPaths];
 
   // Methods
   const onLoadImage = async (index: number, source: File) => {
