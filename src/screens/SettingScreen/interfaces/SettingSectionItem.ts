@@ -1,5 +1,5 @@
+import { SettingItem } from '@/settings/classes/SettingItem';
 import { SettingSection } from '@/settings/enums/SettingSection';
-import { SettingItem } from '@/settings/interfaces/SettingItem';
 
 export interface SettingSectionItem {
   section: SettingSection;

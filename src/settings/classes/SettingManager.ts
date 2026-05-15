@@ -2,14 +2,15 @@
 import { SettingList } from '../constants/SettingList';
 import { SettingStorage } from '../constants/SettingStorage';
 import { SettingType } from '../enums/SettingType';
-import { SettingItem } from '../interfaces/SettingItem';
+import { ISettingItem } from '../interfaces/ISettingItem';
+import { SettingItem } from './SettingItem';
 
-export class Settings {
+export class SettingManager {
   public static setOption(key: SettingType, val: any) {
     SettingStorage.set(String(key), val);
   }
 
-  public static getOption(key: SettingType, type: SettingItem['type']) {
+  public static getOption(key: SettingType, type: ISettingItem['type']) {
     switch (type) {
       case 'boolean':
         return SettingStorage.getBoolean(String(key));
@@ -25,10 +26,15 @@ export class Settings {
     }
   }
 
-  public static getList() {
-    return SettingList.map((item) => ({
-      ...item,
-      value: this.getOption(item.key, item.type) ?? item.defaultValue,
-    }));
+  public static getList(): SettingItem[] {
+    for (const SettingItem of SettingList) {
+      if (SettingItem.key) {
+        const saved = this.getOption(SettingItem.key, SettingItem.type);
+
+        SettingItem.setValue(saved ?? SettingItem.defaultValue, true);
+      }
+    }
+
+    return SettingList;
   }
 }

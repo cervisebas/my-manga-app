@@ -15,7 +15,7 @@ import { BookChapterHistory } from '@/database/classes/BookChapterHistory';
 import { goToBookInfo } from '@/utils/goToBookInfo';
 import { getInstanceById } from '@/api/utils/getInstanceById';
 import { ChapterOptionInterface } from '@/api/shared/interfaces/ChapterOptionInterface';
-import { Settings } from '@/settings/classes/Settings';
+import { SettingManager } from '@/settings/classes/SettingManager';
 import { SettingType } from '@/settings/enums/SettingType';
 import { ToastAndroid } from 'react-native';
 import { isOptionInSpanish } from '@/common/utils/isOptionInSpanish';
@@ -72,7 +72,7 @@ export class ChapterOptions {
   }
 
   private showOnlySpanishOptionEnabled() {
-    return Settings.getOption(
+    return SettingManager.getOption(
       SettingType.ONLY_SHOW_SPANISH_LANGUAGE,
       'boolean',
     ) as boolean;

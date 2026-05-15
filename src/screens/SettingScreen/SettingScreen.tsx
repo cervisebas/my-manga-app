@@ -14,7 +14,7 @@ type IProps = NativeStackScreenProps<ParamListBase, 'settings'>;
 
 export function SettingScreen(props: IProps) {
   const theme = useTheme();
-  const { options, setOption } = useSettings();
+  const { options } = useSettings();
   const { settingSections } = useSettingSectionList(options);
 
   return (
@@ -40,19 +40,8 @@ export function SettingScreen(props: IProps) {
             title={section.section}
           >
             {section.settings.map((item, index, array) => (
-              <React.Fragment key={`setting-item-${item.key}`}>
-                <SettingListItem
-                  icon={item.icon}
-                  type={item.type}
-                  value={item.value}
-                  title={item.title}
-                  titleNumberOfLines={2}
-                  description={item.description}
-                  descriptionNumberOfLines={10}
-                  onChange={(val) => {
-                    setOption(item.key, val);
-                  }}
-                />
+              <React.Fragment key={`setting-item-${item.key}-${item.title}`}>
+                <SettingListItem instance={item} />
 
                 {array[index + 1] && <UDivider className={'mx-4'} />}
               </React.Fragment>

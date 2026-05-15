@@ -6,7 +6,7 @@ import { Languages } from '@/api/shared/translate/Languages';
 import { BottomSheetOptionsInterface } from '@/common/components/BottomSheetOptions';
 import { ChapterOptions } from '@/common/handlers/ChapterOptions';
 import { refBottomSheetOptions } from '@/constants/Refs';
-import { Settings } from '@/settings/classes/Settings';
+import { SettingManager } from '@/settings/classes/SettingManager';
 import { SettingType } from '@/settings/enums/SettingType';
 import { NavigationProp } from '@react-navigation/native';
 import { autoSelectOption } from '../utils/autoSelectOption';
@@ -39,7 +39,7 @@ export class ChapterSheetOptions {
     this.option = option;
 
     this.automaticSelectChapterOption =
-      (Settings.getOption(
+      (SettingManager.getOption(
         SettingType.AUTOMATIC_SELECT_CHAPTER_OPTION,
         'boolean',
       ) as boolean) ?? false;

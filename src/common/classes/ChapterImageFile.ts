@@ -1,7 +1,6 @@
 import { Directory, File, Paths } from 'expo-file-system';
 import { ChapterImageCompress } from './ChapterImageCompress';
-
-const IMAGE_FOLDER = 'images-chapter';
+import { IMAGE_FOLDER_PATH } from '../constants/ImageFolderPath';
 
 export class ChapterImageFile {
   private file: File;
@@ -18,7 +17,7 @@ export class ChapterImageFile {
   ) {
     this.subdirs = subdirs;
 
-    this.dir = Paths.join(Paths.document, IMAGE_FOLDER);
+    this.dir = IMAGE_FOLDER_PATH;
     this.filePath = Paths.join(this.dir, ...(subdirs ?? []), fileName);
     this.file = new File(this.filePath);
 
@@ -99,21 +98,21 @@ export class ChapterImageFile {
   }
 
   public static exist(fileName: string, subdirs: string[] = []) {
-    const path = Paths.join(Paths.document, IMAGE_FOLDER, ...subdirs, fileName);
+    const path = Paths.join(IMAGE_FOLDER_PATH, ...subdirs, fileName);
 
     const file = new File(path);
     return file.exists;
   }
 
   public static getFileObj(fileName: string, subdirs: string[] = []) {
-    const path = Paths.join(Paths.document, IMAGE_FOLDER, ...subdirs, fileName);
+    const path = Paths.join(IMAGE_FOLDER_PATH, ...subdirs, fileName);
 
     const file = new File(path);
     return file;
   }
 
   public static read(fileName: string, subdirs: string[] = []) {
-    const path = Paths.join(Paths.document, IMAGE_FOLDER, ...subdirs, fileName);
+    const path = Paths.join(IMAGE_FOLDER_PATH, ...subdirs, fileName);
 
     const file = new File(path);
     return file.base64Sync();

@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from 'react';
-import { SettingItem } from '../interfaces/SettingItem';
-import { Settings } from '../classes/Settings';
+import { SettingManager } from '../classes/SettingManager';
+import { SettingItem } from '../classes/SettingItem';
 
 interface SettingProviderProps {
   children: React.ReactNode;
@@ -16,11 +16,13 @@ export function SettingProvider(props: SettingProviderProps) {
   const [options, setOptions] = useState<SettingItem[]>([]);
 
   function loadOptions() {
-    setOptions(Settings.getList());
+    setOptions(SettingManager.getList());
   }
 
   function setOption(key: SettingItem['key'], val: SettingItem['value']) {
-    Settings.setOption(key, val);
+    if (key) {
+      SettingManager.setOption(key, val);
+    }
     loadOptions();
   }
 

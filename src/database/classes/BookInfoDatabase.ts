@@ -1,5 +1,5 @@
 import { BookInfoInterface } from '@/api/shared/interfaces/BookInfoInterface';
-import { and, eq, inArray, not, sql } from 'drizzle-orm';
+import { and, count, eq, inArray, not, sql } from 'drizzle-orm';
 import dayjs from 'dayjs';
 import { BookInfoModel } from '../schemas/BookInfoModel';
 import { BookGenderModel } from '../schemas/BookGenderModel';
@@ -287,5 +287,14 @@ export class BookInfoDatabase {
       .limit(1);
 
     return book.id;
+  }
+
+  @DatabaseHandleErrors()
+  public static async countSaved() {
+    const [{ _count }] = await db
+      .select({ _count: count() })
+      .from(BookInfoModel);
+
+    return _count;
   }
 }

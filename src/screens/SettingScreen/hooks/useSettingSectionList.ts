@@ -1,7 +1,7 @@
 import { SettingSection } from '@/settings/enums/SettingSection';
-import { SettingItem } from '@/settings/interfaces/SettingItem';
 import { useMemo } from 'react';
 import { SettingSectionItem } from '../interfaces/SettingSectionItem';
+import { SettingItem } from '@/settings/classes/SettingItem';
 
 export function useSettingSectionList(settings: SettingItem[]) {
   const settingSections = useMemo(() => {
