@@ -221,7 +221,7 @@ export class ShadowMangaScrapping implements IScrappingService {
     ];
   }
 
-  @RetryOnFail(5, 1000)
+  @RetryOnFail(5, 2500)
   @ApiHandleErrors()
   public async getPopular(): Promise<BookInfoInterface[]> {
     const { data } = await axios.get<ShadowMangaPopularResponse[]>(
@@ -258,7 +258,7 @@ export class ShadowMangaScrapping implements IScrappingService {
     });
   }
 
-  @RetryOnFail(5, 1000)
+  @RetryOnFail(5, 2500)
   @ApiHandleErrors()
   public async search(
     value: string,
@@ -324,7 +324,7 @@ export class ShadowMangaScrapping implements IScrappingService {
     };
   }
 
-  @RetryOnFail(5, 1000)
+  @RetryOnFail(5, 2500)
   @ApiHandleErrors()
   public async searchByGender(
     gender: string,
@@ -337,7 +337,7 @@ export class ShadowMangaScrapping implements IScrappingService {
     );
   }
 
-  @RetryOnFail(5, 1000)
+  @RetryOnFail(5, 2500)
   @ApiHandleErrors()
   public async searchByAutor(
     autor: string,
@@ -369,7 +369,7 @@ export class ShadowMangaScrapping implements IScrappingService {
     }
   }
 
-  @RetryOnFail(5, 1000)
+  @RetryOnFail(5, 2500)
   @OrderChapters()
   private async mapChapters(
     capitulos: ShadowMangaChapter[],
@@ -396,7 +396,7 @@ export class ShadowMangaScrapping implements IScrappingService {
     });
   }
 
-  @RetryOnFail(5, 1000)
+  @RetryOnFail(5, 2500)
   @ApiHandleErrors()
   public async bookInfo(url: string): Promise<BookInfoInterface> {
     const id = url.split('/').pop() || '';
@@ -437,20 +437,20 @@ export class ShadowMangaScrapping implements IScrappingService {
     };
   }
 
-  @RetryOnFail(5, 1000)
+  @RetryOnFail(5, 2500)
   @ApiHandleErrors()
   public async getDataChapter(url: string): Promise<string[]> {
     const { data } = await axios.get<ShadowMangaChapterDataResponse>(url);
     return data.paginas;
   }
 
-  @RetryOnFail(5, 1000)
+  @RetryOnFail(5, 2500)
   @ApiHandleErrors()
   public async loadChapterImage(url: string): Promise<File> {
     return defaultLoadChapterImage(url);
   }
 
-  @RetryOnFail(5, 1000)
+  @RetryOnFail(5, 2500)
   @ApiHandleErrors()
   public async loadChapterImages(
     urls: string[],

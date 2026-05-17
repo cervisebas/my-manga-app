@@ -117,7 +117,7 @@ export class ChapterSheetOptions {
   private generateActions() {
     this.actions = [];
 
-    if (this.chapter.options.length !== 1 || this.instance.onlyChapterOption) {
+    if (this.chapter.options.length > 1 || this.instance.onlyChapterOption) {
       this.actions.push({
         label: 'Cambiar opción',
         leftIcon: 'list-box-outline',
