@@ -67,8 +67,8 @@
 - [x] Implementar el filtro "RADIO" en el bottom sheet de filtros de la biblioteca
 - [ ] Implementar el filtro "SELECT_LIST" en el bottom sheet de filtros de la biblioteca
 
-- [ ] Añadir un flag más para ocultar cosas del historial
-- [ ] Decoradores para repetir un método en caso de error y otro para trackear el referer
+- [x] Añadir un flag más para ocultar cosas del historial
+- [x] Decoradores para repetir un método en caso de error y otro para trackear el referer
 
 - [x] Atributo que indique que no debe recomendar opciones en los capítulos
 - - [x] Al abrir un manga precargar el siguiente con este criterio:

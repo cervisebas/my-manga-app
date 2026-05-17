@@ -7,4 +7,5 @@ export interface BookHistoryItem {
   option_path: string;
   progress: number;
   date?: Date | null;
+  id_book_history: number;
 }

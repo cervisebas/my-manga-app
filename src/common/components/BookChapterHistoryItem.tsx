@@ -12,6 +12,7 @@ interface IProps {
   bookPicture: string;
   chapterName: string;
   onPress?(): void;
+  onLongPress?(): void;
 }
 
 export function BookChapterHistoryItem(props: IProps) {
@@ -24,6 +25,7 @@ export function BookChapterHistoryItem(props: IProps) {
       borderless
       className={'w-full py-1'}
       onPress={props.onPress}
+      onLongPress={props.onLongPress}
     >
       <View className={'flex-row h-[140]'}>
         <View className={'relative w-[110] h-full items-end justify-center'}>

@@ -1,0 +1,1 @@
+ALTER TABLE `book-user-chapter-book-history` ADD `hideHistoryList` integer DEFAULT false NOT NULL;

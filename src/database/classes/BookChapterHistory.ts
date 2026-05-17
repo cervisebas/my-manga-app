@@ -100,6 +100,7 @@ export class BookChapterHistory {
         BookInfoModel,
         eq(BookChapterModel.id_bookinfo, BookInfoModel.id),
       )
+      .where(eq(BookUserChapterBookHistoryModel.hideHistoryList, false))
       .orderBy(desc(BookUserChapterBookHistoryModel.updateAt));
 
     for (const item of infoSaved) {
@@ -132,10 +133,19 @@ export class BookChapterHistory {
         option_path: history.path_option,
         progress: history.progress,
         date: history.updateAt,
+        id_book_history: item['book-user-chapter-book-history'].id,
       });
     }
 
     return data;
+  }
+
+  @DatabaseHandleErrors()
+  public static async hideOfHistory(id_book_history: number) {
+    await db
+      .update(BookUserChapterBookHistoryModel)
+      .set({ hideHistoryList: true })
+      .where(eq(BookUserChapterBookHistoryModel.id, id_book_history));
   }
 
   @DatabaseHandleErrors()

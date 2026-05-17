@@ -91,6 +91,21 @@ export function HistoryScreen(props: IProps) {
     }
   };
 
+  const hideChapterHistoryItem = async (item: BookHistoryItem) => {
+    refDialogs.current?.open({
+      message: '¿Está seguro que quiere remover este elemento del historial?',
+      cancelButton: {
+        label: 'Cancelar',
+      },
+      confirmButton: {
+        label: 'Eliminar',
+        onPress() {
+          BookChapterHistory.hideOfHistory(item.id_book_history);
+        },
+      },
+    });
+  };
+
   const _renderItem = ({ item }: ListRenderItemInfo<BookHistoryItem>) => {
     const instance = getInstanceById(item.bookInfo.provider);
     return (
@@ -111,6 +126,9 @@ export function HistoryScreen(props: IProps) {
         progress={item.progress}
         onPress={() => {
           showChapterActions(item);
+        }}
+        onLongPress={() => {
+          hideChapterHistoryItem(item);
         }}
       />
     );
