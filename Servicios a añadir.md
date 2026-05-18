@@ -8,6 +8,7 @@
 - [x] CapibaraTraductor <b>[API RES en JSON]</b> [[Link]](https://capibaratraductor.com/)
 
 ## Servicios que usan Cloudflare 
+- [x] ManhwaWeb <b>[API RES en JSON]</b> [[Link]](https://manhwaweb.com/)
 - [ ] Manga Oni <b>[HTML]</b>
 - [ ] Kumanga <b>[HTML]</b> [[Link]](https://www.kumanga.com/)
 - [ ] LeerMangaEsp <b>[API RES en JSON]</b> [[Link]](https://leermangaesp.net/)

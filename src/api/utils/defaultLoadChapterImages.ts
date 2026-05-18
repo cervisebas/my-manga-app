@@ -31,7 +31,7 @@ export async function defaultLoadChapterImages(
         );
         await progress?.(index, image);
       } catch (error) {
-        console.error(error);
+        console.error(urls[index], error);
         await onError?.(index);
       }
     }
