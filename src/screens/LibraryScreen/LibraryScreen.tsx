@@ -218,6 +218,9 @@ export function LibraryScreen(_props: IProps) {
                           <NativeActivityIndicator size={20} strokeWidth={2} />
                         ) : (
                           <UImage
+                            key={`tab-icon-${scrapper.getIdName()}`}
+                            cachePolicy={'none'}
+                            recyclingKey={`tab-icon-${scrapper.getIdName()}`}
                             className={'size-[20]'}
                             source={scrapper.getLogo()}
                           />

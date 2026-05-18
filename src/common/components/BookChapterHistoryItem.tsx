@@ -44,6 +44,9 @@ export function BookChapterHistoryItem(props: IProps) {
                 style={{ backgroundColor: theme.colors.surfaceVariant }}
               >
                 <UImage
+                  key={`tab-icon-${props.instance.getIdName()}`}
+                  cachePolicy={'none'}
+                  recyclingKey={`tab-icon-${props.instance.getIdName()}`}
                   className={'size-[14]'}
                   source={props.instance.getLogo()}
                 />

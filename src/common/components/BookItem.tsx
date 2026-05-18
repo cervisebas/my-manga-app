@@ -86,7 +86,13 @@ export const BookItem = React.memo(function (props: IProps) {
           }
           style={{ backgroundColor: theme.colors.surfaceVariant }}
         >
-          <UImage className={'size-[14]'} source={props.instance.getLogo()} />
+          <UImage
+            key={`tab-icon-${props.instance.getIdName()}`}
+            cachePolicy={'none'}
+            recyclingKey={`tab-icon-${props.instance.getIdName()}`}
+            className={'size-[14]'}
+            source={props.instance.getLogo()}
+          />
           <Text variant={'labelSmall'}>{props.instance.getNameService()}</Text>
         </View>
       )}

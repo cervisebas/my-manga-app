@@ -52,6 +52,9 @@ export function HomeScreen(_props: IProps) {
                 return (
                   <View className={'flex-row items-center gap-2.5'}>
                     <UImage
+                      key={`tab-icon-${scrapper.getIdName()}`}
+                      cachePolicy={'none'}
+                      recyclingKey={`tab-icon-${scrapper.getIdName()}`}
                       className={'size-[20]'}
                       source={scrapper.getLogo()}
                     />
