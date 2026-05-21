@@ -1,7 +1,6 @@
 import { Language } from '@/api/shared/enums/Language';
 import { Linking, ToastAndroid, View } from 'react-native';
 import { Button, Text, useTheme } from 'react-native-paper';
-import { translate } from '@modules/translate-text';
 import { useRef, useState } from 'react';
 import {
   EnrichedMarkdownText,
@@ -9,6 +8,7 @@ import {
 } from 'react-native-enriched-markdown';
 import { refDialogs } from '@/constants/Refs';
 import { truncateByChars } from '@/common/utils/truncateByChars';
+import { Traductor } from '@/traductor/Traductor';
 
 interface IProps {
   description?: string;
@@ -58,12 +58,10 @@ export function BookInfoDescription(props: IProps) {
         return;
       }
 
-      const value = await translate(props.description ?? '', {
-        to: 'Spanish',
-      });
+      const result = await Traductor.translateText(props.description ?? '');
 
-      setTranslateValue(value.text);
-      cacheTranslateValue.current = value.text;
+      setTranslateValue(result);
+      cacheTranslateValue.current = result;
     } catch (error) {
       console.error(error);
 
