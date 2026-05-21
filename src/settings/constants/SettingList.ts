@@ -6,6 +6,7 @@ import { BookInfoDatabase } from '@/database/classes/BookInfoDatabase';
 import { ToastAndroid } from 'react-native';
 import { refDialogs } from '@/constants/Refs';
 
+// CHAPTER OPTIONS SECTION
 const ONLY_SHOW_SPANISH_LANGUAGE = new SettingItem({
   key: SettingType.ONLY_SHOW_SPANISH_LANGUAGE,
   icon: 'translate',
@@ -39,6 +40,18 @@ const AUTOMATIC_RESTORE_SAVED_POSITION = new SettingItem({
   defaultValue: false,
 });
 
+const PREFERER_SAVED_IMAGES_CHAPTER = new SettingItem({
+  key: SettingType.PREFERER_SAVED_IMAGES_CHAPTER,
+  icon: 'content-save-all-outline',
+  type: 'boolean',
+  title: 'Preferir contenido offline',
+  section: SettingSection.CHAPTER_OPTION,
+  description:
+    'Al activar esta opción, se evitara volver a consultar el listado de imagenes de un capítulo ya visto.\n\nActivar esta opción permitira ver los capítulos de forma offline más rapidamente.',
+  defaultValue: true,
+});
+
+// STORAGE SECTION
 const STORAGE_METER = new SettingItem({
   icon: 'harddisk',
   title: 'Espacio de descargas',
@@ -106,6 +119,7 @@ export const SettingList: SettingItem[] = [
   ONLY_SHOW_SPANISH_LANGUAGE,
   AUTOMATIC_SELECT_CHAPTER_OPTION,
   AUTOMATIC_RESTORE_SAVED_POSITION,
+  PREFERER_SAVED_IMAGES_CHAPTER,
   STORAGE_METER,
   STORAGE_CLEAR,
   STORAGE_BOOKS_COUNT,

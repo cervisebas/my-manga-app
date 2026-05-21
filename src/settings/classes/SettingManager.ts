@@ -37,4 +37,13 @@ export class SettingManager {
 
     return SettingList;
   }
+
+  public static getValue(
+    key: SettingType,
+  ): ReturnType<typeof SettingManager.getOption> {
+    const find = SettingList.find((item) => item.key === key);
+    const value = SettingManager.getOption(key, find?.type);
+
+    return (value ?? find?.defaultValue) as never;
+  }
 }
