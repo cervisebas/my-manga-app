@@ -8,17 +8,19 @@ import {
   withTiming,
 } from 'react-native-reanimated';
 import { ChapterViewVisualizerImage } from './ChapterViewVisualizerImage';
-import { useDimension } from '@/common/hooks/useDimension';
 import { View } from 'react-native';
 import { useLayoutSize } from '@/common/hooks/useLayoutSize';
-import { useChapterImagesPositions } from '../hooks/useChapterImagesPositions';
 import { useChapterVisibleImages } from '../hooks/useChapterVisibleImages';
 import { useChapterGestures } from '../hooks/useChapterGestures';
 import React, { forwardRef, useImperativeHandle } from 'react';
 import { ChapterPosition } from '../interfaces/ChapterPosition';
+import { VISUALIZER_MARGIN_HORIZONTAL } from '../constants/VisualizerStyleValues';
+import { ImagePosition } from '../interfaces/ImagePosition';
 
 interface IProps {
   images: (ChapterImage | null)[];
+  imagesWithPositions: ImagePosition[];
+  imagesTotalHeight: number;
 }
 
 export interface ChapterViewVisualizerRef {
@@ -27,11 +29,9 @@ export interface ChapterViewVisualizerRef {
 }
 
 const UCanvas = withUniwind(Canvas);
-const VISUALIZER_MARGIN_HORIZONTAL = 8;
 
 export const ChapterViewVisualizer = forwardRef(
   (props: IProps, ref: React.Ref<ChapterViewVisualizerRef>) => {
-    const [widthWindow] = useDimension();
     const { layout: containerLayout, onLayout } = useLayoutSize();
 
     const scale = useSharedValue(1);
@@ -45,14 +45,8 @@ export const ChapterViewVisualizer = forwardRef(
       { translateY: translateY.value },
     ]);
 
-    const { imagesWithPositions, totalHeight } = useChapterImagesPositions(
-      props.images,
-      widthWindow,
-      VISUALIZER_MARGIN_HORIZONTAL,
-    );
-
     const { visibleImages } = useChapterVisibleImages(
-      imagesWithPositions,
+      props.imagesWithPositions,
       translateY,
       scale,
       containerLayout.height,
@@ -63,14 +57,14 @@ export const ChapterViewVisualizer = forwardRef(
       translateX,
       translateY,
       containerLayout,
-      totalHeight,
+      totalHeight: props.imagesTotalHeight,
     });
 
     useImperativeHandle(ref, () => ({
       getPosition() {
         const progress = -(
           (translateY.value - containerLayout.height) /
-          totalHeight
+          props.imagesTotalHeight
         );
 
         return {

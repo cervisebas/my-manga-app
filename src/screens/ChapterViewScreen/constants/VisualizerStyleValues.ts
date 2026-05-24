@@ -1,0 +1,1 @@
+export const VISUALIZER_MARGIN_HORIZONTAL = 8;

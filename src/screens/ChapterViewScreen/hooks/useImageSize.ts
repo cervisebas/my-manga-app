@@ -5,5 +5,7 @@ export function useImageSize(
   heightImage: number,
   widthDimension: number,
 ) {
-  return calculeImageSize(widthImage, heightImage, widthDimension);
+  const size = calculeImageSize(widthImage, heightImage, widthDimension);
+
+  return size;
 }

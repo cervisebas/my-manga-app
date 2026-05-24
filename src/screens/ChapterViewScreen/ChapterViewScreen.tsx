@@ -16,11 +16,16 @@ import {
 } from './components/ChapterViewVisualizer';
 import { ChapterSheetOptions } from './classes/ChapterSheetOptions';
 import { useChapterHistory } from './hooks/useChapterHistory';
-import { useChapterPosition } from './hooks/useChapterPosition';
+import { useChapterSavePosition } from './hooks/useChapterSavePosition';
 import { MiniBanner } from '@/common/components/MiniBanner';
 import { usePreventBackNavigation } from '@/common/hooks/usePreventBackNavigation';
 import { usePreventBackHandler } from '@/common/hooks/usePreventBackHandler';
 import { toSafeFolderName } from '@/common/utils/toSafeFolderName';
+import { useEnableRestorePosition } from './hooks/useEnableRestorePosition';
+import { useAutoRestorePosition } from './hooks/useAutoRestorePosition';
+import { useChapterImagesPositions } from './hooks/useChapterImagesPositions';
+import { useDimension } from '@/common/hooks/useDimension';
+import { VISUALIZER_MARGIN_HORIZONTAL } from './constants/VisualizerStyleValues';
 
 type IProps = NativeBottomTabScreenProps<ParamListBase, 'chapter-view'>;
 
@@ -51,24 +56,44 @@ export function ChapterViewScreen(props: IProps) {
   const theme = useTheme();
   const scrapper = getInstanceById(params.instance);
   const safeFolderName = toSafeFolderName(params.option.url);
+
+  const [widthWindow] = useDimension('window');
+
   const { images, progress, loading } = useLoadChapterImages(
     scrapper,
     params.images,
     [params.bookInfo.path, safeFolderName],
   );
 
-  const {
-    restorePosition,
-    autoRestorePosition,
-    restoreLastPosition,
-    noRestoreLastPosition,
-    saveCurrentPosition,
-  } = useChapterPosition(
+  const { imagesWithPositions, totalHeight } = useChapterImagesPositions(
+    images,
+    widthWindow,
+    VISUALIZER_MARGIN_HORIZONTAL,
+  );
+
+  const { saveCurrentPosition, startAutoSave } = useChapterSavePosition(
     params.chapter,
     params.option,
     () => refChapterViewVisualizer.current?.getPosition(),
-    (pos) => refChapterViewVisualizer.current?.setPosition(pos),
   );
+
+  const {
+    restorePosition,
+    enableRestorePosition,
+    restoreLastPosition,
+    noRestoreLastPosition,
+  } = useEnableRestorePosition({
+    option: params.option,
+    chapter: params.chapter,
+    imagesTotalHeight: totalHeight,
+    startAutoSave: startAutoSave,
+    saveCurrentPosition: saveCurrentPosition,
+    setPosition(pos) {
+      refChapterViewVisualizer.current?.setPosition(pos);
+    },
+  });
+
+  const { autoRestorePosition } = useAutoRestorePosition();
 
   // Variables
   const title =
@@ -125,10 +150,10 @@ export function ChapterViewScreen(props: IProps) {
   }, []);
 
   useEffect(() => {
-    if (restorePosition && !loading && autoRestorePosition) {
+    if (restorePosition && enableRestorePosition && autoRestorePosition) {
       restoreLastPosition();
     }
-  }, [restorePosition, loading, autoRestorePosition]);
+  }, [restorePosition, enableRestorePosition, autoRestorePosition]);
 
   // Back Handler
   usePreventBackNavigation(props.navigation as never, true, (removePrevent) => {
@@ -188,7 +213,7 @@ export function ChapterViewScreen(props: IProps) {
           },
           {
             label: 'Si',
-            loading: loading,
+            loading: !enableRestorePosition,
             mode: 'contained',
             onPress() {
               restoreLastPosition();
@@ -197,7 +222,12 @@ export function ChapterViewScreen(props: IProps) {
         ]}
       />
 
-      <ChapterViewVisualizer ref={refChapterViewVisualizer} images={images} />
+      <ChapterViewVisualizer
+        ref={refChapterViewVisualizer}
+        images={images}
+        imagesWithPositions={imagesWithPositions}
+        imagesTotalHeight={totalHeight}
+      />
     </View>
   );
 }
