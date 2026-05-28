@@ -1,4 +1,3 @@
-import { AndroidNotificationChannel } from '../enums/AndroidNotificationChannel';
 import { createUID } from '../utils/createUID';
 import Notifee, {
   AndroidImportance,
@@ -13,7 +12,7 @@ export interface INotificationData {
   action?: string;
   data?: Record<string, number | string>;
 
-  channel?: AndroidNotificationChannel;
+  channel?: AndroidChannel;
 
   progress?: {
     max: number;
@@ -23,13 +22,41 @@ export interface INotificationData {
   autoDismiss?: boolean;
 }
 
+export interface AndroidChannel {
+  id: string;
+  name: string;
+  importance: AndroidImportance;
+  vibration: boolean;
+  sound: string | undefined;
+}
+
+type ChannelNames = 'DEFAULT' | 'BACKGROUND_TASK';
+
+export const AndroidChannels: Record<ChannelNames, AndroidChannel> = {
+  DEFAULT: {
+    id: 'default',
+    name: 'General',
+    importance: AndroidImportance.DEFAULT,
+    vibration: true,
+    sound: 'cartoon_close_bells',
+  },
+  BACKGROUND_TASK: {
+    id: 'silent',
+    name: 'Tareas en segundo plano',
+    importance: AndroidImportance.LOW,
+    vibration: false,
+    sound: undefined,
+  },
+};
+
 export class Notification {
-  public static async createChannel(channelName: AndroidNotificationChannel) {
+  public static async createChannel(channelData: AndroidChannel) {
     return Notifee.createChannel({
-      id: await createUID(channelName),
-      name: channelName,
-      importance: AndroidImportance.HIGH,
-      sound: 'cartoon_close_bells',
+      id: await createUID(channelData.id),
+      name: channelData.name,
+      importance: channelData.importance,
+      vibration: channelData.vibration,
+      sound: channelData.sound,
     });
   }
 
@@ -45,7 +72,7 @@ export class Notification {
   public static async showNotification(data: INotificationData) {
     // Channel
     const channel = await Notification.createChannel(
-      data.channel ?? AndroidNotificationChannel.DEFAULT,
+      data.channel ?? AndroidChannels.DEFAULT,
     );
 
     // Notification ID

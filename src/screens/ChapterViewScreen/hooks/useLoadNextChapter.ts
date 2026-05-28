@@ -4,7 +4,7 @@ import { ChapterInterface } from '@/api/shared/interfaces/ChapterInterface';
 import { useEffect, useRef } from 'react';
 import { getAutoSelectOption } from '../utils/getAutoSelectOption';
 import { ChapterOptionInterface } from '@/api/shared/interfaces/ChapterOptionInterface';
-import { Notification } from '@/common/classes/Notification';
+import { AndroidChannels, Notification } from '@/common/classes/Notification';
 import { getPreffererSavedImages } from '@/utils/goToChapterView';
 import { ChapterImageFile } from '@/common/classes/ChapterImageFile';
 import { File } from 'expo-file-system';
@@ -101,6 +101,7 @@ export function useLoadNextChapter(
         max: 0,
         current: 0,
       },
+      channel: AndroidChannels.BACKGROUND_TASK,
       sticky: true,
       autoDismiss: false,
     });
@@ -126,6 +127,7 @@ export function useLoadNextChapter(
               max: savedImages.current.length,
               current: index + 1,
             },
+            channel: AndroidChannels.BACKGROUND_TASK,
             sticky: true,
             autoDismiss: false,
           });

@@ -68,7 +68,18 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     [
       './plugins/withCustomSounds',
       {
-        sounds: ['./assets/cartoon_close_bells.wav'],
+        sounds: ['./assets/cartoon_close_bells.ogg'],
+      },
+    ],
+    [
+      './plugins/withKeepResources',
+      {
+        keep: [
+          '@raw/cartoon_close_bells',
+          '@drawable/ic_notification*',
+          '@mipmap/ic_notification*',
+        ],
+        shrinkMode: 'safe',
       },
     ],
   ],
