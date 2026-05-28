@@ -20,7 +20,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       {
         android: {
           enableProguardInReleaseBuilds: true,
-          enableShrinkResourcesInReleaseBuilds: true,
+          enableShrinkResourcesInReleaseBuilds: false,
           usesCleartextTraffic: true,
         },
       },
