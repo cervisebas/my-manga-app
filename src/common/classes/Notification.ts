@@ -34,7 +34,7 @@ type ChannelNames = 'DEFAULT' | 'BACKGROUND_TASK';
 
 export const AndroidChannels: Record<ChannelNames, AndroidChannel> = {
   DEFAULT: {
-    id: 'default',
+    id: 'general',
     name: 'General',
     importance: AndroidImportance.DEFAULT,
     vibration: true,
