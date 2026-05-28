@@ -26,6 +26,7 @@ import { useAutoRestorePosition } from './hooks/useAutoRestorePosition';
 import { useChapterImagesPositions } from './hooks/useChapterImagesPositions';
 import { useDimension } from '@/common/hooks/useDimension';
 import { VISUALIZER_MARGIN_HORIZONTAL } from './constants/VisualizerStyleValues';
+import { useLoadNextChapter } from './hooks/useLoadNextChapter';
 
 type IProps = NativeBottomTabScreenProps<ParamListBase, 'chapter-view'>;
 
@@ -122,6 +123,15 @@ export function ChapterViewScreen(props: IProps) {
 
   // Effects
   useChapterHistory(params.chapter);
+
+  useLoadNextChapter(
+    scrapper,
+    params.chapter,
+    params.option,
+    params.bookInfo,
+    [params.bookInfo.path],
+    !loading,
+  );
 
   useEffect(() => {
     if (!unmount.current) {

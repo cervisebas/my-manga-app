@@ -51,6 +51,17 @@ const PREFERER_SAVED_IMAGES_CHAPTER = new SettingItem({
   defaultValue: true,
 });
 
+const PRELOAD_NEXT_CHAPTER = new SettingItem({
+  key: SettingType.PRELOAD_NEXT_CHAPTER,
+  icon: 'cloud-download-outline',
+  type: 'boolean',
+  title: 'Precargar siguiente capítulo',
+  section: SettingSection.CHAPTER_OPTION,
+  description:
+    'Al activar esta opción, se pre-cargara el siguiente capitulo para tenerlo siempre listo.\n\nEsta opción cargara la opción más indicado que intuya que veras.',
+  defaultValue: true,
+});
+
 // STORAGE SECTION
 const STORAGE_METER = new SettingItem({
   icon: 'harddisk',
@@ -120,6 +131,7 @@ export const SettingList: SettingItem[] = [
   AUTOMATIC_SELECT_CHAPTER_OPTION,
   AUTOMATIC_RESTORE_SAVED_POSITION,
   PREFERER_SAVED_IMAGES_CHAPTER,
+  PRELOAD_NEXT_CHAPTER,
   STORAGE_METER,
   STORAGE_CLEAR,
   STORAGE_BOOKS_COUNT,

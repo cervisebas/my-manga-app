@@ -5,3 +5,6 @@ allowBuilds:
   sharp: true
 
 nodeLinker: hoisted
+
+patchedDependencies:
+  react-native-notify-kit: patches/react-native-notify-kit.patch

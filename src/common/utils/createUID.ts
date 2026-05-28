@@ -1,6 +1,10 @@
 import * as Crypto from 'expo-crypto';
 
-export async function createUID(text: string): Promise<string> {
+export async function createUID(text?: string): Promise<string> {
+  if (!text || !text.length) {
+    return Crypto.randomUUID();
+  }
+
   const hash = await Crypto.digestStringAsync(
     Crypto.CryptoDigestAlgorithm.SHA256,
     text,

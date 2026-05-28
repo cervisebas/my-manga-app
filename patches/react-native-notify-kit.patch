@@ -1,0 +1,26 @@
+diff --git a/android/build.gradle b/android/build.gradle
+index 13376478a540bc200f179244105ef54d0dca91fb..e286b8265b5200e3dc50a05703aa4aca068fa5c5 100644
+--- a/android/build.gradle
++++ b/android/build.gradle
+@@ -23,21 +23,6 @@ plugins {
+   id "org.jetbrains.kotlin.android"
+ }
+ 
+-ext {
+-  jvmVersion = Jvm.current().javaVersion.majorVersion
+-  if (jvmVersion != "8" && jvmVersion != "11" && jvmVersion != "17" && jvmVersion != "21") {
+-    println "\n\n\n"
+-    println "**************************************************************************************************************"
+-    println "\n\n\n"
+-    println "ERROR: Notifee builds with JVM LTS and current releases (currently major version 11, 17, or 21)."
+-    println "  Incompatible major version detected: '" + jvmVersion + "'"
+-    println "\n\n\n"
+-    println "**************************************************************************************************************"
+-    println "\n\n\n"
+-    System.exit(1)
+-  }
+-}
+-
+ if (project.hasProperty('reactNativeProjects')) {
+   reactNativeProjects.each { dependent ->
+     project.evaluationDependsOn(dependent)

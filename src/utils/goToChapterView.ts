@@ -66,6 +66,25 @@ async function getFromDatabase(
   }
 }
 
+export async function getPreffererSavedImages(
+  instance: IScrappingService,
+  option: ChapterOptionInterface,
+) {
+  let images: string[] | undefined;
+
+  const preffererSaved = SettingManager.getValue(
+    SettingType.PREFERER_SAVED_IMAGES_CHAPTER,
+  );
+
+  if (!preffererSaved) {
+    images = await getFromInternet(instance, option, false);
+  } else {
+    images = await getFromDatabase(instance, option, false);
+  }
+
+  return images;
+}
+
 export async function goToChapterView(
   instance: IScrappingService,
   bookInfo: BookInfoInterface,
@@ -76,17 +95,7 @@ export async function goToChapterView(
   refDialogLoading.current?.show('Obteniendo información...');
 
   try {
-    let images: string[] | undefined;
-
-    const preffererSaved = SettingManager.getValue(
-      SettingType.PREFERER_SAVED_IMAGES_CHAPTER,
-    );
-
-    if (!preffererSaved) {
-      images = await getFromInternet(instance, option, false);
-    } else {
-      images = await getFromDatabase(instance, option, false);
-    }
+    const images = await getPreffererSavedImages(instance, option);
 
     if (activeChapterView) {
       refNavegation.current?.goBack();

@@ -41,6 +41,36 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       background: '#2963BE',
       assetsOutput: 'assets/bootsplash',
     }),
+    [
+      'react-native-notify-kit',
+      {
+        android: {
+          foregroundService: {
+            types: ['shortService'],
+          },
+        },
+      },
+    ],
+    [
+      '@evennit/notifee-expo-plugin',
+      {
+        androidIcons: [
+          {
+            name: 'ic_notification',
+            path: './assets/notification_icon.png',
+            type: 'small',
+          },
+        ],
+        iosDeploymentTarget: '13.4',
+        apsEnvMode: 'development',
+      },
+    ],
+    [
+      './plugins/withCustomSounds',
+      {
+        sounds: ['./assets/cartoon_close_bells.wav'],
+      },
+    ],
   ],
   orientation: 'portrait',
   icon: './assets/icon.png',
@@ -55,5 +85,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     },
     predictiveBackGestureEnabled: false,
     package: 'com.cervisebas.mymangaapp',
+    permissions: ['WAKE_LOCK', 'VIBRATE'],
   },
 });

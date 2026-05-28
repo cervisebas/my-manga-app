@@ -10,15 +10,50 @@ import { HistoryScreen } from '@/screens/HistoryScreen';
 import { GenderListScreen } from '@/screens/GenderBooksScreen';
 import { SettingScreen } from '@/screens/SettingScreen/SettingScreen';
 import { AuthorBooksScreen } from '@/screens/AuthorBooksScreen';
+import { Notification } from '@/common/classes/Notification';
+import { refDialogs } from '@/constants/Refs';
+import { AuthorizationStatus } from 'react-native-notify-kit';
 
 const Stack = createNativeStackNavigator();
 
 export function NativeStackNavigation() {
   const theme = useTheme();
 
-  useEffect(() => {
-    BootSplash.hide({
+  const hideBootSplash = () => {
+    return BootSplash.hide({
       fade: true,
+    });
+  };
+
+  const checkNotificationPermissions = async () => {
+    const status = await Notification.requestPermissions();
+
+    if (status === AuthorizationStatus.AUTHORIZED) {
+      return;
+    }
+
+    refDialogs.current?.open({
+      message:
+        'Se necesitan permisos de notificaciones para mostrar progresos de carga y las alertas de nuevos capítulos que se lancen.',
+      confirmButton: {
+        label: 'Reintentar',
+        onPress() {
+          if (status === AuthorizationStatus.DENIED) {
+            return Notification.openSettings();
+          }
+
+          checkNotificationPermissions();
+        },
+      },
+      cancelButton: {
+        label: 'Cancelar',
+      },
+    });
+  };
+
+  useEffect(() => {
+    hideBootSplash().then(() => {
+      checkNotificationPermissions();
     });
   }, []);
 
