@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
+/* eslint-disable no-undef */
 const { withDangerousMod } = require('@expo/config-plugins');
 
 const fs = require('fs');

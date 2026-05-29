@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
+/* eslint-disable no-undef */
 const { withDangerousMod, AndroidConfig } = require('@expo/config-plugins');
 
 const fs = require('fs');
@@ -29,8 +31,8 @@ const withKeepResources = (config, props = {}) => {
   return withDangerousMod(config, [
     'android',
     async (config) => {
-      /* const packageName =
-        AndroidConfig.Package.getPackage(config) || 'expo.keep.resources'; */
+      const packageName =
+        AndroidConfig.Package.getPackage(config) || 'expo.keep.resources';
 
       const valuesDir = path.join(
         config.modRequest.platformProjectRoot,
@@ -46,9 +48,7 @@ const withKeepResources = (config, props = {}) => {
       });
 
       // La doc recomienda nombres únicos/globales
-      // const fileName = `${packageName}.keep.xml`;
-      const fileName = 'keep.xml';
-
+      const fileName = `${packageName}.keep.xml`;
       const filePath = path.join(valuesDir, fileName);
 
       const xml = generateKeepXml({
