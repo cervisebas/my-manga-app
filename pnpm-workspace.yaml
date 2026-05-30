@@ -1,10 +1,13 @@
 allowBuilds:
   '@shopify/react-native-skia': true
   esbuild: true
-  postinstall-postinstall: true
   sharp: true
+
+minimumReleaseAgeExclude:
+  - react-native-notify-kit@10.4.4
 
 nodeLinker: hoisted
 
 patchedDependencies:
-  react-native-notify-kit: patches/react-native-notify-kit.patch
+  react-native-element-dropdown: patches/react-native-element-dropdown.patch
+  react-native-image-viewing: patches/react-native-image-viewing.patch

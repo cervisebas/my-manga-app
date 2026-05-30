@@ -13,6 +13,7 @@ import { AuthorBooksScreen } from '@/screens/AuthorBooksScreen';
 import { Notification } from '@/common/classes/Notification';
 import { refDialogs } from '@/constants/Refs';
 import { AuthorizationStatus } from 'react-native-notify-kit';
+import { BackgroundSync } from '@modules/background-sync';
 
 const Stack = createNativeStackNavigator();
 
@@ -51,10 +52,15 @@ export function NativeStackNavigation() {
     });
   };
 
+  const startBackgroundTasks = () => {
+    BackgroundSync.start();
+  };
+
   useEffect(() => {
     hideBootSplash().then(() => {
       checkNotificationPermissions();
     });
+    startBackgroundTasks();
   }, []);
 
   return (

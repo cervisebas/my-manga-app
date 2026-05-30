@@ -82,6 +82,12 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         shrinkMode: 'safe',
       },
     ],
+    [
+      './plugins/withBackgroundSync',
+      {
+        packageName: 'com.cervisebas.backgroundsync',
+      },
+    ],
   ],
   orientation: 'portrait',
   icon: './assets/icon.png',
@@ -96,6 +102,13 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     },
     predictiveBackGestureEnabled: false,
     package: 'com.cervisebas.mymangaapp',
-    permissions: ['WAKE_LOCK', 'VIBRATE'],
+    permissions: [
+      'VIBRATE',
+      'RECEIVE_BOOT_COMPLETED',
+      'FOREGROUND_SERVICE',
+      'FOREGROUND_SERVICE_DATA_SYNC',
+      'WAKE_LOCK',
+      'SCHEDULE_EXACT_ALARM',
+    ],
   },
 });

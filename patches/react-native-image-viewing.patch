@@ -1,13 +1,13 @@
-diff --git a/node_modules/react-native-image-viewing/dist/ImageViewing.js b/node_modules/react-native-image-viewing/dist/ImageViewing.js
-index 3d7641a..a2297bc 100644
---- a/node_modules/react-native-image-viewing/dist/ImageViewing.js
-+++ b/node_modules/react-native-image-viewing/dist/ImageViewing.js
+diff --git a/dist/ImageViewing.js b/dist/ImageViewing.js
+index 3d7641a9a94864415d207c678b71f8c592c90aa1..09a155663b82e33f00b39021b5f8ceb56cf3bb2c 100644
+--- a/dist/ImageViewing.js
++++ b/dist/ImageViewing.js
 @@ -6,13 +6,14 @@
   *
   */
  import React, { useCallback, useRef, useEffect } from "react";
 -import { Animated, Dimensions, StyleSheet, View, VirtualizedList, Modal, } from "react-native";
-+import { Animated, Dimensions, StyleSheet, View, VirtualizedList, Modal as NativeModal, Platform, } from "react-native";
++import { Animated, Dimensions, StyleSheet, View, VirtualizedList, Modal as NativeModal, Platform } from "react-native";
  import ImageItem from "./components/ImageItem/ImageItem";
  import ImageDefaultHeader from "./components/ImageDefaultHeader";
  import StatusBarManager from "./components/StatusBarManager";
@@ -23,19 +23,19 @@ index 3d7641a..a2297bc 100644
          return null;
      }
 -    return (<Modal transparent={presentationStyle === "overFullScreen"} visible={visible} presentationStyle={presentationStyle} animationType={animationType} onRequestClose={onRequestCloseEnhanced} supportedOrientations={["portrait"]} hardwareAccelerated>
-+
 +    const Modal = Platform.select({
 +        ios: NativeModal,
 +        default: RNModal,
 +    });
-+
-+    return (<Modal
++    return (
++    <Modal
 +        transparent={presentationStyle === "overFullScreen"}
 +        visible={visible}
 +        isVisible={visible}
 +        presentationStyle={presentationStyle}
 +        animationType={animationType}
 +        onRequestClose={onRequestCloseEnhanced}
++        onBackButtonPress={onRequestCloseEnhanced}
 +        supportedOrientations={["portrait"]}
 +        hardwareAccelerated
 +        style={{margin: 0}}
@@ -46,10 +46,10 @@ index 3d7641a..a2297bc 100644
        <StatusBarManager presentationStyle={presentationStyle}/>
        <View style={[styles.container, { opacity, backgroundColor }]}>
          <Animated.View style={[styles.header, { transform: headerTransform }]}>
-diff --git a/node_modules/react-native-image-viewing/dist/components/ImageDefaultHeader.js b/node_modules/react-native-image-viewing/dist/components/ImageDefaultHeader.js
-index 33c9def..97c7633 100644
---- a/node_modules/react-native-image-viewing/dist/components/ImageDefaultHeader.js
-+++ b/node_modules/react-native-image-viewing/dist/components/ImageDefaultHeader.js
+diff --git a/dist/components/ImageDefaultHeader.js b/dist/components/ImageDefaultHeader.js
+index 33c9def36ff51a7f9381c9b1082f46ca7d259a58..97c763315568fd1e85720e2004e194fe9b1b237a 100644
+--- a/dist/components/ImageDefaultHeader.js
++++ b/dist/components/ImageDefaultHeader.js
 @@ -6,7 +6,8 @@
   *
   */
@@ -60,22 +60,20 @@ index 33c9def..97c7633 100644
  const HIT_SLOP = { top: 16, left: 16, bottom: 16, right: 16 };
  const ImageDefaultHeader = ({ onRequestClose }) => (<SafeAreaView style={styles.root}>
      <TouchableOpacity style={styles.closeButton} onPress={onRequestClose} hitSlop={HIT_SLOP}>
-diff --git a/node_modules/react-native-image-viewing/dist/components/ImageItem/ImageItem.android.js b/node_modules/react-native-image-viewing/dist/components/ImageItem/ImageItem.android.js
-index 5fcaa9f..94f2a25 100644
---- a/node_modules/react-native-image-viewing/dist/components/ImageItem/ImageItem.android.js
-+++ b/node_modules/react-native-image-viewing/dist/components/ImageItem/ImageItem.android.js
-@@ -11,6 +11,10 @@ import useImageDimensions from "../../hooks/useImageDimensions";
+diff --git a/dist/components/ImageItem/ImageItem.android.js b/dist/components/ImageItem/ImageItem.android.js
+index 5fcaa9f9a7d893817fee89b85186ee3936118e69..72c05eb3ce492db6e95fb1e981872a0151880a57 100644
+--- a/dist/components/ImageItem/ImageItem.android.js
++++ b/dist/components/ImageItem/ImageItem.android.js
+@@ -11,6 +11,8 @@ import useImageDimensions from "../../hooks/useImageDimensions";
  import usePanResponder from "../../hooks/usePanResponder";
  import { getImageStyles, getImageTransform } from "../../utils";
  import { ImageLoading } from "./ImageLoading";
 +import { Image } from "expo-image";
-+
 +const AnimatedImage = Animated.createAnimatedComponent(Image);
-+
  const SWIPE_CLOSE_OFFSET = 75;
  const SWIPE_CLOSE_VELOCITY = 1.75;
  const SCREEN = Dimensions.get("window");
-@@ -68,7 +72,7 @@ const ImageItem = ({ imageSrc, onZoom, onRequestClose, onLongPress, delayLongPre
+@@ -68,7 +70,7 @@ const ImageItem = ({ imageSrc, onZoom, onRequestClose, onLongPress, delayLongPre
          onScroll,
          onScrollEndDrag,
      })}>
@@ -84,22 +82,20 @@ index 5fcaa9f..94f2a25 100644
        {(!isLoaded || !imageDimensions) && <ImageLoading />}
      </ScrollView>);
  };
-diff --git a/node_modules/react-native-image-viewing/dist/components/ImageItem/ImageItem.ios.js b/node_modules/react-native-image-viewing/dist/components/ImageItem/ImageItem.ios.js
-index 0708505..d99ab2e 100644
---- a/node_modules/react-native-image-viewing/dist/components/ImageItem/ImageItem.ios.js
-+++ b/node_modules/react-native-image-viewing/dist/components/ImageItem/ImageItem.ios.js
-@@ -11,6 +11,10 @@ import useDoubleTapToZoom from "../../hooks/useDoubleTapToZoom";
+diff --git a/dist/components/ImageItem/ImageItem.ios.js b/dist/components/ImageItem/ImageItem.ios.js
+index 0708505081e1d3da5bfc09d7b599975088969ea6..213d736a32630f7ae12c22bb2544dc1c0efd0fed 100644
+--- a/dist/components/ImageItem/ImageItem.ios.js
++++ b/dist/components/ImageItem/ImageItem.ios.js
+@@ -11,6 +11,8 @@ import useDoubleTapToZoom from "../../hooks/useDoubleTapToZoom";
  import useImageDimensions from "../../hooks/useImageDimensions";
  import { getImageStyles, getImageTransform } from "../../utils";
  import { ImageLoading } from "./ImageLoading";
 +import { Image } from "expo-image";
-+
 +const AnimatedImage = Animated.createAnimatedComponent(Image);
-+
  const SWIPE_CLOSE_OFFSET = 75;
  const SWIPE_CLOSE_VELOCITY = 1.55;
  const SCREEN = Dimensions.get("screen");
-@@ -26,7 +30,7 @@ const ImageItem = ({ imageSrc, onZoom, onRequestClose, onLongPress, delayLongPre
+@@ -26,7 +28,7 @@ const ImageItem = ({ imageSrc, onZoom, onRequestClose, onLongPress, delayLongPre
      const scrollValueY = new Animated.Value(0);
      const scaleValue = new Animated.Value(scale || 1);
      const translateValue = new Animated.ValueXY(translate);
@@ -108,7 +104,7 @@ index 0708505..d99ab2e 100644
      const imageOpacity = scrollValueY.interpolate({
          inputRange: [-SWIPE_CLOSE_OFFSET, 0, SWIPE_CLOSE_OFFSET],
          outputRange: [0.5, 1, 0.5],
-@@ -62,7 +66,7 @@ const ImageItem = ({ imageSrc, onZoom, onRequestClose, onLongPress, delayLongPre
+@@ -62,7 +64,7 @@ const ImageItem = ({ imageSrc, onZoom, onRequestClose, onLongPress, delayLongPre
      })}>
          {(!loaded || !imageDimensions) && <ImageLoading />}
          <TouchableWithoutFeedback onPress={doubleTapToZoomEnabled ? handleDoubleTap : undefined} onLongPress={onLongPressHandler} delayLongPress={delayLongPress}>
@@ -117,23 +113,22 @@ index 0708505..d99ab2e 100644
          </TouchableWithoutFeedback>
        </ScrollView>
      </View>);
-diff --git a/node_modules/react-native-image-viewing/dist/components/StatusBarManager.js b/node_modules/react-native-image-viewing/dist/components/StatusBarManager.js
-index 7677856..c3e7067 100644
---- a/node_modules/react-native-image-viewing/dist/components/StatusBarManager.js
-+++ b/node_modules/react-native-image-viewing/dist/components/StatusBarManager.js
-@@ -1,6 +1,8 @@
+diff --git a/dist/components/StatusBarManager.js b/dist/components/StatusBarManager.js
+index 76778560c8d8e191ea67c07d78eb8b8df74f4ac3..65d2e8674a22e4f2cf80567147a3f5effa0d3d88 100644
+--- a/dist/components/StatusBarManager.js
++++ b/dist/components/StatusBarManager.js
+@@ -1,6 +1,7 @@
  import { useEffect } from "react";
  import { Platform, StatusBar, } from "react-native";
  const StatusBarManager = ({ presentationStyle, }) => {
 +    return null;
-+    
      if (Platform.OS === "ios" || presentationStyle !== "overFullScreen") {
          return null;
      }
-diff --git a/node_modules/react-native-image-viewing/dist/hooks/useImageDimensions.js b/node_modules/react-native-image-viewing/dist/hooks/useImageDimensions.js
-index d89a3a1..9f3065d 100644
---- a/node_modules/react-native-image-viewing/dist/hooks/useImageDimensions.js
-+++ b/node_modules/react-native-image-viewing/dist/hooks/useImageDimensions.js
+diff --git a/dist/hooks/useImageDimensions.js b/dist/hooks/useImageDimensions.js
+index d89a3a1280968b3b48b10f4e8ddaf164e23ee1b7..9f3065dfd69ccc71b481c0115219aded2a9d982a 100644
+--- a/dist/hooks/useImageDimensions.js
++++ b/dist/hooks/useImageDimensions.js
 @@ -6,6 +6,7 @@
   *
   */

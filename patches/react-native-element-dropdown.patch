@@ -1,0 +1,105 @@
+diff --git a/src/components/Dropdown/index.tsx b/src/components/Dropdown/index.tsx
+index 2a73f2f70cfd0dd3dfb13db740cf083c16a4f531..7c4fc396189c3ddd8bc12be7f58c2adc846d417c 100644
+--- a/src/components/Dropdown/index.tsx
++++ b/src/components/Dropdown/index.tsx
+@@ -21,7 +21,6 @@ import {
+   Image,
+   Keyboard,
+   KeyboardEvent,
+-  Modal,
+   StatusBar,
+   StyleSheet,
+   Text,
+@@ -35,6 +34,7 @@ import { useDeviceOrientation } from '../../useDeviceOrientation';
+ import CInput from '../TextInput';
+ import { DropdownProps, IDropdownRef } from './model';
+ import { styles } from './styles';
++import { Portal, Modal } from 'react-native-paper';
+ 
+ const { isTablet } = useDetectDevice;
+ const ic_down = require('../../assets/down.png');
+@@ -673,50 +673,51 @@ const DropdownComponent = React.forwardRef<IDropdownRef, DropdownProps<any>>(
+           }
+ 
+           return (
+-            <Modal
+-              transparent
+-              statusBarTranslucent
+-              visible={visible}
+-              supportedOrientations={['landscape', 'portrait']}
+-              onRequestClose={showOrClose}
+-            >
+-              <TouchableWithoutFeedback onPress={showOrClose}>
+-                <View
+-                  style={StyleSheet.flatten([
+-                    styles.flex1,
+-                    isFull && styleContainerVertical,
+-                    backgroundColor && { backgroundColor: backgroundColor },
+-                    keyboardStyle,
+-                  ])}
+-                >
++            <Portal>
++              <Modal
++                visible={visible}
++                style={{ flex: 1, marginTop: 0, marginBottom: 0 }}
++                contentContainerStyle={{ flex: 1 }}
++                onDismiss={showOrClose}
++              >
++                <TouchableWithoutFeedback onPress={showOrClose}>
+                   <View
+                     style={StyleSheet.flatten([
+                       styles.flex1,
+-                      !isTopPosition
+-                        ? { paddingTop: extendHeight }
+-                        : {
+-                            justifyContent: 'flex-end',
+-                            paddingBottom: extendHeight,
+-                          },
+-                      isFull && styles.fullScreen,
++                      isFull && styleContainerVertical,
++                      backgroundColor && { backgroundColor: backgroundColor },
++                      keyboardStyle,
+                     ])}
+                   >
+                     <View
+                       style={StyleSheet.flatten([
+-                        styles.container,
+-                        isFull ? styleHorizontal : styleVertical,
+-                        {
+-                          width,
+-                        },
+-                        containerStyle,
++                        styles.flex1,
++                        !isTopPosition
++                          ? { paddingTop: extendHeight }
++                          : {
++                              justifyContent: 'flex-end',
++                              paddingBottom: extendHeight,
++                            },
++                        isFull && styles.fullScreen,
+                       ])}
+                     >
+-                      {_renderList(isTopPosition)}
++                      <View
++                        style={StyleSheet.flatten([
++                          styles.container,
++                          isFull ? styleHorizontal : styleVertical,
++                          {
++                            width,
++                          },
++                          containerStyle,
++                        ])}
++                      >
++                        {_renderList(isTopPosition)}
++                      </View>
+                     </View>
+                   </View>
+-                </View>
+-              </TouchableWithoutFeedback>
+-            </Modal>
++                </TouchableWithoutFeedback>
++              </Modal>
++            </Portal>
+           );
+         }
+         return null;
