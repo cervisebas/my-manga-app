@@ -25,6 +25,7 @@ import { refImageViewer } from '@/constants/Refs';
 import { BookInfoStatus } from './components/BookInfoStatus';
 import { goToGenderBooks } from '@/utils/goToGenderBooks';
 import { BookInfoAutors } from './components/BookInfoAutors';
+import { BookInfoHeaderMenu } from './components/BookInfoHeaderMenu';
 
 type IProps = NativeStackScreenProps<ParamListBase, 'book-info'>;
 
@@ -74,7 +75,9 @@ export function BookInfoScreen(props: IProps) {
         sizeHidden={coverSize}
         scrollEvent={scrollEvent}
         onBackAction={props.navigation.goBack}
-      />
+      >
+        {!loading && <BookInfoHeaderMenu bookInfo={data} />}
+      </BookInfoHeader>
       <SafeArea.ScrollView
         expandDisableTop
         expandDisableLeft

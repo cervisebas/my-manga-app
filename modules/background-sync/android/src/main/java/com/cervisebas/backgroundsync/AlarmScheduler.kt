@@ -8,11 +8,8 @@ import android.os.SystemClock
 
 object AlarmScheduler {
 
-    private const val SIX_HOURS =
-        6 * 60 * 60 * 1000L
-
-    private const val ONE_MINUTE =
-        1 * 60 * 1000L
+    private const val FOUR_HOURS =
+        4 * 60 * 60 * 1000L
 
     fun schedule(context: Context) {
 
@@ -36,13 +33,13 @@ object AlarmScheduler {
                 // Use exact alarm to grant background start exemption for Foreground Services on Android 12+
                 alarmManager.setExactAndAllowWhileIdle(
                     AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                    SystemClock.elapsedRealtime() + ONE_MINUTE,
+                    SystemClock.elapsedRealtime() + FOUR_HOURS,
                     pendingIntent
                 )
             } else {
                 alarmManager.setAndAllowWhileIdle(
                     AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                    SystemClock.elapsedRealtime() + ONE_MINUTE,
+                    SystemClock.elapsedRealtime() + FOUR_HOURS,
                     pendingIntent
                 )
             }
@@ -50,7 +47,7 @@ object AlarmScheduler {
             // Fallback if SCHEDULE_EXACT_ALARM permission is revoked
             alarmManager.setAndAllowWhileIdle(
                 AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                SystemClock.elapsedRealtime() + ONE_MINUTE,
+                SystemClock.elapsedRealtime() + FOUR_HOURS,
                 pendingIntent
             )
         }

@@ -9,6 +9,8 @@ export enum DatabaseTableName {
 
   BOOK_CHAPTER_IMAGES = 'book-chapter-images',
 
+  BOOK_NOTIFICATION_SUBSCRIPTION = 'book-notification-subscription',
+
   BOOK_STAFF = 'book-staff',
   BOOK_STAFF_BY_BOOKS_INFO = 'book-staff-by-book-info',
 

@@ -2,7 +2,7 @@ import { ChapterInterface } from '@/api/shared/interfaces/ChapterInterface';
 import { ChapterViewedInterface } from '../interfaces/ChapterViewedInterface';
 import { db } from '../constants/database';
 import { BookChapterHistoryModel } from '../schemas/BookChapterHistoryModel';
-import { eq, inArray } from 'drizzle-orm';
+import { and, eq, inArray, not, sql } from 'drizzle-orm';
 import { ChapterOptionInterface } from '@/api/shared/interfaces/ChapterOptionInterface';
 import dayjs from 'dayjs';
 import { BookChapterModel } from '../schemas/BookChapterModel';
@@ -92,5 +92,86 @@ export class BookChapterList {
         chap.availableSpanishLATAMLanguage ?? undefined,
       options: optionsByChapter[chap.id] || [],
     }));
+  }
+
+  @DatabaseHandleErrors()
+  public static async saveChapterList(
+    id_bookinfo: number,
+    chapterList: ChapterInterface[],
+    database = db,
+  ) {
+    return database.transaction(async (tx) => {
+      if (chapterList && chapterList.length > 0) {
+        const chapters = await tx
+          .insert(BookChapterModel)
+          .values(
+            chapterList.map((chapter) => ({
+              id_bookinfo: id_bookinfo,
+              title: chapter.title ?? null,
+              chapter_number: chapter.chapter_number,
+              language: chapter.language,
+              languages: chapter.languages,
+              availableSpanishLanguage: chapter.availableSpanishLanguage,
+              availableSpanishLATAMLanguage:
+                chapter.availableSpanishLATAMLanguage,
+            })),
+          )
+          .onConflictDoUpdate({
+            target: [
+              BookChapterModel.id_bookinfo,
+              BookChapterModel.chapter_number,
+            ],
+            set: {
+              title: sql`excluded.title`,
+              language: sql`excluded.language`,
+              languages: sql`excluded.languages`,
+              availableSpanishLanguage: sql`excluded.availableSpanishLanguage`,
+              availableSpanishLATAMLanguage: sql`excluded.availableSpanishLATAMLanguage`,
+            },
+          })
+          .returning({ idChapter: BookChapterModel.id });
+
+        const options = await tx
+          .insert(BookChapterOptionModel)
+          .values(
+            chapters
+              .map((chapter, index) =>
+                chapterList![index].options.map((opt) => ({
+                  id_chapter: chapter.idChapter,
+                  title: opt.title,
+                  date: dayjs(opt.date).toDate(),
+                  url: opt.url,
+                  language: opt.language,
+                })),
+              )
+              .flat(),
+          )
+          .onConflictDoUpdate({
+            target: [
+              BookChapterOptionModel.id_chapter,
+              BookChapterOptionModel.url,
+            ],
+            set: {
+              language: sql`excluded.language`,
+            },
+          })
+          .returning({ idOption: BookChapterOptionModel.id });
+
+        await tx.delete(BookChapterOptionModel).where(
+          and(
+            not(
+              inArray(
+                BookChapterOptionModel.id,
+                options.map((option) => option.idOption),
+              ),
+            ),
+            inArray(
+              BookChapterOptionModel.id_chapter,
+              chapters.map((chapter) => chapter.idChapter),
+            ),
+          ),
+        );
+      }
+    });
   }
 }

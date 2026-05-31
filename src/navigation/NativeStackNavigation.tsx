@@ -53,6 +53,10 @@ export function NativeStackNavigation() {
   };
 
   const startBackgroundTasks = () => {
+    if (__DEV__) {
+      return;
+    }
+
     BackgroundSync.start();
   };
 

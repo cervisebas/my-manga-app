@@ -5,6 +5,7 @@ import { SettingType } from '../enums/SettingType';
 import { BookInfoDatabase } from '@/database/classes/BookInfoDatabase';
 import { ToastAndroid } from 'react-native';
 import { refDialogs } from '@/constants/Refs';
+import { SettingListTest } from './SettingListTest';
 
 // CHAPTER OPTIONS SECTION
 const ONLY_SHOW_SPANISH_LANGUAGE = new SettingItem({
@@ -135,4 +136,5 @@ export const SettingList: SettingItem[] = [
   STORAGE_METER,
   STORAGE_CLEAR,
   STORAGE_BOOKS_COUNT,
+  ...(__DEV__ ? SettingListTest : []),
 ];

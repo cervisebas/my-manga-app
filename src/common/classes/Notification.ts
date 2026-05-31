@@ -13,6 +13,7 @@ export interface INotificationData {
   data?: Record<string, number | string>;
 
   channel?: AndroidChannel;
+  largeImage?: string | number;
 
   progress?: {
     max: number;
@@ -91,6 +92,7 @@ export class Notification {
         data: data.data ?? {},
       },
       android: {
+        ...(data.largeImage ? { largeIcon: data.largeImage } : {}),
         ongoing: data.sticky ?? false,
         autoCancel: true,
         channelId: channel,

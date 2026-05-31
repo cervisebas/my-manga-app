@@ -14,7 +14,7 @@ class SyncTaskService : HeadlessJsTaskService() {
         return HeadlessJsTaskConfig(
             "BackgroundTasks",
             Arguments.createMap(),
-            1 * 60 * 1000, //10 * 60 * 1000,
+            4 * 60 * 60 * 1000,
             true
         )
     }

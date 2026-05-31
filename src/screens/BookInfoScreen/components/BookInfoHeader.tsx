@@ -12,7 +12,7 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { modeAppbarHeight } from 'react-native-paper/src/components/Appbar/utils';
 import { useSafeArea } from '@/common/hooks/useSafeArea';
 import Color from 'color';
@@ -22,6 +22,7 @@ interface IProps {
   style?: StyleProp<ViewStyle>;
   sizeHidden: number;
   scrollEvent: NativeScrollEvent | null;
+  children?: React.ReactNode;
   onBackAction?(): void;
 }
 
@@ -58,6 +59,7 @@ export const BookInfoHeader = withUniwind((props: IProps) => {
       <Appbar.Header style={styles.header} mode={'small'}>
         <Appbar.BackAction onPress={props.onBackAction} />
         <Appbar.Content title={props.title} />
+        {props.children}
       </Appbar.Header>
     </Animated.View>
   );
