@@ -14,7 +14,7 @@ export async function BackgroundTasks() {
     notificationId = await Notification.showNotification({
       title: 'Verificando actualizaciones',
       message: 'Comprobando...',
-      channel: AndroidChannels.DEFAULT,
+      channel: AndroidChannels.BACKGROUND_TASK,
       progress: {
         max: 0,
         current: 0,

@@ -12,6 +12,7 @@ import SafeArea from '@/common/components/SafeArea';
 import dayjs from 'dayjs';
 import { BookNotificationSubscription } from '@/database/classes/BookNotificationSubscription';
 import { refDialogs } from '@/constants/Refs';
+import { goToBookInfo } from '@/utils/goToBookInfo';
 
 type IProps = NativeStackScreenProps<ParamListBase, 'subscriptions'>;
 
@@ -52,6 +53,10 @@ export function SubscriptionScreen(props: IProps) {
         instance={instance}
         bookPicture={item.picture}
         onPress={() => {
+          const scrapper = getInstanceById(item.provider);
+          goToBookInfo(scrapper, item);
+        }}
+        onLongPress={() => {
           if (item.id) {
             unsubscribeBook(item.id);
           }
