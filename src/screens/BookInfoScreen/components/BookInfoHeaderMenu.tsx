@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Appbar, Menu } from 'react-native-paper';
 import { BookInfoInterface } from '@/api/shared/interfaces/BookInfoInterface';
-import { useBookInfoHeaderMenu } from '../hooks/useBookInfoHeaderMenu';
+import { useBookInfoHeaderMenuNotification } from '../hooks/useBookInfoHeaderMenuNotification';
 
 interface IProps {
   bookInfo: BookInfoInterface;
@@ -10,7 +10,7 @@ interface IProps {
 export function BookInfoHeaderMenu(props: IProps) {
   const [visible, setVisible] = useState(false);
   const { notificationActived, toggleNotificationSubscription } =
-    useBookInfoHeaderMenu(props.bookInfo);
+    useBookInfoHeaderMenuNotification(props.bookInfo);
 
   const openMenu = () => setVisible(true);
   const closeMenu = () => setVisible(false);

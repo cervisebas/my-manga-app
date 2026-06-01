@@ -96,6 +96,10 @@ export function MiProfileScreen() {
     return item.path;
   };
 
+  const goToSubscriptionScreen = () => {
+    refNavegation.current?.navigate('subscriptions');
+  };
+
   const goToHistoryScreen = () => {
     refNavegation.current?.navigate('history-chapters');
   };
@@ -118,8 +122,9 @@ export function MiProfileScreen() {
     >
       <AppbarHeader>
         <Appbar.Content title={'Mi Perfil'} />
-        <Appbar.Action icon={'cog-outline'} onPress={goToSettingScreen} />
+        <Appbar.Action icon={'bell-outline'} onPress={goToSubscriptionScreen} />
         <Appbar.Action icon={'history'} onPress={goToHistoryScreen} />
+        <Appbar.Action icon={'cog-outline'} onPress={goToSettingScreen} />
       </AppbarHeader>
 
       <BookStatusTabs

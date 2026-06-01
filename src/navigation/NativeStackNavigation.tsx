@@ -14,6 +14,7 @@ import { Notification } from '@/common/classes/Notification';
 import { refDialogs } from '@/constants/Refs';
 import { AuthorizationStatus } from 'react-native-notify-kit';
 import { BackgroundSync } from '@modules/background-sync';
+import { SubscriptionScreen } from '@/screens/SubscriptionScreen/SubscriptionScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -88,6 +89,7 @@ export function NativeStackNavigation() {
       <Stack.Screen name={'gender-books'} component={GenderListScreen} />
       <Stack.Screen name={'author-books'} component={AuthorBooksScreen} />
       <Stack.Screen name={'settings'} component={SettingScreen} />
+      <Stack.Screen name={'subscriptions'} component={SubscriptionScreen} />
     </Stack.Navigator>
   );
 }

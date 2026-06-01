@@ -1,6 +1,6 @@
 import { getInstanceById } from '@/api/utils/getInstanceById';
 import { AppbarHeader } from '@/common/components/AppbarHeader';
-import { BookChapterHistoryItem } from '@/common/components/BookChapterHistoryItem';
+import { BookHorizontalItem } from '@/common/components/BookHorizontalItem';
 import SafeArea from '@/common/components/SafeArea';
 import { ChapterOptions } from '@/common/handlers/ChapterOptions';
 import { refDialogLoading, refDialogs } from '@/constants/Refs';
@@ -109,7 +109,7 @@ export function HistoryScreen(props: IProps) {
   const _renderItem = ({ item }: ListRenderItemInfo<BookHistoryItem>) => {
     const instance = getInstanceById(item.bookInfo.provider);
     return (
-      <BookChapterHistoryItem
+      <BookHorizontalItem
         key={`history-item-${item.bookInfo.path}-${item.chapter.chapter_number}`}
         date={
           item.date

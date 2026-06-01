@@ -32,6 +32,17 @@ export class BookNotificationSubscription {
     return subscriptions.map((item) => item.id_bookinfo);
   }
 
+  public async getAllSubscriptionsWithDates() {
+    const subscriptions = await this.database
+      .select({
+        id_bookinfo: BookNotificationSubscriptionModel.id_bookinfo,
+        createAt: BookNotificationSubscriptionModel.createAt,
+      })
+      .from(BookNotificationSubscriptionModel);
+
+    return subscriptions;
+  }
+
   public async checkSubscription(idBookInfo: number) {
     const items = await this.database
       .select()

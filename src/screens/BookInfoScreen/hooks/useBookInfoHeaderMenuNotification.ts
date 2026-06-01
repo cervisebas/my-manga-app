@@ -1,11 +1,12 @@
 import { BookInfoInterface } from '@/api/shared/interfaces/BookInfoInterface';
+import { BatteryOptimization } from '@/common/classes/BatteryOptimization';
 import { BookNotificationSubscription } from '@/database/classes/BookNotificationSubscription';
 import { DatabaseTableName } from '@/database/enums/DatabaseTableName';
 import { useTableChanges } from '@/database/hooks/useTableChange';
 import { useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner-native';
 
-export function useBookInfoHeaderMenu(bookInfo: BookInfoInterface) {
+export function useBookInfoHeaderMenuNotification(bookInfo: BookInfoInterface) {
   const idBookInfo = bookInfo.id ?? 0;
 
   const [active, setActive] = useState(false);
@@ -27,15 +28,26 @@ export function useBookInfoHeaderMenu(bookInfo: BookInfoInterface) {
     }
   };
 
+  const checkBatteryOptimization = async () => {
+    const status = await BatteryOptimization.isEnabled();
+
+    if (status) {
+      BatteryOptimization.requestDisable();
+    }
+  };
+
   const toggleNotificationSubscription = async () => {
     try {
       if (active) {
         await bookNotificationSubscription.current.unsubscribeBook(idBookInfo);
+
         toast.info('Notificaciones inactivas', {
           description: `Se inhabilitaron las notificaciones para el libro: ${bookInfo.title}`,
         });
       } else {
         await bookNotificationSubscription.current.subscribeBook(idBookInfo);
+
+        checkBatteryOptimization();
         toast.info('Notificaciones activas', {
           description: `Se habilitaron las notificaciones para el libro: ${bookInfo.title}`,
         });

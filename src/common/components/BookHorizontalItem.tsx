@@ -7,18 +7,18 @@ import { IScrappingService } from '@/api/interfaces/IScrappingService';
 interface IProps {
   date?: string;
   bookName: string;
-  progress: number;
+  progress?: number;
   instance?: IScrappingService;
   bookPicture: string;
-  chapterName: string;
+  chapterName?: string;
   onPress?(): void;
   onLongPress?(): void;
 }
 
-export function BookChapterHistoryItem(props: IProps) {
+export function BookHorizontalItem(props: IProps) {
   const theme = useTheme();
 
-  const progress = props.progress * 100;
+  const progress = (props?.progress ?? 0) * 100;
 
   return (
     <UTouchableRipple
@@ -55,9 +55,15 @@ export function BookChapterHistoryItem(props: IProps) {
           </View>
         </View>
         <View className={'flex-1 px-4 py-3'}>
-          <Text variant={'titleMedium'} numberOfLines={3}>
-            {props.chapterName} | {props.bookName}
-          </Text>
+          {props.chapterName ? (
+            <Text variant={'titleMedium'} numberOfLines={3}>
+              {props.chapterName} | {props.bookName}
+            </Text>
+          ) : (
+            <Text variant={'titleMedium'} numberOfLines={3}>
+              {props.bookName}
+            </Text>
+          )}
           {props.date && (
             <UText
               variant={'labelMedium'}
@@ -67,22 +73,24 @@ export function BookChapterHistoryItem(props: IProps) {
             </UText>
           )}
 
-          <View className={'flex-1 gap-1 mt-3 flex-col justify-center'}>
-            <View
-              className={'rounded-md w-full h-[8]'}
-              style={{ backgroundColor: theme.colors.surfaceVariant }}
-            >
+          {props.progress !== undefined && (
+            <View className={'flex-1 gap-1 mt-3 flex-col justify-center'}>
               <View
-                className={'h-full rounded-md'}
-                style={{
-                  backgroundColor: theme.colors.primary,
-                  width: `${progress}%`,
-                }}
-              />
-            </View>
+                className={'rounded-md w-full h-[8]'}
+                style={{ backgroundColor: theme.colors.surfaceVariant }}
+              >
+                <View
+                  className={'h-full rounded-md'}
+                  style={{
+                    backgroundColor: theme.colors.primary,
+                    width: `${progress}%`,
+                  }}
+                />
+              </View>
 
-            <Text variant={'labelSmall'}>{progress.toFixed(2)}%</Text>
-          </View>
+              <Text variant={'labelSmall'}>{progress.toFixed(2)}%</Text>
+            </View>
+          )}
         </View>
       </View>
     </UTouchableRipple>
