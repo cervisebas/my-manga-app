@@ -54,7 +54,14 @@ export function BookHorizontalItem(props: IProps) {
             )}
           </View>
         </View>
-        <View className={'flex-1 px-4 py-3'}>
+        <View
+          className={'flex-1 px-4 py-3 flex-col'}
+          style={
+            props.progress === undefined
+              ? { justifyContent: 'center' }
+              : undefined
+          }
+        >
           {props.chapterName ? (
             <Text variant={'titleMedium'} numberOfLines={3}>
               {props.chapterName} | {props.bookName}
