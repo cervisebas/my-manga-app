@@ -25,7 +25,8 @@ export function SubscriptionScreen(props: IProps) {
       confirmButton: {
         label: 'Desuscribirse',
         onPress() {
-          const bookNotificationSubscription = new BookNotificationSubscription();
+          const bookNotificationSubscription =
+            new BookNotificationSubscription();
           bookNotificationSubscription.unsubscribeBook(idBookInfo);
         },
       },
