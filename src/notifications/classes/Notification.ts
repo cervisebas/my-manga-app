@@ -1,4 +1,4 @@
-import { createUID } from '../utils/createUID';
+import { createUID } from '../../common/utils/createUID';
 import Notifee, {
   AndroidImportance,
   AndroidVisibility,

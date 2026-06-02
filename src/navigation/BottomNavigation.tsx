@@ -8,6 +8,7 @@ import { tabBarIcon } from '@/common/utils/tabBarIcon';
 import { TAB_ICONS } from '@/constants/TabIcons';
 import { useKeyboard } from '@/common/hooks/useKeyboard';
 import Color from 'color';
+import { useOpeBookNotificationAction } from '@/notifications/hooks/useOpeBookNotificationAction';
 
 const Tab = createNativeBottomTabNavigator();
 
@@ -19,6 +20,8 @@ export function BottomNavigation() {
     .fade(0.85)
     .rgb()
     .string();
+
+  useOpeBookNotificationAction();
 
   return (
     <Tab.Navigator

@@ -20,6 +20,7 @@ import { DialogLoading } from '@/common/components/DialogLoading';
 import { SystemBars } from 'react-native-edge-to-edge';
 import { ImageViewer } from '@/common/components/ImageViewer';
 import { SettingProvider } from '@/settings/providers/SettingProvider';
+import { NotificationActionProvider } from '@/notifications/providers/NotificationActionProvider';
 
 LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
@@ -31,22 +32,24 @@ export default function App() {
       <SystemBars style={'light'} />
 
       <DatabaseProvider>
-        <GestureHandlerRootView>
-          <ThemeProvider>
-            <BottomSheetModalProvider>
-              <SettingProvider>
-                <NativeStackNavigation />
-              </SettingProvider>
+        <NotificationActionProvider>
+          <GestureHandlerRootView>
+            <ThemeProvider>
+              <BottomSheetModalProvider>
+                <SettingProvider>
+                  <NativeStackNavigation />
+                </SettingProvider>
 
-              <BottomSheetOptions ref={refBottomSheetOptions} />
-            </BottomSheetModalProvider>
+                <BottomSheetOptions ref={refBottomSheetOptions} />
+              </BottomSheetModalProvider>
 
-            <FloatToast />
-            <Dialogs ref={refDialogs} />
-            <ImageViewer ref={refImageViewer} />
-            <DialogLoading ref={refDialogLoading} />
-          </ThemeProvider>
-        </GestureHandlerRootView>
+              <FloatToast />
+              <Dialogs ref={refDialogs} />
+              <ImageViewer ref={refImageViewer} />
+              <DialogLoading ref={refDialogLoading} />
+            </ThemeProvider>
+          </GestureHandlerRootView>
+        </NotificationActionProvider>
       </DatabaseProvider>
     </View>
   );

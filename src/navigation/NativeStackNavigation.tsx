@@ -10,7 +10,7 @@ import { HistoryScreen } from '@/screens/HistoryScreen';
 import { GenderListScreen } from '@/screens/GenderBooksScreen';
 import { SettingScreen } from '@/screens/SettingScreen/SettingScreen';
 import { AuthorBooksScreen } from '@/screens/AuthorBooksScreen';
-import { Notification } from '@/common/classes/Notification';
+import { Notification } from '@/notifications/classes/Notification';
 import { refDialogs } from '@/constants/Refs';
 import { AuthorizationStatus } from 'react-native-notify-kit';
 import { BackgroundSync } from '@modules/background-sync';

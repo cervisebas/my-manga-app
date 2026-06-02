@@ -1,4 +1,7 @@
-import { AndroidChannels, Notification } from '@/common/classes/Notification';
+import {
+  AndroidChannels,
+  Notification,
+} from '@/notifications/classes/Notification';
 import { BookNotificationSubscription } from '@/database/classes/BookNotificationSubscription';
 import { getInfoBooksBackgroundTask } from './utils/getInfoBooksBackgroundTask';
 import { BookChapterList } from '@/database/classes/BookChapterList';

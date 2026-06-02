@@ -1,5 +1,5 @@
 import { BookInfoInterface } from '@/api/shared/interfaces/BookInfoInterface';
-import { and, count, eq, inArray, not, sql } from 'drizzle-orm';
+import { and, count, eq, inArray, not, or, sql } from 'drizzle-orm';
 import dayjs from 'dayjs';
 import { BookInfoModel } from '../schemas/BookInfoModel';
 import { BookGenderModel } from '../schemas/BookGenderModel';
@@ -203,11 +203,14 @@ export class BookInfoDatabase {
   }
 
   @DatabaseHandleErrors()
-  public static async getBookInfo(url: string): Promise<BookInfoInterface> {
+  public static async getBookInfo(
+    url: string,
+    id?: number,
+  ): Promise<BookInfoInterface> {
     const [book] = await db
       .select()
       .from(BookInfoModel)
-      .where(and(eq(BookInfoModel.url, url)))
+      .where(or(eq(BookInfoModel.url, url), eq(BookInfoModel.id, id ?? -1)))
       .limit(1);
 
     if (!book) throw null;
@@ -276,6 +279,11 @@ export class BookInfoDatabase {
       staff: staff,
       chapters: chapters,
     };
+  }
+
+  @DatabaseHandleErrors()
+  public static getBookInfoWithId(id: number) {
+    return BookInfoDatabase.getBookInfo('', id);
   }
 
   @DatabaseHandleErrors()

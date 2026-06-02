@@ -4,7 +4,10 @@ import { ChapterInterface } from '@/api/shared/interfaces/ChapterInterface';
 import { useEffect, useRef } from 'react';
 import { getAutoSelectOption } from '../utils/getAutoSelectOption';
 import { ChapterOptionInterface } from '@/api/shared/interfaces/ChapterOptionInterface';
-import { AndroidChannels, Notification } from '@/common/classes/Notification';
+import {
+  AndroidChannels,
+  Notification,
+} from '@/notifications/classes/Notification';
 import { getPreffererSavedImages } from '@/utils/goToChapterView';
 import { ChapterImageFile } from '@/common/classes/ChapterImageFile';
 import { File } from 'expo-file-system';
