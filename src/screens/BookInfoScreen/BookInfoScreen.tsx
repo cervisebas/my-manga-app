@@ -193,7 +193,7 @@ export function BookInfoScreen(props: IProps) {
 
             <Divider />
 
-            {data.staff && (
+            {data.staff && data.staff.length !== 0 && (
               <React.Fragment>
                 <BookInfoAutors authors={data.staff} scrapper={scrapper} />
 
@@ -216,7 +216,7 @@ export function BookInfoScreen(props: IProps) {
                 )}
 
                 {/* Lenguaje */}
-                {data.languages && (
+                {data.languages && data.languages.length !== 0 && (
                   <React.Fragment>
                     <BookInfoLanguages languages={data.languages} />
 

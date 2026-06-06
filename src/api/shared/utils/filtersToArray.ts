@@ -12,7 +12,7 @@ function getOptionValues(options: SearchFilterOption[], queryKey?: string) {
   const result: [string, string][] = [];
 
   for (const item of options) {
-    if (item.selectedValue !== undefined) {
+    if (item.selectedValue !== undefined && item.selectedValue) {
       result.push([queryKey ?? item.queryKey!, cleanValue(String(item.value))]);
     }
   }

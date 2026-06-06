@@ -248,12 +248,15 @@ export const LibraryFiltersSheet = forwardRef(function (
                       </View>
                     )}
                     onPress={() => {
+                      const currentValue =
+                        val.selectedValue ?? val.defaultValue ?? false;
+
+                      if (currentValue) {
+                        return;
+                      }
+
                       changeValue({
-                        value: !(
-                          val.selectedValue ??
-                          val.defaultValue ??
-                          false
-                        ),
+                        value: !currentValue,
                         index: filterIndex,
                         optionIndex: optionIndex,
                         radioEffect: true,

@@ -66,9 +66,9 @@ export function useLoadNextChapter(
 
   const onLoadImage = async (index: number, source: File) => {
     try {
-      const fileName = savedImages.current[index].slice(
-        savedImages.current[index].lastIndexOf('/') + 1,
-      );
+      const fileName = savedImages.current[index]
+        .split('?')[0]
+        .slice(savedImages.current[index].split('?')[0].lastIndexOf('/') + 1);
 
       const _file = new ChapterImageFile(fileName, source, subdirs.current);
       _file.checkFolder();
@@ -81,9 +81,10 @@ export function useLoadNextChapter(
   };
 
   const existFile = (index: number) => {
-    const fileName = savedImages.current[index].slice(
-      savedImages.current[index].lastIndexOf('/') + 1,
-    );
+    const fileName = savedImages.current[index]
+      .split('?')[0]
+      .slice(savedImages.current[index].split('?')[0].lastIndexOf('/') + 1);
+
     return ChapterImageFile.exist(fileName, subdirs.current);
   };
 

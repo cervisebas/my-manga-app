@@ -12,7 +12,10 @@ export async function defaultLoadChapterImage(
     destination.create();
   }
 
-  const path = Paths.join(destination, url.slice(url.lastIndexOf('/') + 1));
+  const fileName = url
+    .split('?')[0]
+    .slice(url.split('?')[0].lastIndexOf('/') + 1);
+  const path = Paths.join(destination, fileName);
   const file = new File(path);
 
   const info = await InsecureFetch.downloadFile(
