@@ -176,6 +176,11 @@ export function ChapterViewScreen(props: IProps) {
   });
 
   usePreventBackHandler(() => {
+    if (refBottomSheetOptions.current?.isOpened()) {
+      refBottomSheetOptions.current?.close();
+      return;
+    }
+
     if (lockBackAction.current && !UIBackAction.current) {
       lockBackAction.current = false;
 
