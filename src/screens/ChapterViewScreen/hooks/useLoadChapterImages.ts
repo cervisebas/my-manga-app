@@ -101,6 +101,27 @@ export function useLoadChapterImages(
     }
   };
 
+  const reloadImages = () => {
+    // Delete all images
+    for (const image of images) {
+      if (!image || typeof image.source !== 'string') {
+        continue;
+      }
+
+      const _file = new File(image.source);
+      if (_file.exists) {
+        _file.delete();
+      }
+    }
+
+    // Reset UI States
+    setLoading(true);
+    setImages(Array(sourceImages.length).fill(null));
+
+    // Load Images
+    loadImages();
+  };
+
   // Effects
   useEffect(() => {
     loadImages();
@@ -110,5 +131,5 @@ export function useLoadChapterImages(
     };
   }, []);
 
-  return { images, progress, loading };
+  return { images, progress, loading, reloadImages };
 }

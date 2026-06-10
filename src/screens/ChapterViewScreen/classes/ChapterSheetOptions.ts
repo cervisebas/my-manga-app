@@ -5,7 +5,7 @@ import { ChapterOptionInterface } from '@/api/shared/interfaces/ChapterOptionInt
 import { Languages } from '@/api/shared/translate/Languages';
 import { BottomSheetOptionsInterface } from '@/common/components/BottomSheetOptions';
 import { ChapterOptions } from '@/common/handlers/ChapterOptions';
-import { refBottomSheetOptions } from '@/constants/Refs';
+import { refBottomSheetOptions, refDialogs } from '@/constants/Refs';
 import { SettingManager } from '@/settings/classes/SettingManager';
 import { SettingType } from '@/settings/enums/SettingType';
 import { NavigationProp } from '@react-navigation/native';
@@ -19,10 +19,17 @@ export class ChapterSheetOptions {
   private instance: IScrappingService;
   private navigation: NavigationProp<ReactNavigation.RootParamList>;
 
-  private information: BottomSheetOptionsInterface[] = [];
   private actions: BottomSheetOptionsInterface[] = [];
+  private options: BottomSheetOptionsInterface[] = [];
+  private information: BottomSheetOptionsInterface[] = [];
 
   private automaticSelectChapterOption = false;
+
+  private loadingImages?: {
+    images?: string[];
+    loading: boolean;
+    reloadImages?(): void;
+  };
 
   constructor(
     instance: IScrappingService,
@@ -49,6 +56,7 @@ export class ChapterSheetOptions {
     }
 
     this.generateInfo();
+    this.generateOptions();
     this.generateActions();
   }
 
@@ -114,6 +122,36 @@ export class ChapterSheetOptions {
     chapterOptions.show();
   }
 
+  private generateOptions() {
+    this.options = [];
+
+    if (this.loadingImages) {
+      this.options.push({
+        label: 'Recargar imágenes',
+        description: this.loadingImages.loading
+          ? 'Aún no disponible'
+          : undefined,
+        disabled: this.loadingImages.loading,
+        leftIcon: 'image-refresh-outline',
+        onPress: () => {
+          refDialogs.current?.open({
+            message:
+              '¿Seguro que desea recargar las imágenes? Estas se borrarán del dispositivo y se cargarán de nuevo.',
+            confirmButton: {
+              label: 'Recargar',
+              onPress: () => {
+                this.loadingImages?.reloadImages?.();
+              },
+            },
+            cancelButton: {
+              label: 'Cancelar',
+            },
+          });
+        },
+      });
+    }
+  }
+
   private generateActions() {
     this.actions = [];
 
@@ -169,12 +207,37 @@ export class ChapterSheetOptions {
     }
   }
 
+  public setImageLoading(
+    loading: boolean,
+    images?: string[],
+    reloadImages?: () => void,
+  ) {
+    this.loadingImages = {
+      images,
+      loading,
+      reloadImages,
+    };
+  }
+
   public show() {
-    refBottomSheetOptions.current?.setNavigation(this.navigation);
-    refBottomSheetOptions.current?.open('Opciones', {
+    this.generateOptions();
+
+    const options: Record<string, BottomSheetOptionsInterface[]> = {
       'Viendo ahora': this.information,
+    };
+
+    if (this.options) {
+      Object.assign(options, {
+        'Opciones ': this.options,
+      });
+    }
+
+    Object.assign(options, {
       'Acciones ': this.actions,
     });
+
+    refBottomSheetOptions.current?.setNavigation(this.navigation);
+    refBottomSheetOptions.current?.open('Opciones', options);
   }
 
   public hide() {

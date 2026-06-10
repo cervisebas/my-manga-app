@@ -87,11 +87,13 @@ export const BottomSheetOptions = forwardRef(function (
       index: number,
       array: BottomSheetOptionsInterface[],
     ) => {
+      const disabled = value.selected || value.disabled;
+
       return (
         <React.Fragment key={`bottom-sheet-option-${index}`}>
           <ItemWithIcon
             title={value.label}
-            disabled={value.selected || value.disabled}
+            disabled={disabled}
             leftIcon={value.leftIcon}
             leftIconSize={value.leftIconSize}
             leftIconColor={value.leftIconColor}
@@ -105,6 +107,7 @@ export const BottomSheetOptions = forwardRef(function (
                   ? fadedHighlightColor
                   : highlightColor
                 : undefined,
+              opacity: disabled ? 0.75 : undefined,
             }}
             right={value.right}
             onPress={

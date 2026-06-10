@@ -27,6 +27,7 @@ import { useChapterImagesPositions } from './hooks/useChapterImagesPositions';
 import { useDimension } from '@/common/hooks/useDimension';
 import { VISUALIZER_MARGIN_HORIZONTAL } from './constants/VisualizerStyleValues';
 import { useLoadNextChapter } from './hooks/useLoadNextChapter';
+import { refBottomSheetOptions } from '@/constants/Refs';
 
 type IProps = NativeBottomTabScreenProps<ParamListBase, 'chapter-view'>;
 
@@ -60,7 +61,7 @@ export function ChapterViewScreen(props: IProps) {
 
   const [widthWindow] = useDimension('window');
 
-  const { images, progress, loading } = useLoadChapterImages(
+  const { images, progress, loading, reloadImages } = useLoadChapterImages(
     scrapper,
     params.images,
     [params.bookInfo.path, safeFolderName],
@@ -113,6 +114,11 @@ export function ChapterViewScreen(props: IProps) {
       );
     }
 
+    optionsRef.current.setImageLoading(
+      loading,
+      !loading ? images.map((img) => img?.source as string) : undefined,
+      reloadImages,
+    );
     optionsRef.current.show();
   };
 
