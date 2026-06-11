@@ -278,6 +278,7 @@ export class BookInfoDatabase {
       genders: genders,
       staff: staff,
       chapters: chapters,
+      updateAt: book.updateAt,
     };
   }
 

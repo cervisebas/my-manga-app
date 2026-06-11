@@ -29,4 +29,6 @@ export interface BookInfoInterface {
   chapters?: ChapterInterface[];
 
   staff?: BookStaffInterface[];
+
+  updateAt?: Date | null;
 }

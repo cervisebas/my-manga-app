@@ -127,14 +127,34 @@ STORAGE_BOOKS_COUNT.externalGetData = async function _() {
   }
 };
 
+// BOOK SECTION
+const BOOK_PREVENT_RECACHING = new SettingItem({
+  key: SettingType.BOOK_PREVENT_RECACHING,
+  icon: 'book-clock-outline',
+  type: 'boolean',
+  title: 'Evitar recarga de información',
+  section: SettingSection.BOOK_OPTION,
+  description:
+    'Al activar esta opción, solo se actualizara la información de los libros pasado 30 minutos de la ultima recarga.',
+  defaultValue: true,
+});
+
 export const SettingList: SettingItem[] = [
+  // CHAPTER
   ONLY_SHOW_SPANISH_LANGUAGE,
   AUTOMATIC_SELECT_CHAPTER_OPTION,
   AUTOMATIC_RESTORE_SAVED_POSITION,
   PREFERER_SAVED_IMAGES_CHAPTER,
   PRELOAD_NEXT_CHAPTER,
+
+  // BOOK
+  BOOK_PREVENT_RECACHING,
+
+  // STORAGE
   STORAGE_METER,
   STORAGE_CLEAR,
   STORAGE_BOOKS_COUNT,
+
+  // DEV
   ...(__DEV__ ? SettingListTest : []),
 ];

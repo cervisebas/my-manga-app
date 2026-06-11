@@ -5,6 +5,9 @@ import { refDialogs } from '@/constants/Refs';
 import { BookChapterList } from '@/database/classes/BookChapterList';
 import { BookInfoDatabase } from '@/database/classes/BookInfoDatabase';
 import { DatabaseError } from '@/database/errors/DatabaseError';
+import { SettingManager } from '@/settings/classes/SettingManager';
+import { SettingType } from '@/settings/enums/SettingType';
+import dayjs from 'dayjs';
 import { useEffect, useState } from 'react';
 
 export function useBookInfo(
@@ -21,10 +24,11 @@ export function useBookInfo(
     setError(null);
 
     let cached: boolean = false;
+    let saved: BookInfoInterface | undefined = undefined;
 
     // Consulta en local
     try {
-      const saved = await BookInfoDatabase.getBookInfo(info.url);
+      saved = await BookInfoDatabase.getBookInfo(info.url);
       console.info('Found in DB:', saved.id);
 
       cached = true;
@@ -39,6 +43,28 @@ export function useBookInfo(
 
     // Consulta a API
     try {
+      const preventRecached = SettingManager.getValue(
+        SettingType.BOOK_PREVENT_RECACHING,
+      ) as boolean;
+
+      if (cached && saved && saved.updateAt && preventRecached) {
+        const minDiff = dayjs().diff(dayjs(saved.updateAt), 'minutes');
+
+        console.info(
+          'PREVENT_RECACHED :: Fecha de información: ',
+          dayjs(saved.updateAt).format('DD-MM-YYYY HH:mm:ss'),
+        );
+        console.info(
+          `PREVENT_RECACHED :: Diferencia de tiempo con información: ${minDiff} minutos`,
+        );
+
+        // Si la diferencia es menor a 30 minutos, evitar
+        if (minDiff < 30) {
+          console.info('PREVENT_RECACHED :: Se previno actualizar datos.');
+          return;
+        }
+      }
+
       const response = await scrapper.bookInfo(info.url);
 
       // Guardar en base de datos
