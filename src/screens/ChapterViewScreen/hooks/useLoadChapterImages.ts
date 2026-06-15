@@ -25,33 +25,42 @@ export function useLoadChapterImages(
   const progress = images.reduce((prev, curr) => (curr ? prev + 1 : prev), 0);
   const subdirs = [instance.getIdName(), ...bookPaths];
 
+  const getFileName = (filePath: string) => {
+    return filePath
+      .split('?')[0]
+      .slice(filePath.split('?')[0].lastIndexOf('/') + 1);
+  };
+
   // Methods
   const onLoadImage = async (index: number, source: File) => {
-    const fileName = sourceImages[index]
-      .split('?')[0]
-      .slice(sourceImages[index].split('?')[0].lastIndexOf('/') + 1);
+    try {
+      const fileName = getFileName(sourceImages[index]);
 
-    const _file = new ChapterImageFile(fileName, source, subdirs);
-    _file.checkFolder();
-    await _file.save();
+      const _file = new ChapterImageFile(fileName, source, subdirs);
+      _file.checkFolder();
+      await _file.save();
 
-    const _info = new ChapterImageInfo(_file.getFile());
-    await _info.load();
+      const _info = new ChapterImageInfo(_file.getFile());
+      await _info.load();
 
-    const _sizes = _info.getSizes();
+      const _sizes = _info.getSizes();
 
-    const image: ChapterImage = {
-      source: _file.getPath(),
-      width: _sizes.width,
-      height: _sizes.height,
-    };
+      const image: ChapterImage = {
+        source: _file.getPath(),
+        width: _sizes.width,
+        height: _sizes.height,
+      };
 
-    setImages((images) => {
-      const _images = [...images];
-      _images[index] = image;
+      setImages((images) => {
+        const _images = [...images];
+        _images[index] = image;
 
-      return _images;
-    });
+        return _images;
+      });
+    } catch (error) {
+      console.error('onLoadImage ::', index, error);
+      onErrorImage(index);
+    }
   };
 
   const onErrorImage = async (index: number) => {
@@ -72,9 +81,7 @@ export function useLoadChapterImages(
   };
 
   const existFile = (index: number) => {
-    const fileName = sourceImages[index]
-      .split('?')[0]
-      .slice(sourceImages[index].split('?')[0].lastIndexOf('/') + 1);
+    const fileName = getFileName(sourceImages[index]);
     const exist = ChapterImageFile.exist(fileName, subdirs);
 
     if (exist) {

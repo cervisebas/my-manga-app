@@ -12,7 +12,7 @@ interface DownloadFileReturn {
   size: number;
 }
 
-type MethodRequest = 'GET' | 'POST' | 'PUT' | 'DELETE';
+export type MethodRequest = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
 declare class ExpoInsecureFetchModule extends NativeModule {
   fetch(

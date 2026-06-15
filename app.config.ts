@@ -2,11 +2,20 @@ import { ExpoConfig, ConfigContext } from 'expo/config';
 import edgeToEdge from 'react-native-edge-to-edge/expo';
 import bootsplash from 'react-native-bootsplash/expo';
 
+const extraProguardRules = `
+# Nitro Modules
+-keep class com.margelo.nitro.** { *; }
+-keep class com.margelo.** { *; }
+
+# React Native Compressor
+-keep class com.reactnativecompressor.** { *; }
+`;
+
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
   name: 'My Manga App',
   slug: 'MMA',
-  version: '1.3.1',
+  version: '1.4.0',
   experiments: {
     tsconfigPaths: true,
     reactCompiler: true,
@@ -22,10 +31,12 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
           enableProguardInReleaseBuilds: true,
           enableShrinkResourcesInReleaseBuilds: false,
           usesCleartextTraffic: true,
+          extraProguardRules: extraProguardRules.trim(),
         },
       },
     ],
     'expo-image',
+    'expo-status-bar',
     edgeToEdge({
       android: {
         parentTheme: 'Material3Expressive.Light',
@@ -65,6 +76,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         apsEnvMode: 'development',
       },
     ],
+    '@react-native-vector-icons/material-design-icons',
     [
       './plugins/withCustomSounds',
       {
@@ -93,7 +105,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   icon: './assets/icon.png',
   userInterfaceStyle: 'dark',
   android: {
-    versionCode: 7,
+    versionCode: 8,
     adaptiveIcon: {
       backgroundColor: '#E6F4FE',
       foregroundImage: './assets/android-icon-foreground.png',

@@ -25,7 +25,6 @@ import type { SearchPaginated } from '@api/shared/interfaces/SearchPaginated';
 import type { SearchResult } from '@api/shared/interfaces/SearchResult';
 import { ImageSourcePropType } from 'react-native';
 import LogoImage from '@api/assets/mangadex-logo.webp';
-import axios from 'axios';
 import dayjs from 'dayjs';
 import { Language } from '../shared/enums/Language';
 import { ApiHandleErrors } from '../shared/decorators/ApiHandleErrors';
@@ -34,6 +33,7 @@ import { filtersToArray } from '../shared/utils/filtersToArray';
 import { File } from 'expo-file-system';
 import { defaultLoadChapterImage } from '../utils/defaultLoadChapterImage';
 import { defaultLoadChapterImages } from '../utils/defaultLoadChapterImages';
+import { SimpleFetch } from '../shared/classes/SimpleFetch';
 
 const ORDER_OPTIONS: SearchFilterOption[] = [
   {
@@ -536,12 +536,12 @@ export class MangaDexScrapping implements IScrappingService {
 
   @ApiHandleErrors()
   public async getPopular(): Promise<BookInfoInterface[]> {
-    const { data } = await axios.get<MangaDexSearchResponse>(
+    const { data } = await SimpleFetch.fetch<MangaDexSearchResponse>(
+      'GET',
       'https://api.mangadex.org/manga?limit=32&offset=0&includes[]=cover_art&contentRating[]=safe&contentRating[]=suggestive&contentRating[]=erotica&order[rating]=desc&includedTagsMode=AND&excludedTagsMode=OR',
       {
-        headers: {
-          Referer: 'https://mangadex.org/',
-        },
+        Referer: 'https://mangadex.org/',
+        Accept: 'application/json',
       },
     );
 
@@ -638,11 +638,13 @@ export class MangaDexScrapping implements IScrappingService {
       url.searchParams.append(key, value);
     }
 
-    const { data } = await axios.get<MangaDexSearchResponse>(url.href, {
-      headers: {
+    const { data } = await SimpleFetch.fetch<MangaDexSearchResponse>(
+      'GET',
+      url.href,
+      {
         Referer: 'https://mangadex.org/',
       },
-    });
+    );
 
     return {
       page: offset ? Math.round(data.total / offset) : 0,
@@ -965,9 +967,10 @@ export class MangaDexScrapping implements IScrappingService {
           limit = this.EXTRACT_CHAPTERS - offset;
         } */
 
-        const { data } = await axios.get<MangaDexChapterResponse>(
+        const { data } = await SimpleFetch.fetch<MangaDexChapterResponse>(
+          'GET',
           `https://api.mangadex.org/manga/${id}/feed?limit=${limit}&includes[]=scanlation_group&includes[]=user&order[volume]=desc&order[chapter]=desc&offset=${offset}&contentRating[]=safe&contentRating[]=suggestive&contentRating[]=erotica&contentRating[]=pornographic&includeUnavailable=0&excludeExternalUrl=blinktoon.com`,
-          { headers: { Referer: url } },
+          { Referer: url },
         );
 
         const { total: _total } = data;
@@ -1008,13 +1011,15 @@ export class MangaDexScrapping implements IScrappingService {
         },
         chapters,
       ] = await Promise.all([
-        axios.get<MangaDexBookInfoResponse>(
+        SimpleFetch.fetch<MangaDexBookInfoResponse>(
+          'GET',
           `https://api.mangadex.org/manga/${id}?includes[]=artist&includes[]=author&includes[]=cover_art`,
-          { headers: { Referer: url } },
+          { Referer: url },
         ),
-        axios.get<MangaDexBookRatingResponse>(
+        SimpleFetch.fetch<MangaDexBookRatingResponse>(
+          'GET',
           `https://api.mangadex.org/statistics/manga/${id}`,
-          { headers: { Referer: url } },
+          { Referer: url },
         ),
         this.getAllChapters(id, url),
       ]);
@@ -1106,7 +1111,8 @@ export class MangaDexScrapping implements IScrappingService {
   public async getDataChapter(url: string): Promise<string[]> {
     const id = url.slice(url.indexOf('chapter/') + 8);
 
-    const { data } = await axios.get<MangaDexChapterDataResponse>(
+    const { data } = await SimpleFetch.fetch<MangaDexChapterDataResponse>(
+      'GET',
       `https://api.mangadex.org/at-home/server/${id}?forcePort443=false`,
     );
 

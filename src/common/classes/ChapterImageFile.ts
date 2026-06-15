@@ -49,7 +49,7 @@ export class ChapterImageFile {
         `Comprimido:\n\tAntes (${this.source.name}) -> ${this.source.info().size}\n\tDespues (${newFile.name}) -> ${newFile.info().size}`,
       );
 
-      newFile.move(this.file);
+      await newFile.move(this.file);
     } catch (error) {
       console.error('Compress error:', error);
     }
