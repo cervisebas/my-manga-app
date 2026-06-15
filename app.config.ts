@@ -26,6 +26,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       },
     ],
     'expo-image',
+    'expo-status-bar',
     edgeToEdge({
       android: {
         parentTheme: 'Material3Expressive.Light',
@@ -65,6 +66,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         apsEnvMode: 'development',
       },
     ],
+    '@react-native-vector-icons/material-design-icons',
     [
       './plugins/withCustomSounds',
       {

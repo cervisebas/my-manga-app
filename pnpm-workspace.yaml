@@ -3,9 +3,6 @@ allowBuilds:
   esbuild: true
   sharp: true
 
-minimumReleaseAgeExclude:
-  - react-native-notify-kit@10.4.4
-
 nodeLinker: hoisted
 
 patchedDependencies:

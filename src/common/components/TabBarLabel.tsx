@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { Text } from 'react-native-paper';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import MaterialCommunityIcons from '@react-native-vector-icons/material-design-icons';
 
 interface IProps {
   focused: boolean;
