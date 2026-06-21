@@ -18,6 +18,8 @@ export const BookInfoModel = sqliteTable(DatabaseTableName.BOOKS_INFO, {
   language: text().$type<Language>(),
   languages: text({ mode: 'json' }).$type<Language[]>(),
 
+  additionalPictures: text({ mode: 'json' }).$type<string[]>(),
+
   status: text().$type<BookStatus>(),
   description: text(),
   descriptionLang: text().$type<Language>(),

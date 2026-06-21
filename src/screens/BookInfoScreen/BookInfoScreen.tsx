@@ -105,10 +105,18 @@ export function BookInfoScreen(props: IProps) {
             source={data.picture}
             language={data.language}
             onPress={() => {
-              refImageViewer.current?.open([
-                data.picture,
-                data.wallpaper ?? data.picture,
-              ]);
+              if (!data) {
+                return;
+              }
+
+              const images = [data.picture, data.wallpaper ?? data.picture];
+
+              if (data.additionalPictures) {
+                images.splice(1, 1);
+                images.push(...data.additionalPictures);
+              }
+
+              refImageViewer.current?.open(images);
             }}
           />
         </View>

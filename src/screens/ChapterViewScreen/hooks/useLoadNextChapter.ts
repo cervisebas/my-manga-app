@@ -64,11 +64,19 @@ export function useLoadNextChapter(
     return getAutoSelectOption(instance, bookInfo, nextChapter, currentOption);
   };
 
+  const getFileName = (filePath: string, index: number) => {
+    if (instance.getCustomFileName) {
+      return instance.getCustomFileName(filePath, index);
+    }
+
+    return filePath
+      .split('?')[0]
+      .slice(filePath.split('?')[0].lastIndexOf('/') + 1);
+  };
+
   const onLoadImage = async (index: number, source: File) => {
     try {
-      const fileName = savedImages.current[index]
-        .split('?')[0]
-        .slice(savedImages.current[index].split('?')[0].lastIndexOf('/') + 1);
+      const fileName = getFileName(savedImages.current[index], index);
 
       const _file = new ChapterImageFile(fileName, source, subdirs.current);
       _file.checkFolder();

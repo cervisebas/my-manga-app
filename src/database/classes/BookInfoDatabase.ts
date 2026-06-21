@@ -33,6 +33,7 @@ export class BookInfoDatabase {
           type: bookInfo.type,
           language: bookInfo.language,
           languages: bookInfo.languages,
+          additionalPictures: bookInfo.additionalPictures,
           status: bookInfo.status,
           description: bookInfo.description,
           descriptionLang: bookInfo.descriptionLang,
@@ -50,6 +51,7 @@ export class BookInfoDatabase {
             type: bookInfo.type,
             language: bookInfo.language,
             languages: bookInfo.languages,
+            additionalPictures: bookInfo.additionalPictures,
             status: bookInfo.status,
             description: bookInfo.description,
             descriptionLang: bookInfo.descriptionLang,
@@ -278,6 +280,7 @@ export class BookInfoDatabase {
       genders: genders,
       staff: staff,
       chapters: chapters,
+      additionalPictures: book.additionalPictures || undefined,
       updateAt: book.updateAt,
     };
   }

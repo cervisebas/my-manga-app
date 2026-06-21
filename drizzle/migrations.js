@@ -5,6 +5,7 @@ import m0000 from './0000_dark_lord_tyger.sql';
 import m0001 from './0001_wooden_killer_shrike.sql';
 import m0002 from './0002_happy_white_queen.sql';
 import m0003 from './0003_dear_firedrake.sql';
+import m0004 from './0004_outstanding_peter_quill.sql';
 
   export default {
     journal,
@@ -12,7 +13,8 @@ import m0003 from './0003_dear_firedrake.sql';
       m0000,
 m0001,
 m0002,
-m0003
+m0003,
+m0004
     }
   }
   

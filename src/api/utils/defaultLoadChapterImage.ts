@@ -7,14 +7,15 @@ const destination = new Directory(Paths.cache, 'images');
 export async function defaultLoadChapterImage(
   url: string,
   headers?: Record<string, string>,
+  customFileName?: string,
 ) {
   if (!destination.exists) {
     destination.create();
   }
 
-  const fileName = url
-    .split('?')[0]
-    .slice(url.split('?')[0].lastIndexOf('/') + 1);
+  const fileName =
+    customFileName ||
+    url.split('?')[0].slice(url.split('?')[0].lastIndexOf('/') + 1);
   const path = Paths.join(destination, fileName);
   const file = new File(path);
 

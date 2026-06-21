@@ -10,6 +10,7 @@ import { SettingManager } from '@/settings/classes/SettingManager';
 import { SettingType } from '@/settings/enums/SettingType';
 import { NavigationProp } from '@react-navigation/native';
 import { autoSelectOption } from '../utils/autoSelectOption';
+import { goToChapterView } from '@/utils/goToChapterView';
 
 export class ChapterSheetOptions {
   private bookInfo: BookInfoInterface;
@@ -150,6 +151,25 @@ export class ChapterSheetOptions {
         },
       });
     }
+
+    this.options.push({
+      label: 'Volver a solicitar los recursos',
+      description: this.loadingImages?.loading
+        ? 'Aún no disponible'
+        : undefined,
+      disabled: this.loadingImages?.loading,
+      leftIcon: 'cloud-download-outline',
+      onPress: () => {
+        goToChapterView(
+          this.instance,
+          this.bookInfo,
+          this.chapter,
+          this.option,
+          true,
+          true,
+        );
+      },
+    });
   }
 
   private generateActions() {

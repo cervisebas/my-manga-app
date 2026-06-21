@@ -8,6 +8,7 @@ import { BookChapterList } from '@/database/classes/BookChapterList';
 import { eq } from 'drizzle-orm';
 import { BookChapterOptionModel } from '@/database/schemas/BookChapterOptionModel';
 import { ToastAndroid } from 'react-native';
+import { BookInfoModel } from '@/database/schemas/BookInfoModel';
 
 const TEST_BACKGROUND_TASK = new SettingItem({
   icon: 'test-tube',
@@ -58,7 +59,29 @@ TEST_REMOVE_LAST_CHAPTERS.externalClickAction = async function _() {
   }
 };
 
+const TEST_CLEAR_BOOK_INFO_DB = new SettingItem({
+  icon: 'book-remove-outline',
+  title: 'Remover libros de la base de datos',
+  section: SettingSection.TEST,
+  clickable: true,
+  loadeable: false,
+});
+TEST_CLEAR_BOOK_INFO_DB.externalClickAction = async function _() {
+  try {
+    await db.transaction(async (tx) => {
+      await tx.delete(BookInfoModel);
+      await tx.delete(BookChapterModel);
+      await tx.delete(BookChapterOptionModel);
+    });
+
+    ToastAndroid.show('Listo!', ToastAndroid.SHORT);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const SettingListTest = [
   TEST_BACKGROUND_TASK,
   TEST_REMOVE_LAST_CHAPTERS,
+  TEST_CLEAR_BOOK_INFO_DB,
 ];

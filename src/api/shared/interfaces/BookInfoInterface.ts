@@ -14,6 +14,7 @@ export interface BookInfoInterface {
   title: string;
   altTitles: Record<string, string> | string[];
   picture: string;
+  additionalPictures?: string[];
   stars?: number;
   type: BookType;
 

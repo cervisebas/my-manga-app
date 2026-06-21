@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 
 export interface ChapterOptionInterface {
   title?: string;
-  date: dayjs.Dayjs;
+  date: dayjs.Dayjs | null;
   url: string;
   language?: Language;
 }

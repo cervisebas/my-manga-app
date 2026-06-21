@@ -43,12 +43,13 @@ export interface IScrappingService {
   ): Promise<string[]>;
 
   // Load Images
+  getCustomFileName?(url: string, index: number): string;
   loadChapterImage(url: string): Promise<File>;
   loadChapterImages(
     urls: string[],
     _continue?: () => boolean,
     exist?: (index: number) => boolean,
     progress?: (index: number, source: File) => Promise<void>,
-    onError?: (index: number) => Promise<void>,
+    onError?: (index: number, cause?: string) => Promise<void>,
   ): Promise<void>;
 }

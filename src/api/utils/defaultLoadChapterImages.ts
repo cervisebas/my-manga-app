@@ -8,7 +8,9 @@ export async function defaultLoadChapterImages(
   _continue?: () => boolean,
   exist?: (index: number) => boolean,
   progress?: (index: number, file: File) => Promise<void>,
-  onError?: (index: number) => Promise<void>,
+  onError?: (index: number, cause?: string) => Promise<void>,
+  customFileName?: (url: string, index: number) => string,
+  explainError?: (error: string) => string | undefined,
 ): Promise<void> {
   try {
     for (let index = 0; index < urls.length; index++) {
@@ -25,14 +27,18 @@ export async function defaultLoadChapterImages(
       try {
         const url = urls[index] ?? '';
         const image = await retry(
-          defaultLoadChapterImage(url, headers),
+          defaultLoadChapterImage(url, headers, customFileName?.(url, index)),
           5,
           250,
         );
         await progress?.(index, image);
       } catch (error) {
         console.error(urls[index], error);
-        await onError?.(index);
+        if (explainError) {
+          await onError?.(index, explainError(error as string));
+        } else {
+          await onError?.(index);
+        }
       }
     }
   } catch (error) {

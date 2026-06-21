@@ -69,6 +69,7 @@ async function getFromDatabase(
 export async function getPreffererSavedImages(
   instance: IScrappingService,
   option: ChapterOptionInterface,
+  ignoreCached = false,
 ) {
   let images: string[] | undefined;
 
@@ -76,7 +77,7 @@ export async function getPreffererSavedImages(
     SettingType.PREFERER_SAVED_IMAGES_CHAPTER,
   );
 
-  if (!preffererSaved) {
+  if (!preffererSaved || ignoreCached) {
     images = await getFromInternet(instance, option, false);
   } else {
     images = await getFromDatabase(instance, option, false);
@@ -91,11 +92,16 @@ export async function goToChapterView(
   chapter: ChapterInterface,
   option: ChapterOptionInterface,
   activeChapterView: boolean,
+  ignoreCached = false,
 ) {
   refDialogLoading.current?.show('Obteniendo información...');
 
   try {
-    const images = await getPreffererSavedImages(instance, option);
+    const images = await getPreffererSavedImages(
+      instance,
+      option,
+      ignoreCached,
+    );
 
     if (activeChapterView) {
       refNavegation.current?.goBack();

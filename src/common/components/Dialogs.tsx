@@ -24,6 +24,7 @@ export interface IDialog {
 
 export interface IDialogRef {
   open(data: IDialog): void;
+  isOpened(): boolean;
 }
 
 export const Dialogs = forwardRef(function (
@@ -71,6 +72,9 @@ export const Dialogs = forwardRef(function (
       setConfirmButton(data.confirmButton);
       setCancelButton(data.cancelButton);
       setVisible(true);
+    },
+    isOpened() {
+      return visible;
     },
   }));
 

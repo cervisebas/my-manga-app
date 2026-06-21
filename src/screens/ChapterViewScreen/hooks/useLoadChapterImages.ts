@@ -6,6 +6,7 @@ import { ChapterImageInfo } from '@/common/classes/ChapterImageInfo';
 
 import NoLoadImage from '@/assets/no-load-image.webp';
 import { File } from 'expo-file-system';
+import { refDialogs } from '@/constants/Refs';
 
 export function useLoadChapterImages(
   instance: IScrappingService,
@@ -22,10 +23,16 @@ export function useLoadChapterImages(
   const _continue = useRef(true);
 
   // Variables
+  const showErrorDialog = useRef(false);
+
   const progress = images.reduce((prev, curr) => (curr ? prev + 1 : prev), 0);
   const subdirs = [instance.getIdName(), ...bookPaths];
 
-  const getFileName = (filePath: string) => {
+  const getFileName = (filePath: string, index: number) => {
+    if (instance.getCustomFileName) {
+      return instance.getCustomFileName(filePath, index);
+    }
+
     return filePath
       .split('?')[0]
       .slice(filePath.split('?')[0].lastIndexOf('/') + 1);
@@ -34,7 +41,7 @@ export function useLoadChapterImages(
   // Methods
   const onLoadImage = async (index: number, source: File) => {
     try {
-      const fileName = getFileName(sourceImages[index]);
+      const fileName = getFileName(sourceImages[index], index);
 
       const _file = new ChapterImageFile(fileName, source, subdirs);
       _file.checkFolder();
@@ -63,7 +70,7 @@ export function useLoadChapterImages(
     }
   };
 
-  const onErrorImage = async (index: number) => {
+  const onErrorImage = async (index: number, cause?: string) => {
     const _info = new ChapterImageInfo(NoLoadImage as never);
     await _info.load();
 
@@ -75,13 +82,23 @@ export function useLoadChapterImages(
       height: _sizes.height,
     };
 
+    if (!refDialogs.current?.isOpened() && !showErrorDialog.current) {
+      showErrorDialog.current = true;
+      refDialogs.current?.open({
+        message: cause,
+        confirmButton: {
+          label: 'Aceptar',
+        },
+      });
+    }
+
     setImages((images) =>
       images.map((value, indexImage) => (indexImage === index ? image : value)),
     );
   };
 
   const existFile = (index: number) => {
-    const fileName = getFileName(sourceImages[index]);
+    const fileName = getFileName(sourceImages[index], index);
     const exist = ChapterImageFile.exist(fileName, subdirs);
 
     if (exist) {

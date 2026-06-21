@@ -2,7 +2,12 @@ import { AppbarHeader } from '@/common/components/AppbarHeader';
 import { NativeBottomTabScreenProps } from '@bottom-tabs/react-navigation';
 import { ParamListBase } from '@react-navigation/native';
 import React, { useRef, useState } from 'react';
-import { Keyboard, TouchableWithoutFeedback, View } from 'react-native';
+import {
+  Keyboard,
+  ToastAndroid,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import { Appbar, Badge, Text, Tooltip, useTheme } from 'react-native-paper';
 import { LibrarySearchBar } from './components/LibrarySearchBar';
 import { Scrappers } from '@/api/api';
@@ -125,6 +130,11 @@ export function LibraryScreen(_props: IProps) {
 
     const scrapper = getInstanceById(currentIndex);
     const _filters = scrapper.getSearchFilters();
+
+    if (!_filters.length) {
+      ToastAndroid.show('Este servicio no soporta filtros', ToastAndroid.SHORT);
+      return;
+    }
 
     if (filters[currentIndex]) {
       for (const filter of filters[currentIndex]) {

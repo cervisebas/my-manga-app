@@ -1,0 +1,1 @@
+ALTER TABLE `books-info` ADD `additionalPictures` text;

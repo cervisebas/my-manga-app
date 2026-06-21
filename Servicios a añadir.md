@@ -12,4 +12,4 @@
 - [ ] Manga Oni <b>[HTML]</b>
 - [ ] Kumanga <b>[HTML]</b> [[Link]](https://www.kumanga.com/)
 - [x] LeerMangaEsp <b>[API RES en JSON]</b> [[Link]](https://leermangaesp.net/)
-- [ ] Yupmanga <b>[HTML]</b> [[Link]](https://www.yupmanga.com/)
+- [x] Yupmanga <b>[HTML]</b> [[Link]](https://www.yupmanga.com/)
