@@ -6,6 +6,7 @@ import { CapibaraTraductorScrapping } from './classes/CapibaraTraductorScrapping
 import { ManhwaWebScrapping } from './classes/ManhwaWebScrapping';
 import { LeerMangaEspScrapping } from './classes/LeerMangaEspScrapping';
 import { YupMangaScrapping } from './classes/YupMangaScrapping';
+import { VisorMangaScrapping } from './classes/VisorMangaScrapping';
 
 export const Scrappers: IScrappingService[] = [
   new MangaDexScrapping(),
@@ -14,4 +15,5 @@ export const Scrappers: IScrappingService[] = [
   new ManhwaWebScrapping(),
   new LeerMangaEspScrapping(),
   new YupMangaScrapping(),
+  new VisorMangaScrapping(),
 ];

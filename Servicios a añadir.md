@@ -13,3 +13,4 @@
 - [ ] Kumanga <b>[HTML]</b> [[Link]](https://www.kumanga.com/)
 - [x] LeerMangaEsp <b>[API RES en JSON]</b> [[Link]](https://leermangaesp.net/)
 - [x] Yupmanga <b>[HTML]</b> [[Link]](https://www.yupmanga.com/)
+- [x] VisorManga <b>[HTML]</b> [[Link]](https://visormanga.com/)

@@ -15,7 +15,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
   name: 'My Manga App',
   slug: 'MMA',
-  version: '1.5.0',
+  version: '1.6.0',
   experiments: {
     tsconfigPaths: true,
     reactCompiler: true,
@@ -105,7 +105,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   icon: './assets/icon.png',
   userInterfaceStyle: 'dark',
   android: {
-    versionCode: 9,
+    versionCode: 10,
     adaptiveIcon: {
       backgroundColor: '#E6F4FE',
       foregroundImage: './assets/android-icon-foreground.png',
