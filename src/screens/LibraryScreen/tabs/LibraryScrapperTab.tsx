@@ -65,6 +65,13 @@ export function LibraryScrapperTab(props: IProps) {
       });
       setData((_current) => [..._current, ..._data.books]);
 
+      console.info('DATA SEARCH ::', {
+        _instance: props.instance.getNameService(),
+        data: _data,
+        page: page.current,
+        offset: offset.current,
+      });
+
       offset.current = _data.offset;
       page.current = _data.page;
       total.current = (total.current ?? 0) + (_data.total ?? 0);

@@ -23,7 +23,7 @@ export interface CapibaraTraductorSearchData {
 }
 
 export interface CapibaraTraductorSearchItem {
-  id: number;
+  id: number | string;
   title: string;
   imageUrl: string;
   bannerUrl: string;

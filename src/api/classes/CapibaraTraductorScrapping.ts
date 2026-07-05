@@ -277,7 +277,11 @@ export class CapibaraTraductorScrapping implements IScrappingService {
       total: data?.data?.total || items.length,
       offset: 0,
       books: items.map((val: CapibaraTraductorSearchItem) => {
-        const urlPath = `/${val.organization?.slug}/manga/${val.manga?.slug}`;
+        const idSlug =
+          typeof val.id === 'string' && val.id.includes('-')
+            ? val.id.slice(0, val.id.lastIndexOf('-'))
+            : null;
+        const urlPath = `/${idSlug ?? val.organization?.slug}/manga/${val.manga?.slug}`;
         const bookUrl = `https://capibaratraductor.com${urlPath}`;
 
         return {
