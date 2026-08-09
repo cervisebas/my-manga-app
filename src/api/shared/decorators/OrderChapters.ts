@@ -21,7 +21,9 @@ export function OrderChapters(props?: IProps) {
 
       if (!props?.noOrderOptions) {
         for (const chapter of chapters) {
-          chapter.options.sort((a, b) => a.date.unix() - b.date.unix());
+          chapter.options.sort(
+            (a, b) => (a.date?.unix() ?? 0) - (b.date?.unix() ?? 0),
+          );
         }
       }
 

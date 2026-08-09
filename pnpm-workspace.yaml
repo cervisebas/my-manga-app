@@ -20,5 +20,7 @@ minimumReleaseAgeExclude:
 nodeLinker: hoisted
 
 patchedDependencies:
+  metro: patches/metro.patch
+  metro-runtime: patches/metro-runtime.patch
   react-native-element-dropdown: patches/react-native-element-dropdown.patch
   react-native-image-viewing: patches/react-native-image-viewing.patch
