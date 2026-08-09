@@ -5,4 +5,5 @@ export enum ApiErrorCode {
   BLOCKED,
   UNKNOWN,
   INTERNAL_ERROR,
+  ORIGIN_UNREACHABLE,
 }

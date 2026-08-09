@@ -21,6 +21,9 @@ export class ApiError {
         case 503:
           return ApiErrorCode.SERVICE_NOT_AVAILABLE;
 
+        case 523:
+          return ApiErrorCode.ORIGIN_UNREACHABLE;
+
         case 400:
         case 404:
           return ApiErrorCode.NOT_FOUND;

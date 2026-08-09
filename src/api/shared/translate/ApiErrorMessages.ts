@@ -7,4 +7,5 @@ export const ApiErrorMessages = {
   [ApiErrorCode.BLOCKED]: 'El servicio bloqueo la petición',
   [ApiErrorCode.UNKNOWN]: 'Eroor desconocido',
   [ApiErrorCode.INTERNAL_ERROR]: 'Ocurrio un error interno',
+  [ApiErrorCode.ORIGIN_UNREACHABLE]: 'El origen es inaccesible',
 };
